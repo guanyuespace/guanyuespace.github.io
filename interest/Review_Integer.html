@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Review   Review Integer valueOf toStr parseInt 位操作&amp;amp;最低位 位操作&amp;amp;高位零的数目 位操作&amp;amp;低位零的数目 位操作&amp;amp;循环移位 位操作&amp;amp;符号位 位操作&amp;amp;二进制反序 位操作&amp;amp;二进制中1的数目   AtomicInteger 简介 Unsafe 补充-volatile 测试      Integerva">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;Review_Integer.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="Review   Review Integer valueOf toStr parseInt 位操作&amp;amp;最低位 位操作&amp;amp;高位零的数目 位操作&amp;amp;低位零的数目 位操作&amp;amp;循环移位 位操作&amp;amp;符号位 位操作&amp;amp;二进制反序 位操作&amp;amp;二进制中1的数目   AtomicInteger 简介 Unsafe 补充-volatile 测试      Integerva">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190111101332407.png">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190111101332407.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/interest/Review_Integer.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h1><!-- TOC -->
+
+<ul>
+<li><a href="#review">Review</a></li>
+<li><a href="#integer">Integer</a><ul>
+<li><a href="#valueof-function%20valueOf()%20%7B%20%5Bnative%20code%5D%20%7D1">valueOf</a></li>
+<li><a href="#tostr">toStr</a></li>
+<li><a href="#parseint">parseInt</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E6%9C%80%E4%BD%8E%E4%BD%8D">位操作&amp;最低位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E9%AB%98%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;高位零的数目</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BD%8E%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;低位零的数目</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%BE%AA%E7%8E%AF%E7%A7%BB%E4%BD%8D">位操作&amp;循环移位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%8F%B7%E4%BD%8D">位操作&amp;符号位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8F%8D%E5%BA%8F">位操作&amp;二进制反序</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;二进制中1的数目</a></li>
+</ul>
+</li>
+<li><a href="#atomicinteger">AtomicInteger</a><ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#unsafe">Unsafe</a></li>
+<li><a href="#%E8%A1%A5%E5%85%85-volatile">补充-volatile</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95">测试</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<hr>
+<h1 id="Integer"><a href="#Integer" class="headerlink" title="Integer"></a>Integer</h1><h2 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf"></a>valueOf</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br><span class="line">Integer#IntegerCache(-128~127)</span><br></pre></td></tr></table></figure>
+
+<h2 id="toStr"><a href="#toStr" class="headerlink" title="toStr"></a>toStr</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">toStr(val, radix)&#123;</span><br><span class="line">    <span class="keyword">while</span> (val &gt;= radix) &#123;</span><br><span class="line">       buf[charPos--] = digits[(val % radix)];</span><br><span class="line">       val = val / radix;</span><br><span class="line">    &#125;</span><br><span class="line">    buf<span class="comment">//result array buffer</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt"></a>parseInt</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">parseInt(s, radix)&#123;</span><br><span class="line">    digit = Character.digit(s.charAt(i++),radix);</span><br><span class="line">    result*=radix;</span><br><span class="line">    result+=digit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">## 位操作&amp;最高位</span><br><span class="line">```java</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">highestOneBit</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// HD, Figure 3-1</span></span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">1</span>);<span class="comment">//右移一位，  </span></span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">2</span>);</span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">4</span>);</span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">   i |= (i &gt;&gt; <span class="number">16</span>);</span><br><span class="line">   <span class="keyword">return</span> i - (i &gt;&gt;&gt; <span class="number">1</span>);<span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析：</strong>  </p>
+<ul>
+<li>右移一位，最高位1右移一位，取或–&gt; 最高的两位都是1</li>
+<li>右移两位，最高两位都是1，再右移两位取或—&gt; 最高四位都是1</li>
+<li>int共32位，到最后一步使得最高位之后均为1，返回最高位为1的数      </li>
+</ul>
+<p><strong>Result:</strong>   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(15),16)</span><br><span class="line">$1 ==&gt; &quot;8&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(16),16)</span><br><span class="line">$2 ==&gt; &quot;10&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(7),16)</span><br><span class="line">$3 ==&gt; &quot;4&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(0x7fffffff),16)</span><br><span class="line">$5 ==&gt; &quot;40000000&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-最低位"><a href="#位操作-amp-最低位" class="headerlink" title="位操作&amp;最低位"></a>位操作&amp;最低位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">lowestOneBit</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// HD, Section 2-1</span></span><br><span class="line">    <span class="keyword">return</span> i &amp; -i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析：</strong>    </p>
+<ul>
+<li>补码表示： 原码取反+1</li>
+<li>原码取反,  +1–&gt;（主体：反码）最低位0变1 (0之后的1均变为0）   因此使得最低位0之后的数位与原码都相同（主体：补码）   </li>
+<li>同样（主体：原码）最低位1之后的数位与补码均相同   </li>
+</ul>
+<p>省去符号位(高位)表示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^1([0|1]+)?|0   </span><br><span class="line"></span><br><span class="line">1101 0000     0010 1111+1    0001 0000</span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-高位零的数目"><a href="#位操作-amp-高位零的数目" class="headerlink" title="位操作&amp;高位零的数目"></a>位操作&amp;高位零的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">numberOfLeadingZeros</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-6</span></span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">16</span> == <span class="number">0</span>) &#123; n += <span class="number">16</span>; i &lt;&lt;= <span class="number">16</span>; &#125;<span class="comment">//无符号右移16  高16位==0（i左移16位保存低16位，舍弃高16位）   </span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">24</span> == <span class="number">0</span>) &#123; n +=  <span class="number">8</span>; i &lt;&lt;=  <span class="number">8</span>; &#125;<span class="comment">//无符号右移24  高8位==0</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">28</span> == <span class="number">0</span>) &#123; n +=  <span class="number">4</span>; i &lt;&lt;=  <span class="number">4</span>; &#125;<span class="comment">//</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">30</span> == <span class="number">0</span>) &#123; n +=  <span class="number">2</span>; i &lt;&lt;=  <span class="number">2</span>; &#125;</span><br><span class="line">    n -= i &gt;&gt;&gt; <span class="number">31</span>;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line">```    </span><br><span class="line">**Result:**   </span><br><span class="line">```jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x1</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">8</span> ==&gt; <span class="string">"31"</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0xffffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">10</span> ==&gt; <span class="string">"0"</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x3fffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">11</span> ==&gt; <span class="string">"2"</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x1fffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">12</span> ==&gt; <span class="string">"3"</span></span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-低位零的数目"><a href="#位操作-amp-低位零的数目" class="headerlink" title="位操作&amp;低位零的数目"></a>位操作&amp;低位零的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">numberOfTrailingZeros</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-14</span></span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">31</span>;</span><br><span class="line">    y = i &lt;&lt;<span class="number">16</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n -<span class="number">16</span>; i = y; &#125;<span class="comment">//低十六位!=0  -=16</span></span><br><span class="line">    y = i &lt;&lt; <span class="number">8</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">8</span>; i = y; &#125;</span><br><span class="line">    y = i &lt;&lt; <span class="number">4</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">4</span>; i = y; &#125;</span><br><span class="line">    y = i &lt;&lt; <span class="number">2</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">2</span>; i = y; &#125;</span><br><span class="line">    <span class="keyword">return</span> n - ((i &lt;&lt; <span class="number">1</span>) &gt;&gt;&gt; <span class="number">31</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong>   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x77),10)</span><br><span class="line">$16 ==&gt; &quot;0&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x75),10)</span><br><span class="line">$17 ==&gt; &quot;0&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x76),10)</span><br><span class="line">$18 ==&gt; &quot;1&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-循环移位"><a href="#位操作-amp-循环移位" class="headerlink" title="位操作&amp;循环移位"></a>位操作&amp;循环移位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">rotateLeft</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> distance)</span> </span>&#123;<span class="comment">//循环左移</span></span><br><span class="line">    <span class="keyword">return</span> (i &lt;&lt; distance) | (i &gt;&gt;&gt; -distance);<span class="comment">//左移|移出的补位</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">rotateRight</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> distance)</span> </span>&#123;<span class="comment">//循环右移</span></span><br><span class="line">   <span class="keyword">return</span> (i &gt;&gt;&gt; distance) | (i &lt;&lt; -distance);<span class="comment">//无符号右移|移出的补位</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-符号位"><a href="#位操作-amp-符号位" class="headerlink" title="位操作&amp;符号位"></a>位操作&amp;符号位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">signum</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// HD, Section 2-7</span></span><br><span class="line">   <span class="keyword">return</span> (i &gt;&gt; <span class="number">31</span>) | (-i &gt;&gt;&gt; <span class="number">31</span>);<span class="comment">//i&lt;0?-1:0|  -i&gt;0?0:1    -1|0=-1(负数)   0|1=1（正数） 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>… …</p>
+<h2 id="位操作-amp-二进制反序"><a href="#位操作-amp-二进制反序" class="headerlink" title="位操作&amp;二进制反序"></a>位操作&amp;二进制反序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// HD, Figure 7-1</span></span><br><span class="line">   i = (i &amp; <span class="number">0x55555555</span>) &lt;&lt; <span class="number">1</span> | (i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>;</span><br><span class="line">   i = (i &amp; <span class="number">0x33333333</span>) &lt;&lt; <span class="number">2</span> | (i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>;</span><br><span class="line">   i = (i &amp; <span class="number">0x0f0f0f0f</span>) &lt;&lt; <span class="number">4</span> | (i &gt;&gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0f0f0f0f</span>;</span><br><span class="line">   i = (i &lt;&lt; <span class="number">24</span>) | ((i &amp; <span class="number">0xff00</span>) &lt;&lt; <span class="number">8</span>) |</span><br><span class="line">       ((i &gt;&gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff00</span>) | (i &gt;&gt;&gt; <span class="number">24</span>);</span><br><span class="line">   <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-二进制中1的数目"><a href="#位操作-amp-二进制中1的数目" class="headerlink" title="位操作&amp;二进制中1的数目"></a>位操作&amp;二进制中1的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bitCount</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-2</span></span><br><span class="line">    i = i - ((i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>);</span><br><span class="line">    i = (i &amp; <span class="number">0x33333333</span>) + ((i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);</span><br><span class="line">    i = (i + (i &gt;&gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x0f0f0f0f</span>;</span><br><span class="line">    i = i + (i &gt;&gt;&gt; <span class="number">8</span>);</span><br><span class="line">    i = i + (i &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="keyword">return</span> i &amp; <span class="number">0x3f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><font color="red" size="+3">数学计算</font><br/><br>函数功能说明：技术整型i二进制表示中1的个数。</p>
+<p>解释过程，设：$i=b_0\cdot2^0+b_1\cdot2^1+…+b_{30}\cdot2^{30}+b_{31}\cdot2^{31}$。<br>要求的结果为：$b_0+b_1+b_2+b_3+…+b_{30}+b_{31}$ 的值。    </p>
+<p>第一步<code>i = i - ((i &gt;&gt;&gt; 1) &amp; 0x55555555);</code>(5的二进制为0101)得到的结果为：<br>$i=b_0\cdot2^0+b_1\cdot2^1+…+b_{31}\cdot2^{31}-(b_1\cdot2^0+b_3\cdot2^2+b_5\cdot2^4+b_{31}\cdot2^{30}) \ =(b_0-b_1)\cdot2^0+b_1\cdot2^1+(b_2-b_3)\cdot2^2+…+b_{29}\cdot2^{29}+(b_{30}-b_{31})\cdot2^{30}+b_{31}\cdot2^{31}\ =(b_0+b_1)\cdot2^0+(b_2+b_3)\cdot2^2+…+(b_{28}+b_{29})\cdot2^{28}+(b_{30}+b_{31})\cdot2^{30}$。</p>
+<p>第二步<code>i = (i &amp; 0x33333333) + ((i &gt;&gt;&gt; 2) &amp; 0x33333333);</code>(3的二进制为0011)得到的结果为：<br>$i=((b_0+b_1)\cdot2^0+(b_4+b_5)\cdot2^4+…+(b_{28}+b_{29})\cdot2^{28})\ +((b_2+b_3)\cdot2^0+(b_6+b_7)\cdot2^4+…+(b_{30}+b_{31})\cdot2^{28}\ =(b_0+b_1+b_2+b_3)\cdot2^0+(b_4+b_5+b_6+b_7)\cdot2^4+…+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28}$  </p>
+<p>第三步<code>i = (i + (i &gt;&gt;&gt; 4)) &amp; 0x0f0f0f0f;</code>(0f的二进制为00001111)中i + (i &gt;&gt;&gt; 4)得到的结果为：<br>$i + (i &gt;&gt;&gt; 4)=((b_0+b_1+b_2+b_3)\cdot2^0+(b_4+b_5+b_6+b_7)\cdot2^4+…\ +(b_{24}+b_{25}+b_{26}+b_{27})\cdot2^{24}+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28})\ +((b_4+b_5+b_6+b_7)\cdot2^0+(b_8+b_9+b_{10}+b_{11})\cdot2^4+…+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{24})\ =(b_0+b_1+b_2+…+b_6+b_7)\cdot2^0+(b_4+b_5+b_6+…+b_{10}+b_{11})\cdot2^4+…\ +(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28}$</p>
+<p>所以<code>i = (i + (i &gt;&gt;&gt; 4)) &amp; 0x0f0f0f0f;</code>得到的结果为：<br>$i=(b_0+b_1+b_2+…+b_6+b_7)\cdot2^0+(b_8+b_9+b_{10}+b_{11}+…+b_{14}+b_{15})\cdot2^8+…+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>第四步<code>i = i + (i &gt;&gt;&gt; 8);</code>得到的结果为：<br>$i=(b_0+b_1+b_2+…+b_{14}+b_{15})\cdot2^0+(b_8+b_9+b_{10}+…+b_{22}+b_{23})\cdot2^8\ +(b_{16}+b_{17}+b_{18}+…+b_{30}+b_{31})\cdot2^{16}+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>第五步<code>i = i + (i &gt;&gt;&gt; 16);</code>得到的结果为：<br>$i=(b_0+b_1+b_2+…+b_{30}+b_{31})\cdot2^0+(b_8+b_9+b_{10}+…+b_{30}+b_{31})\cdot2^8\ +(b_{16}+b_{17}+b_{18}+…+b_{30}+b_{31})\cdot2^{16}+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>最后<code>i &amp; 0x3f;</code>得到的结果为：<br>$i=\sum_{i=0}^{31}b_i$   </p>
+<hr>
+<h1 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h1><blockquote>
+<p>An int value that may be updated atomically.</p>
+<p>An AtomicInteger is used in applications such as atomically incremented counters, and <strong>cannot be used as a replacement for an java.lang.Integer.</strong><br>However, this class does extend Number to allow uniform access by tools and utilities that deal with numerically-based classes.</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicInteger</span> <span class="keyword">extends</span> <span class="title">Number</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="comment">// setup to use Unsafe.compareAndSwapInt for updates</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Unsafe unsafe = Unsafe.getUnsafe();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> valueOffset;<span class="comment">//field: value   --&gt; offset  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> value;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           valueOffset = unsafe.objectFieldOffset(AtomicInteger.class.getDeclaredField(<span class="string">"value"</span>));</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception ex) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> Error(ex); &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/////////////////////////////////////Function///////////////////////////////////////////////////////////////</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lazySet</span><span class="params">(<span class="keyword">int</span> newValue)</span> </span>&#123;</span><br><span class="line">        unsafe.putOrderedInt(<span class="keyword">this</span>, valueOffset, newValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">compareAndSet</span><span class="params">(<span class="keyword">int</span> expect, <span class="keyword">int</span> update)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.compareAndSwapInt(<span class="keyword">this</span>, valueOffset, expect, update);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndIncrement</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IntBinaryOperator: FunctionalInterface</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">accumulateAndGet</span><span class="params">(<span class="keyword">int</span> x,</span></span></span><br><span class="line"><span class="function"><span class="params">                                      IntBinaryOperator accumulatorFunction)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> prev, next;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            prev = get();</span><br><span class="line">            next = accumulatorFunction.applyAsInt(prev, x);</span><br><span class="line">        &#125; <span class="keyword">while</span> (!compareAndSet(prev, next));<span class="comment">//ok 原子操作的基础... ...</span></span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由代码可知，所有操作均有Unsafe.java类进行操作完成     </p>
+<h2 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Unsafe</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Unsafe theUnsafe;<span class="comment">//ok</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Unsafe <span class="title">getUnsafe</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Class caller = Reflection.getCallerClass();</span><br><span class="line">        <span class="keyword">if</span> (!VM.isSystemDomainLoader(caller.getClassLoader())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> SecurityException(<span class="string">"Unsafe"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> theUnsafe;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">      registerNatives();</span><br><span class="line">      Reflection.registerMethodsToFilter(Unsafe.class, <span class="keyword">new</span> String[]&#123;<span class="string">"getUnsafe"</span>&#125;);</span><br><span class="line">      theUnsafe = <span class="keyword">new</span> Unsafe();</span><br><span class="line">      ... ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">////////////////////////////About AtomicInteger/////////////////////////////////////////</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">putOrderedInt</span><span class="params">(Object var1, <span class="keyword">long</span> offset, <span class="keyword">int</span> newValue)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapInt</span><span class="params">(Object var1, <span class="keyword">long</span> offset, <span class="keyword">int</span> expect, <span class="keyword">int</span> update)</span></span>;<span class="comment">//Value(var1.offset)==expect?&#123;Value(var1.offset)=update; return true;&#125;:return false;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> offset, <span class="keyword">int</span> addon)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> current;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            current = <span class="keyword">this</span>.getIntVolatile(var1, offset);<span class="comment">//取出当前值</span></span><br><span class="line">        &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, offset, current, current + addon));<span class="comment">//set the new value successfully ? true : false;</span></span><br><span class="line">        <span class="keyword">return</span> current;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>阻塞同步和非阻塞同步都是实现线程安全的两个保障手段，非阻塞同步对于阻塞同步而言主要解决了阻塞同步中线程阻塞和唤醒带来的性能问题，那什么叫做非阻塞同步呢？<br><em>在并发环境下，某个线程对共享变量先进行操作，如果没有其他线程争用共享数据那操作就成功；如果存在数据的争用冲突，那就采取补偿措施，比如不断的重试机制，直到成功为止，因为这种乐观的并发策略不需要把线程挂起，也就把这种同步操作称为非阻塞同步（操作和冲突检测具备原子性）。</em> <strong><em>在硬件指令集的发展驱动下，使得 “操作和冲突检测” 这种看起来需要多次操作的行为只需要一条处理器指令便可以完成，这些指令中就包括非常著名的 CAS 指令（Compare-And-Swap 比较并交换）。</em></strong> 《深入理解 Java 虚拟机第二版. 周志明》第十三章中这样描述关于 CAS 机制:<br><img src="https://img-blog.csdnimg.cn/20190111101332407.png" alt="《深入理解 Java 虚拟机第二版. 周志明》13.2.2" title="《深入理解 Java 虚拟机第二版. 周志明》13.2.2">  </p>
+<p><strong>原子操作：</strong> incrementAndGet() 方法在一个无限循环体内，不断尝试将一个比当前值大 1 的新值赋给自己，如果失败则说明在执行 “获取 - 设置” 操作的时已经被其它线程修改过了，于是便再次进入循环下一次操作，直到成功为止。   </p>
+<h2 id="补充-volatile"><a href="#补充-volatile" class="headerlink" title="补充-volatile"></a>补充-volatile</h2><ul>
+<li>保证变量在线程间可见，对 volatile 变量所有的写操作都能立即反应到其他线程中，换句话说，volatile 变量在各个线程中是一致的（得益于 java 内存模型—“先行发生原则”）；</li>
+<li>禁止指令的重排序优化；</li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicIntegerTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicInteger counter = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);</span><br><span class="line">        ExecutorService executors = Executors.newFixedThreadPool(<span class="number">50</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            executors.execute(() -&gt; &#123;</span><br><span class="line">                increase();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Thread.sleep(<span class="number">50</span>);</span><br><span class="line">        <span class="keyword">if</span> (Thread.activeCount() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            Thread.yield();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(counter.get());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        counter.accumulateAndGet(<span class="number">20</span>, (left, right) -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> left + right;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">200000</span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h1><blockquote>
+</blockquote>
+<h2 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h2><h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Review"><span class="nav-number">1.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Integer"><span class="nav-number">2.</span> <span class="nav-text">Integer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#valueOf-NaN"><span class="nav-number">2.1.</span> <span class="nav-text">valueOf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toStr"><span class="nav-number">2.2.</span> <span class="nav-text">toStr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parseInt"><span class="nav-number">2.3.</span> <span class="nav-text">parseInt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-最低位"><span class="nav-number">2.4.</span> <span class="nav-text">位操作&amp;最低位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-高位零的数目"><span class="nav-number">2.5.</span> <span class="nav-text">位操作&amp;高位零的数目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-低位零的数目"><span class="nav-number">2.6.</span> <span class="nav-text">位操作&amp;低位零的数目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-循环移位"><span class="nav-number">2.7.</span> <span class="nav-text">位操作&amp;循环移位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-符号位"><span class="nav-number">2.8.</span> <span class="nav-text">位操作&amp;符号位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-二进制反序"><span class="nav-number">2.9.</span> <span class="nav-text">位操作&amp;二进制反序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作-amp-二进制中1的数目"><span class="nav-number">2.10.</span> <span class="nav-text">位操作&amp;二进制中1的数目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AtomicInteger"><span class="nav-number">3.</span> <span class="nav-text">AtomicInteger</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsafe"><span class="nav-number">3.2.</span> <span class="nav-text">Unsafe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充-volatile"><span class="nav-number">3.3.</span> <span class="nav-text">补充-volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Thread"><span class="nav-number">4.</span> <span class="nav-text">Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yield"><span class="nav-number">4.1.</span> <span class="nav-text">yield</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join"><span class="nav-number">4.2.</span> <span class="nav-text">join</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

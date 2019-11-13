@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010852160&#x2F;article&#x2F;details&#x2F;78491084  HTTP 2.0 是在 SPDY（An experimental protocol for a faster web, The Chromium Projects）基础上形成的下一代互联网通信协议。HTTP&#x2F;2 的目的是通过支持请">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;http&#x2F;simpread-HTTP2.0%20%E5%8E%9F%E7%90%86%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90%20-%20u010852160%20%E7%9A%84%E5%8D%9A%E5%AE%A2%20-%20CSDN%20%E5%8D%9A%E5%AE%A2.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010852160&#x2F;article&#x2F;details&#x2F;78491084  HTTP 2.0 是在 SPDY（An experimental protocol for a faster web, The Chromium Projects）基础上形成的下一代互联网通信协议。HTTP&#x2F;2 的目的是通过支持请">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170405172818292">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170405153816267">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170405170457247">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170405172729697">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406101003201">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406101019438">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406105233944">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406151823031">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406154122927">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406154450854">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406160432663">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170406160245818">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.513Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20170405172818292">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/http/simpread-HTTP2.0 原理详细解析 - u010852160 的博客 - CSDN 博客.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://blog.csdn.net/u010852160/article/details/78491084" target="_blank" rel="noopener">https://blog.csdn.net/u010852160/article/details/78491084</a></p>
+</blockquote>
+<p>HTTP 2.0 是在 SPDY（An experimental protocol for a faster web, The Chromium Projects）基础上形成的下一代互联网通信协议。HTTP/2 的目的是通过支持请求与响应的多路复用来较少延迟，通过压缩 HTTPS 首部字段将协议开销降低，同时增加请求优先级和服务器端推送的支持。<br>本文目的是学习 HTTP 2.0 的原理并研究其通信的详细细节。大部分知识点源于《Web 性能权威指南》。</p>
+<h1 id="1-二进制分帧层"><a href="#1-二进制分帧层" class="headerlink" title="1. 二进制分帧层"></a>1. 二进制分帧层</h1><p>二进制分帧层，是 HTTP 2.0 性能增强的核心。<br>HTTP 1.x 在应用层以纯文本的形式进行通信，而 HTTP 2.0 将所有的传输信息分割为更小的消息和帧，并对它们采用二进制格式编码。这样，客户端和服务端都需要引入新的二进制编码和解码的机制。<br>如下图所示，HTTP 2.0 并没有改变 HTTP 1.x 的语义，只是在应用层使用二进制分帧方式传输。<br><img src="https://img-blog.csdn.net/20170405172818292" alt=""><br>因此，也引入了新的通信单位：</p>
+<h2 id="1-1-帧（frame）"><a href="#1-1-帧（frame）" class="headerlink" title="1.1 帧（frame）"></a>1.1 帧（frame）</h2><p>HTTP 2.0 通信的最小单位，包括帧首部、流标识符、优先值和帧净荷等。<br><img src="https://img-blog.csdn.net/20170405153816267" alt=""></p>
+<p>其中，帧类型又可以分为：</p>
+<ul>
+<li>DATA：用于传输 HTTP 消息体；</li>
+<li>HEADERS：用于传输首部字段；</li>
+<li>SETTINGS：用于约定客户端和服务端的配置数据。比如设置初识的双向流量控制窗口大小；</li>
+<li>WINDOW_UPDATE：用于调整个别流或个别连接的流量</li>
+<li>PRIORITY： 用于指定或重新指定引用资源的优先级。</li>
+<li>RST_STREAM： 用于通知流的非正常终止。</li>
+<li>PUSH_ PROMISE： 服务端推送许可。</li>
+<li>PING： 用于计算往返时间，执行 “活性” 检活。</li>
+<li>GOAWAY： 用于通知对端停止在当前连接中创建流。</li>
+</ul>
+<p>标志位用于不同的帧类型定义特定的消息标志。比如 DATA 帧就可以使用<code>End Stream: true</code>表示该条消息通信完毕。流标识位表示帧所属的流 ID。优先值用于 HEADERS 帧，表示请求优先级。R 表示保留位。<br>下面是 Wireshark 抓包的一个 DATA 帧：<br><img src="https://img-blog.csdn.net/20170405170457247" alt=""></p>
+<h2 id="1-2-消息（message）"><a href="#1-2-消息（message）" class="headerlink" title="1.2 消息（message）"></a>1.2 消息（message）</h2><p>消息是指逻辑上的 HTTP 消息（请求 / 响应）。一系列数据帧组成了一个完整的消息。比如一系列 DATA 帧和一个 HEADERS 帧组成了请求消息。</p>
+<h2 id="1-3-流（stream）"><a href="#1-3-流（stream）" class="headerlink" title="1.3 流（stream）"></a>1.3 流（stream）</h2><p>流是连接中的一个虚拟信道，可以承载双向消息传输。每个流有唯一整数标识符。为了防止两端流 ID 冲突，客户端发起的流具有奇数 ID，服务器端发起的流具有偶数 ID。<br>所有 HTTP 2. 0 通信都在一个 TCP 连接上完成， 这个连接可以承载任意数量的双向数据流 Stream。 相应地， 每个数据流以 消息的形式发送， 而消息由一 或多个帧组成， 这些帧可以乱序发送， 然后根据每个帧首部的流标识符重新组装。<br><img src="https://img-blog.csdn.net/20170405172729697" alt=""><br>二进制分帧层保留了 HTTP 的语义不受影响，包括首部、方法等，在应用层来看，和 HTTP 1.x 没有差别。同时，所有同主机的通信能够在一个 TCP 连接上完成。</p>
+<h1 id="2-多路复用共享连接"><a href="#2-多路复用共享连接" class="headerlink" title="2. 多路复用共享连接"></a>2. 多路复用共享连接</h1><p>基于二进制分帧层，HTTP 2.0 可以在共享 TCP 连接的基础上，同时发送请求和响应。HTTP 消息被分解为独立的帧，而不破坏消息本身的语义，交错发送出去，最后在另一端根据流 ID 和首部将它们重新组合起来。<br>我们来对比下 HTTP 1.x 和 HTTP 2.0，假设不考虑 1.x 的 pipeline 机制，双方四层都是一个 TCP 连接。客户端向服务度发起三个图片请求 / image1.jpg，/image2.jpg，/image3.jpg。<br>HTTP 1.x 发起请求是串行的，image1 返回后才能再发起 image2，image2 返回后才能再发起 image3。<br><img src="https://img-blog.csdn.net/20170406101003201" alt=""><br>HTTP 2.0 建立一条 TCP 连接后，并行传输着 3 个数据流，客户端向服务端乱序发送 stream1~3 的一系列的 DATA 帧，与此同时，服务端已经在返回 stream 1 的 DATA 帧<br><img src="https://img-blog.csdn.net/20170406101019438" alt=""><br>性能对比，高下立见。HTTP 2.0 成功解决了 HTTP 1.x 的队首阻塞问题（TCP 层的阻塞仍无法解决），同时，也不需要通过 pipeline 机制多条 TCP 连接来实现并行请求与响应。减少了 TCP 连接数对服务器性能也有很大的提升。</p>
+<h1 id="3-请求优先级"><a href="#3-请求优先级" class="headerlink" title="3. 请求优先级"></a>3. 请求优先级</h1><p>流可以带有一个 31bit 的优先级：</p>
+<ul>
+<li>0：表示最高优先级</li>
+<li>2<sup>31</sup>-1：表示最低优先级</li>
+</ul>
+<p>客户端明确指定优先级，服务端可以根据这个优先级作为依据交互数据，比如客户端优先级设置为. css&gt;.js&gt;.jpg（具体可参见《高性能网站建设指南》）， 服务端按优先级返回结果有利于高效利用底层连接，提高用户体验。<br>然而，也不能过分迷信请求优先级，仍然要注意以下问题：</p>
+<ul>
+<li>服务端是否支持请求优先级</li>
+<li>会否引起队首阻塞问题，比如高优先级的慢响应请求会阻塞其他资源的交互。</li>
+</ul>
+<h1 id="4-服务端推送"><a href="#4-服务端推送" class="headerlink" title="4. 服务端推送"></a>4. 服务端推送</h1><p>HTTP 2.0 增加了服务端推送功能，服务端可以根据客户端的请求，提前返回多个响应，推送额外的资源给客户端。如下图所示，客户端请求 stream 1，/page.html。服务端在返回 stream 1 消息的同时推送了 stream 2（/script.js）和 stream 4（/style.css）。<br><img src="https://img-blog.csdn.net/20170406105233944" alt=""><br>PUSH_PROMISE 帧是服务端向客户端有意推送资源的信号。</p>
+<ul>
+<li>如果客户端不需要服务端 Push，可在 SETTINGS 帧中设定服务端流的值为 0，禁用此功能</li>
+<li>PUSH_PROMISE 帧中只包含预推送资源的首部。如果客户端对 PUSH_PROMISE 帧没有意见，服务端在 PUSH_PROMISE 帧后发送响应的 DATA 帧开始推送资源。如果客户端已经缓存该资源，不需要再推送，可以选择拒绝 PUSH_PROMISE 帧。</li>
+<li>PUSH_PROMISE 必须遵循请求 - 响应原则，只能借着对请求的响应推送资源。<br>目前，Apache 的 <a href="http://httpd.apache.org/docs/2.4/mod/mod_http2.html" target="_blank" rel="noopener"><code>mod_http2</code></a>能够开启 <code>H2Push on</code>服务端推送 Push。Nginx 的<code>ngx_http_v2_module</code>还不支持服务端 Push。</li>
+</ul>
+<pre>Apache mod_headers example
+<Location /index.html>
+    Header add Link "</css/site.css>;rel=preload"
+    Header add Link "</images/logo.jpg>;rel=preload"
+</Location>
+Apache mod_headers example
+<Location /index.html>
+    Header add Link "</css/site.css>;rel=preload"
+    Header add Link "</images/logo.jpg>;rel=preload"
+</Location>
+</pre>
+
+
+<h1 id="5-首部压缩"><a href="#5-首部压缩" class="headerlink" title="5. 首部压缩"></a>5. 首部压缩</h1><p>HTTP 1.x 每一次通信（请求 / 响应）都会携带首部信息用于描述资源属性。HTTP 2.0 在客户端和服务端之间使用 “首部表” 来跟踪和存储之前发送的键 - 值对。首部表在连接过程中始终存在，新增的键 - 值对会更新到表尾，因此，不需要每次通信都需要再携带首部。<br><img src="https://img-blog.csdn.net/20170406151823031" alt=""><br>另外，HTTP 2.0 使用了首部压缩技术，压缩算法使用 HPACK。可让报头更紧凑，更快速传输，有利于移动网络环境。<br>需要注意的是，HTTP 2.0 关注的是首部压缩，而我们常用的 gzip 等是报文内容（body）的压缩。二者不仅不冲突，且能够一起达到更好的压缩效果。</p>
+<h1 id="6-一个完整的-HTTP-2-0-通信过程"><a href="#6-一个完整的-HTTP-2-0-通信过程" class="headerlink" title="6. 一个完整的 HTTP 2.0 通信过程"></a>6. 一个完整的 HTTP 2.0 通信过程</h1><p>考虑一个问题，客户端如何知道服务端是否支持 HTTP 2.0？是否支持对二进制分帧层的编码和解码？所以，在两端使用 HTTP 2.0 通信之前，必然存在协议协商的过程。</p>
+<h2 id="6-1-基于-ALPN-的协商过程"><a href="#6-1-基于-ALPN-的协商过程" class="headerlink" title="6.1 基于 ALPN 的协商过程"></a>6.1 基于 ALPN 的协商过程</h2><p>支持 HTTP 2.0 的浏览器可以在 TLS 会话层自发完成和服务端的协议协商以确定是否使用 HTTP 2.0 通信。其原理是 TLS 1.2 中引入了扩展字段，以允许协议的扩展，其中 ALPN 协议（Application Layer Protocol Negotiation, 应用层协议协商, 前身是 NPN）用于客户端和服务端的协议协商过程。<br>服务端使用 ALPN，监听 443 端口默认提高 HTTP 1.1，并允许协商其他协议，比如 SPDY 和 HTTP 2.0。<br>比如，客户端在 TLS 握手 Client Hello 阶段表明自身支持 HTTP 2.0<br><img src="https://img-blog.csdn.net/20170406154122927" alt=""><br>服务端收到后，响应 Server Hello，表示自己也支持 HTTP 2.0。双方开始 HTTP 2.0 通信。<br><img src="https://img-blog.csdn.net/20170406154450854" alt=""></p>
+<h2 id="6-2-基于-HTTP-的协商过程"><a href="#6-2-基于-HTTP-的协商过程" class="headerlink" title="6.2 基于 HTTP 的协商过程"></a>6.2 基于 HTTP 的协商过程</h2><p>然而，HTTP 2.0 一定是 HTTPS（TLS 1.2）的特权吗？<br>当然不是，客户端使用 HTTP 也可以开启 HTTP 2.0 通信。只不过因为 HTTP 1. 0 和 HTTP 2. 0 都使用同一个 端口（80）， 又没有服务器是否支持 HTTP 2. 0 的其他任何 信息，此时 客户端只能使用 HTTP Upgrade 机制（OkHttp, <a href="https://nghttp2.org/documentation/nghttp.1.html" target="_blank" rel="noopener">nghttp2</a> 等组件均可实现，也可以自己编码完成）通过协调确定适当的协议：</p>
+<pre>HTTP Upgrade request
+GET / HTTP/1.1
+host: nghttp2.org
+connection: Upgrade, HTTP2-Settings
+upgrade: h2c        /*发起带有HTTP2.0 Upgrade头部的请求*/
+http2-settings: AAMAAABkAAQAAP__   /*客户端SETTINGS净荷*/
+user-agent: nghttp2/1.9.0-DEV
+HTTP Upgrade response
+HTTP/1.1 101 Switching Protocols   /*服务端同意升级到HTTP 2.0*/
+Connection: Upgrade
+Upgrade: h2c
+HTTP Upgrade success               /*协商完成*/
+HTTP Upgrade request
+GET / HTTP/1.1
+host: nghttp2.org
+connection: Upgrade, HTTP2-Settings
+upgrade: h2c        /*发起带有HTTP2.0 Upgrade头部的请求*/
+http2-settings: AAMAAABkAAQAAP__   /*客户端SETTINGS净荷*/
+user-agent: nghttp2/1.9.0-DEV
+
+HTTP Upgrade response
+HTTP/1.1 101 Switching Protocols   /*服务端同意升级到HTTP 2.0*/
+Connection: Upgrade
+Upgrade: h2c
+
+HTTP Upgrade success               /*协商完成*/
+</pre>
+
+
+<h2 id="6-3-完整通信过程"><a href="#6-3-完整通信过程" class="headerlink" title="6.3 完整通信过程"></a>6.3 完整通信过程</h2><p>TCP 连接建立：<br><img src="https://img-blog.csdn.net/20170406160432663" alt=""><br>TLS 握手和 HTTP 2.0 通信过程：<br><img src="https://img-blog.csdn.net/20170406160245818" alt=""><br>另外，在 chrome 中通过<code>chrome://net-internals/#http2</code>命令也能捕获 HTTP 2.0 通信过程：</p>
+<pre>42072: HTTP2_SESSION
+textlink.simba.taobao.com:443 (PROXY 10.19.110.55:8080)
+Start Time: 2017-04-05 11:39:11.459
+t=370225 [st=    0] +HTTP2_SESSION  [dt=32475+]
+                     --> host = "textlink.simba.taobao.com:443"
+                     --> proxy = "PROXY 10.19.110.55:8080"
+t=370225 [st=    0]    HTTP2_SESSION_INITIALIZED
+                       --> protocol = "h2"
+                       --> source_dependency = 42027 (PROXY_CLIENT_SOCKET_WRAPPER)
+t=370225 [st=    0]    HTTP2_SESSION_SEND_SETTINGS
+                       --> settings = ["[id:3 flags:0 value:1000]","[id:4 flags:0 value:6291456]","[id:1 flags:0 value:65536]"]
+t=370225 [st=    0]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                       --> delta = 15663105
+                       --> window_size = 15728640
+t=370225 [st=    0]    HTTP2_SESSION_SENT_WINDOW_UPDATE_FRAME
+                       --> delta = 15663105
+                       --> stream_id = 0
+t=370225 [st=    0]    HTTP2_SESSION_SEND_HEADERS
+                       --> exclusive = true
+                       --> fin = true
+                       --> has_priority = true
+                       --> :method: GET
+                           :authority: textlink.simba.taobao.com
+                           :scheme: https
+                           :path: /?name=tbhs&cna=IAj9EOy3fngCAXBQ5kJ9yusH&nn=&count=13&pid=430266_1006&_ksTS=1491363551394_94&callback=jsonp95
+                           user-agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+                           accept: */*
+                           referer: https://www.taobao.com/
+                           accept-encoding: gzip, deflate, sdch, br
+                           accept-language: zh-CN,zh;q=0.8
+                           cookie: [382 bytes were stripped]
+                       --> parent_stream_id = 0
+                       --> stream_id = 1
+                       --> weight = 147
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTINGS
+                       --> host = "textlink.simba.taobao.com:443"
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 3
+                       --> value = 128
+t=370256 [st=   31]    HTTP2_SESSION_UPDATE_STREAMS_SEND_WINDOW_SIZE
+                       --> delta_window_size = 2147418112
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 4
+                       --> value = 2147483647
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 5
+                       --> value = 16777215
+t=370256 [st=   31]    HTTP2_SESSION_RECEIVED_WINDOW_UPDATE_FRAME
+                       --> delta = 2147418112
+                       --> stream_id = 0
+t=370256 [st=   31]    HTTP2_SESSION_UPDATE_SEND_WINDOW
+                       --> delta = 2147418112
+                       --> window_size = 2147483647
+t=370261 [st=   36]    HTTP2_SESSION_RECV_HEADERS
+                       --> fin = false
+                       --> :status: 200
+                           date: Wed, 05 Apr 2017 03:39:11 GMT
+                           content-type: text/html; charset=ISO-8859-1
+                           vary: Accept-Encoding
+                           server: Tengine
+                           expires: Wed, 05 Apr 2017 03:39:11 GMT
+                           cache-control: max-age=0
+                           strict-transport-security: max-age=0
+                           timing-allow-origin: *
+                           content-encoding: gzip
+                       --> stream_id = 1
+t=370261 [st=   36]    HTTP2_SESSION_RECV_DATA
+                       --> fin = false
+                       --> size = 58
+                       --> stream_id = 1
+t=370261 [st=   36]    HTTP2_SESSION_UPDATE_RECV_WINDOW
+                       --> delta = -58
+                       --> window_size = 15728582
+t=370261 [st=   36]    HTTP2_SESSION_RECV_DATA
+                       --> fin = true
+                       --> size = 0
+                       --> stream_id = 1
+t=370295 [st=   70]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                       --> delta = 58
+                       --> window_size = 15728640
+t=402700 [st=32475]
+42072: HTTP2_SESSION
+textlink.simba.taobao.com:443 (PROXY 10.19.110.55:8080)
+Start Time: 2017-04-05 11:39:11.459
+
+t=370225 [st=    0] +HTTP2_SESSION  [dt=32475+]
+                     --> host = "textlink.simba.taobao.com:443"
+                     --> proxy = "PROXY 10.19.110.55:8080"
+t=370225 [st=    0]    HTTP2_SESSION_INITIALIZED
+                       --> protocol = "h2"
+                       --> source_dependency = 42027 (PROXY_CLIENT_SOCKET_WRAPPER)
+t=370225 [st=    0]    HTTP2_SESSION_SEND_SETTINGS
+                       --> settings = ["[id:3 flags:0 value:1000]","[id:4 flags:0 value:6291456]","[id:1 flags:0 value:65536]"]
+t=370225 [st=    0]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                       --> delta = 15663105
+                       --> window_size = 15728640
+t=370225 [st=    0]    HTTP2_SESSION_SENT_WINDOW_UPDATE_FRAME
+                       --> delta = 15663105
+                       --> stream_id = 0
+t=370225 [st=    0]    HTTP2_SESSION_SEND_HEADERS
+                       --> exclusive = true
+                       --> fin = true
+                       --> has_priority = true
+                       --> :method: GET
+                           :authority: textlink.simba.taobao.com
+                           :scheme: https
+                           :path: /?name=tbhs&cna=IAj9EOy3fngCAXBQ5kJ9yusH&nn=&count=13&pid=430266_1006&_ksTS=1491363551394_94&callback=jsonp95
+                           user-agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+                           accept: */*
+                           referer: https://www.taobao.com/
+                           accept-encoding: gzip, deflate, sdch, br
+                           accept-language: zh-CN,zh;q=0.8
+                           cookie: [382 bytes were stripped]
+                       --> parent_stream_id = 0
+                       --> stream_id = 1
+                       --> weight = 147
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTINGS
+                       --> host = "textlink.simba.taobao.com:443"
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 3
+                       --> value = 128
+t=370256 [st=   31]    HTTP2_SESSION_UPDATE_STREAMS_SEND_WINDOW_SIZE
+                       --> delta_window_size = 2147418112
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 4
+                       --> value = 2147483647
+t=370256 [st=   31]    HTTP2_SESSION_RECV_SETTING
+                       --> flags = 0
+                       --> id = 5
+                       --> value = 16777215
+t=370256 [st=   31]    HTTP2_SESSION_RECEIVED_WINDOW_UPDATE_FRAME
+                       --> delta = 2147418112
+                       --> stream_id = 0
+t=370256 [st=   31]    HTTP2_SESSION_UPDATE_SEND_WINDOW
+                       --> delta = 2147418112
+                       --> window_size = 2147483647
+t=370261 [st=   36]    HTTP2_SESSION_RECV_HEADERS
+                       --> fin = false
+                       --> :status: 200
+                           date: Wed, 05 Apr 2017 03:39:11 GMT
+                           content-type: text/html; charset=ISO-8859-1
+                           vary: Accept-Encoding
+                           server: Tengine
+                           expires: Wed, 05 Apr 2017 03:39:11 GMT
+                           cache-control: max-age=0
+                           strict-transport-security: max-age=0
+                           timing-allow-origin: *
+                           content-encoding: gzip
+                       --> stream_id = 1
+t=370261 [st=   36]    HTTP2_SESSION_RECV_DATA
+                       --> fin = false
+                       --> size = 58
+                       --> stream_id = 1
+t=370261 [st=   36]    HTTP2_SESSION_UPDATE_RECV_WINDOW
+                       --> delta = -58
+                       --> window_size = 15728582
+t=370261 [st=   36]    HTTP2_SESSION_RECV_DATA
+                       --> fin = true
+                       --> size = 0
+                       --> stream_id = 1
+t=370295 [st=   70]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                       --> delta = 58
+                       --> window_size = 15728640
+t=402700 [st=32475]
+</pre>
+
+
+<h1 id="7-HTTP-2-0-性能瓶颈"><a href="#7-HTTP-2-0-性能瓶颈" class="headerlink" title="7. HTTP 2.0 性能瓶颈"></a>7. HTTP 2.0 性能瓶颈</h1><p>是不是启用 HTTP 2.0 后性能必然提升了？任何事情都不是绝对的，虽然总体而言性能肯定是能提升的。<br>我想 HTTP 2.0 会带来新的性能瓶颈。因为现在所有的压力集中在底层一个 TCP 连接之上，TCP 很可能就是下一个性能瓶颈，比如 TCP 分组的队首阻塞问题，单个 TCP packet 丢失导致整个连接阻塞，无法逃避，此时所有消息都会受到影响。未来，服务器端针对 HTTP 2.0 下的 TCP 配置优化至关重要，有机会我们再跟进详述。</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-二进制分帧层"><span class="nav-number">1.</span> <span class="nav-text">1. 二进制分帧层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-帧（frame）"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 帧（frame）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-消息（message）"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 消息（message）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-流（stream）"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 流（stream）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-多路复用共享连接"><span class="nav-number">2.</span> <span class="nav-text">2. 多路复用共享连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-请求优先级"><span class="nav-number">3.</span> <span class="nav-text">3. 请求优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-服务端推送"><span class="nav-number">4.</span> <span class="nav-text">4. 服务端推送</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-首部压缩"><span class="nav-number">5.</span> <span class="nav-text">5. 首部压缩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-一个完整的-HTTP-2-0-通信过程"><span class="nav-number">6.</span> <span class="nav-text">6. 一个完整的 HTTP 2.0 通信过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-基于-ALPN-的协商过程"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 基于 ALPN 的协商过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-基于-HTTP-的协商过程"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 基于 HTTP 的协商过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-完整通信过程"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 完整通信过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-HTTP-2-0-性能瓶颈"><span class="nav-number">7.</span> <span class="nav-text">7. HTTP 2.0 性能瓶颈</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

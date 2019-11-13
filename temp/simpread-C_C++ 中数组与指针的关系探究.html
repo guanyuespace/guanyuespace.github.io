@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="数组与指针的关系 原文地址  数组与指针长期以来，在 C&#x2F;C++ 中，数组名和指向数组首元素的指针常量到底是以一种什么关系，一直困扰着很多人。很多地方，甚至是一些教科书中都在说，“数组名就是一个指向数组首元素的指针常量”。但事实是，这是一种错误的说法！我们可以在很多场合中把数组名看作一个指向数组首元素的指针常量，但绝不能将这两者当成同一个东西。 真实的关系数组是数组，指针是指针，这是两种不同的类型">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;simpread-C_C++%20%E4%B8%AD%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8E%A2%E7%A9%B6.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="数组与指针的关系 原文地址  数组与指针长期以来，在 C&#x2F;C++ 中，数组名和指向数组首元素的指针常量到底是以一种什么关系，一直困扰着很多人。很多地方，甚至是一些教科书中都在说，“数组名就是一个指向数组首元素的指针常量”。但事实是，这是一种错误的说法！我们可以在很多场合中把数组名看作一个指向数组首元素的指针常量，但绝不能将这两者当成同一个东西。 真实的关系数组是数组，指针是指针，这是两种不同的类型">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.529Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/simpread-C_C++ 中数组与指针的关系探究.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="数组与指针的关系"><a href="#数组与指针的关系" class="headerlink" title="数组与指针的关系"></a>数组与指针的关系</h1><blockquote>
+<p><a href="https://www.cnblogs.com/zhiheng/p/6683334.html" target="_blank" rel="noopener">原文地址</a></p>
+</blockquote>
+<h2 id="数组与指针"><a href="#数组与指针" class="headerlink" title="数组与指针"></a>数组与指针</h2><p>长期以来，在 C/C++ 中，数组名和指向数组首元素的指针常量到底是以一种什么关系，一直困扰着很多人。很多地方，甚至是一些教科书中都在说，“数组名就是一个指向数组首元素的指针常量”。但事实是，这是一种错误的说法！我们可以在很多场合中把数组名看作一个指向数组首元素的指针常量，<strong>但绝不能将这两者当成同一个东西。</strong></p>
+<h3 id="真实的关系"><a href="#真实的关系" class="headerlink" title="真实的关系"></a>真实的关系</h3><p>数组是数组，指针是指针，这是两种不同的<strong>类型</strong>。</p>
+<p>数组既可以表示一种数据类型，<em>也可以表示这种类型的一个对象</em> <!--what means? 非面向对象之对象？？ -->（非面向对象之对象，下同），表示对象时也可以称之为<strong>数组变量</strong>，和其他类型变量一样，数组变量有地址也有值。</p>
+<p>数组的地址就是数组所占据内存空间的第一块存储单元的编号，而数组的值是由数组所有元素的值构成。</p>
+<p><strong>数组名</strong> 既不是指针，也不是指针变量，而是数组变量的名字，与数组名相对应的是指针变量的 <strong>变量名</strong>，都是<strong>符号</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p = a;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(a); <span class="comment">// 40 &lt;!-- int类型4字节  4*10--&gt;</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(p); <span class="comment">// 8  &lt;!-- 64位机器，指针大小（即地址长度）8字节 --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>作为数组，a 拥有可以存放 10 个 int 型数据的空间，可以将一个 int 型的值存储到 a 中任意一个元素中。但作为一个指针的 p，只能存储一个地址。</p>
+<p><code>sizeof</code> 操作符可以获取到一种数据类型所占据的内存大小，指针类型在 x64 位机器上的大小是 8，而数组类型的大小是所有元素大小之和，上例中即为 10 个 int 型的大小，是 40。</p>
+<h3 id="误解从何而来"><a href="#误解从何而来" class="headerlink" title="误解从何而来"></a>误解从何而来</h3><p>可以将数组名赋值给一个指针，而赋值后的指针是指向数组首元素的，这让数组名看起来确像一个指针。</p>
+<p>直接输出数组名会得到数组首元素的地址，这让人们误以为 “数组名的值就是数组首元素地址 “，符合指针的定义。</p>
+<p><em>数组名可以像指针一样运算，对数组的索引和指针的运算看起来也是相同的。</em></p>
+<h3 id="从-amp-a-与-amp-a-0-说起"><a href="#从-amp-a-与-amp-a-0-说起" class="headerlink" title="从 &amp;a 与 &amp;a[0] 说起"></a>从 &amp;a 与 &amp;a[0] 说起</h3><p><strong>数组的地址</strong> 和 <strong>数组首元素的地址</strong> 虽然值相同，但意义不同。</p>
+<p>意义不同是因为，数组地址代表了整块数组所占据的内存空间，而数组首元素的地址只代表了首元素所占据的空间。<!--(&a)+1 与 &a[1]的不同之处 --></p>
+<p>&amp;a 表示取数组的地址，其结果是一个指向该数组的指针，它可以赋值给另一个同类型的指针。</p>
+<p>&amp;a[0] 表示取数组首元素的地址，其结果是指向该数组首元素的指针，可以赋值给另一个同类型的指针。</p>
+<p>注意：指向数组的指针和指向数组首元素的指针是两种不同类型的指针。</p>
+<p>ps: 看到有些地方说地址就是指针，我觉得这个说法不对。地址就是地址，它是数据对象的一个属性，表明它在内存中的位置。指针本身也有地址，总不能说 “地址的地址” 吧？此外，指针不光带有地址信息，它还附带有所指对象的类型信息，这就是为什么指针知道如何准确的指向下一个地址。</p>
+<h3 id="权威的解释——decay"><a href="#权威的解释——decay" class="headerlink" title="权威的解释——decay"></a>权威的解释——decay<!--decay:衰退 --></h3><p><a href="http://www.iso-9899.info/n1570.html" target="_blank" rel="noopener">C11 标准</a>中，6.3.2.1 [Lvalues, arrays, and function designators] 第 3 段，有如下表述：</p>
+<blockquote>
+<p>Except when it is the operand of the <strong>sizeof</strong> operator, the <strong>_Alignof</strong> operator, or the unary <strong>&amp;</strong> operator, or is <strong>a string literal used to initialize an array</strong> , an expression that has type “array of <em>type</em>“is converted to an expression with type”pointer to <em>type</em>“ that points to the initial element of the array object and <strong>is not an lvalue.</strong>  <strong><em>THE CONVERTED IS NOT AN LVALUE</em></strong></p>
+</blockquote>
+<p>同样的转换在 C++ 中也是一样，在 C++11 标准（ISO/IEC 14882）的 4.2 Array-to-pointer conversion 一节中有如下表述：</p>
+<blockquote>
+<p>An expression of type “array of N T”, “array of runtime bound of T”, or “array of unknown bound of T” can be converted to a prvalue of type “pointer to T”. <strong>The result is a pointer to the first element of the array.</strong></p>
+</blockquote>
+<p>可见，除了作为 <strong>sizeof</strong> 、<strong>_Alignof</strong> 和 <strong>&amp;</strong> 这 3 个操作符的操作数以及用于初始化数组的串字面量外， <strong>表达式中的数组都会被自动转换为指向其首元素的指针</strong> ， <strong><em>转换而来的指针不是一个左值（lvalue）。</em></strong> 因为这种转换丢失了数组的大小和类型，因此有一个专用的称谓叫做 <strong>“decay”</strong> 。</p>
+<p>于是，所有的疑惑都有了最权威的解释。</p>
+<h4 id="IMPORTANT"><a href="#IMPORTANT" class="headerlink" title="IMPORTANT"></a>IMPORTANT</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">char</span> * p = a; <span class="comment">/* 这里的a被转换为 char* 型指针，所以可以赋值给p */</span></span><br><span class="line">a = p; <span class="comment">/* ERROR! a虽然被转换为指针了，但转换后得到的指针无确切地址，不是lvalue，不能被赋值 */</span></span><br><span class="line"><span class="keyword">char</span> (*pa) [<span class="number">10</span>] = &amp;a; <span class="comment">/* a是&amp;的操作数，没有发生转换，&amp;a意为取数组a的地址，得到一个指向数组a的指针 */</span></span><br><span class="line"><span class="keyword">sizeof</span>(a); <span class="comment">/* a未发生转换，仍是数组，所以表达式得到的值是数组的大小 */</span></span><br><span class="line">&amp;a; <span class="comment">/* a未发生转换，仍是数组，所以表达式得到的值是数组的地址 */</span></span><br><span class="line">*a; <span class="comment">/* a被转换为指针，操作符*是作用于指针的，而非数组 */</span></span><br><span class="line">*(a+<span class="number">1</span>); <span class="comment">/* a被转换为指针，所以并不是数组a与1相加，而是转换后得到的指针在参与运算 */</span></span><br><span class="line">a[<span class="number">0</span>]; <span class="comment">/* a被转换为指针，所谓数组的下标本质是指针运算 */</span></span><br><span class="line">a == a; a - a; <span class="comment">/* a被转换为指针，本质是指针运算 */</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现，一旦有了 <strong>decay</strong> ，表达式中所有让一个数组看上去像个指针的现象都合情合理了。除赋值外，可用于指针的运算都可以适用于会发生转换的数组。<strong>不可赋值是因为先要转换，转换后不是左值。</strong></p>
+<p>ps：lvalue 这个术语翻译成左值会过分强调它可以作为赋值操作符（=）的左操作数，实际上 lvalue 的核心在于 location，而不是 left，虽然它最初被命名为 lvalue 确是因为 left。<strong>lvalue 意味着在内存中有确切位置（location），可以定位（locator）。</strong> 所以，数组被转换为指针后不是 lvalue 的原因是<em>没有确切地址</em>，而不能被赋值是结果。</p>
+<p>可能读到这里会有一个疑问，那就是转换后不是左值不可以赋值，那么 <code>a[0] = &#39;x&#39;;</code> 却怎么解释？注意，转换后得到左值的是 a，而非 a[0]。什么意思呢？把这个表达式中除去 a 的部分（[0]）看成是对转换后得到的指针的继续运算，结果就是数组第一个元素，有确切地址，那么 a[0] 整体就是一个左值了。 于是赋值成功！</p>
+<p>值得注意的是，取址时取到的是数组地址而非转换后指针的地址，因为取址时数组不会发生转换，实际上，转换后得到的指针没有确切地址不是左值，是无法取到地址的。这里多说这么几句是因为，有一些博客中纠结于 “数组名作为一个指针常量有没有被分配空间？分配到的地址是什么？” 这样伤神的问题中。</p>
+<h3 id="转换规则的例外情况"><a href="#转换规则的例外情况" class="headerlink" title="转换规则的例外情况"></a>转换规则的例外情况</h3><p>C 规范中指出了四种不发生转换的例外情况。</p>
+<p>前三种情况是说数组作为 <strong>sizeof</strong> 、<strong>_Alignof</strong> 和 <strong>&amp;</strong> 这 3 个操作符的操作数时是不会被转换为指针，这个较好理解，就是这三个操作符<strong>直接作用</strong>于数组时，不会发生转换，如 <code>sizeof(a)</code> 和 <code>&amp;a</code> 中的 a 都不会被转换。而像 <code>&amp;a[0]</code> 这样的表达式中，&amp; 的优先级不是最高的，所以 &amp; 的直接作用对象是 <code>a[0]</code> 这个子表达式，此时 a 转换为指针后进行运算，得到数组的第一个元素，&amp; 作用于这个元素后取得其地址，得到的最终结果指向数组首元素的指针。</p>
+<p>下面的代码也说明了这种规则的关键是直接作用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">4</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>(a)); <span class="comment">/* 不转换，输出数组a的大小 16 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>(a+<span class="number">0</span>)); <span class="comment">/* 转换，输出指针类型大小 8 */</span></span><br></pre></td></tr></table></figure>
+
+<p>那么用于初始化数组的串字面量说的又是什么呢？</p>
+<p>按 <a href="http://www.iso-9899.info/n1570.html" target="_blank" rel="noopener">ISO/IEC 9899:201x</a> ，6.4.5 [String literals] 节中对串字面量的规范可知，编译期间，串字面量所声明的多字节字符序列（multibyte character sequence）会先行合并（如果有多个相邻）并在结尾追加一个零值（ <code>&#39;\0&#39;</code> ），然后用此序列初始化一个<strong>静态存储周期</strong>（static storage duration）的等长度<strong>字符数组</strong>。</p>
+<p>所以，串字面量作为一个原始表达式（Primary expressions），其结果是一个<strong>字符数组</strong>！因为地址可知，它是一个 lvalue 。</p>
+<p>需要注意的是，程序中对这种数组试图修改的行为在 C11 标准中是未定义的，C11 标准同样也没有说明对于内容相同的这种数组是否可以可以视为一个（只存储一份）[^ISO/IEC 9899:201x §6.4.5 para7]。</p>
+<p>看下面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">4</span>] = <span class="string">"abc"</span>; <span class="comment">/* 注意，此处是初始化，而非赋值！*/</span></span><br><span class="line"><span class="keyword">char</span> * p = <span class="string">"abc"</span>;</span><br><span class="line">a[<span class="number">1</span>] = <span class="string">'x'</span>; <span class="comment">/* OK! */</span></span><br><span class="line">p[<span class="number">1</span>] = <span class="string">'x'</span>; <span class="comment">/* ERROR! */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>(<span class="string">"abc"</span>)); <span class="comment">/* 输出 4 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%#x\n"</span>, &amp;(<span class="string">"abc"</span>)); <span class="comment">/* 本机输出 0x403031 ，证明没有转换，因为转换后非lvalue，无法取值 */</span></span><br></pre></td></tr></table></figure>
+
+<p>第一行代码中的串字面量 <code>&quot;abc&quot;</code> 的本质是一个长度为 4（被追加了<code>&#39;\0&#39;</code>）的字符数组，其用于初始化另一个数组 a 时不会发生转换。这就是所谓的<strong>用于初始化数组的串字面量不会 decay</strong>。</p>
+<p>第二行代码中的串字面量同第一行中的一样，也是一个长度为 4 的字符数组，只是是否和上一行的是同一个就不得而知了，C 标准没有规定。这个字符数组此刻并未用于初始化一个数组，所以它被转换为指向其首元素的指针，然后用于初始化另一个指针 p 了。</p>
+<p>所以第一行可以认为是用数组初始化数组，第二行是用指针初始化指针。不过因为转换规则的存在，可用于初始化数组的 “数组” 仅限于串字面量。</p>
+<p>第三行很好理解，a 是我们新初始化的一个数组，和初始化它的串字面量已经是两回事了，所以修改 a 是合法的操作。但是第四行在大多数系统中会报错，因为 p 指向的是一个串字面量，对串字面量的修改行为未被 C 标准所定义，因为串字面量本质是即一个静态存储周期的字符数组，大多数系统对其有写保护因而修改出错。</p>
+<p>如果尝试将串字面量作为 sizeof 、_Alignof 和 &amp; 这 3 个操作符的操作数，我们发现这个 “字符数组” 也没有转换。</p>
+<h3 id="作为表达式结果的数组"><a href="#作为表达式结果的数组" class="headerlink" title="作为表达式结果的数组"></a>作为表达式结果的数组</h3><p>在讨论串字面量本质的时候，我们发现，在转换概念的范围内，所谓数组不光是指在程序中被我们明确定义的数组，也可以是表达式计算的结果。如原始表达式串字面量的结果就是字符数组。果真如此吗？我们来看看下面的情况。</p>
+<p>试想对于一个数组 a，表达式 <code>(&amp;a)[0]</code> 和表达式 <code>&amp;a[0]</code> 有什么不同？</p>
+<p><code>&amp;a[0]</code> 这个表达式我们在前面已经分析过了，它的结果是一个指向 a 的首元素的指针。</p>
+<p>而表达式 <code>(&amp;a)[0]</code> 的不同之处在于提高了取址操作符 &amp; 的优先级。于是，在 <code>(&amp;a)[0]</code> 中，数组 a 作为操作符 &amp; 的操作数，不会发生转换。子表达式 <code>&amp;a</code> 是取数组 a 的地址得到指向该数组的指针，而接下来的运算就是指针运算了，结果便是数组 a 本身。</p>
+<p>那么作为表达式 <code>(&amp;a)[0]</code> 的结果的数组会不会有转换行为呢？答案是肯定的。</p>
+<p>空口无凭，再看代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">4</span>] = <span class="string">"abc"</span>;</span><br><span class="line"><span class="keyword">char</span> * p;</span><br><span class="line">p = &amp;a[<span class="number">0</span>];</span><br><span class="line">p = (&amp;a)[<span class="number">0</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, (&amp;a)[<span class="number">0</span>] == &amp;a[<span class="number">0</span>]); <span class="comment">/* 输出1*/</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>((&amp;a)[<span class="number">0</span>])); <span class="comment">/* 输出 4，数组a的大小 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>(&amp;a[<span class="number">0</span>])); <span class="comment">/* 输出 8，x64系统中指针的大小 */</span></span><br><span class="line"><span class="keyword">char</span> (*pa)[<span class="number">4</span>];</span><br><span class="line">pa = &amp;((&amp;a)[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+
+<p>表达式 <code>&amp;a[0]</code> 的结果是 char * 型的指针，它可以赋值给同类型的指针 p 是理所当然的。但奇怪的是，表达式 <code>(&amp;a)[0]</code> 结果是一个数组，竟然也可以赋值给指针 p。考虑下转换规则，这个情况就完全合理了，这说明作为计算结果的数组，也会在符合转换条件的情况下发生转换。</p>
+<p>将这两个表达式进行逻辑比较，得到的结论是它们是相同的，这也说明表达式 <code>(&amp;a)[0]</code> 发生了转换。我们再尝试将这两个表达式分别作用于操作符 sizeof ，根据规则，作为 sizeof 的操作数，它们不会发生转换，事实确是如此。</p>
+<p>对一个数组取地址会得到指向该数组的指针，我们将表达式 <code>(&amp;a)[0]</code> 作为操作符 &amp; 的操作数（此时也没有转换）得到的确实是指向数组类型的指针。如果，我们脑洞大一些，将 <code>&amp;a[0]</code> 作为 &amp; 的操作数会怎么样？ <code>&amp;a[0]</code> 是一个指针，可能我们会觉得是不是会得到一个指向指针的指针？答案是不会！ <strong><code>&amp;a[0]</code> 是一个指针没错，但没有确切地址，不是 lvalue，无法取址，</strong> <code>&amp;(&amp;a[0])</code> 会编译错误！</p>
+<h3 id="转换的基础"><a href="#转换的基础" class="headerlink" title="转换的基础"></a>转换的基础</h3><p>数组和指针之所以有这么微妙的关系，内存分配才是关键因素。上面讨论的表达式 <code>(&amp;a)[0]</code> 的结果就是数组 a 本身，如果我们把方括号中的整数 0 改为 1 或者 2 这样的值，那又意味着什么？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">4</span>] = <span class="string">"abc"</span>;</span><br><span class="line"><span class="keyword">char</span> * p = &amp;a[<span class="number">1</span>]; <span class="comment">/* p指向数组a的第二个元素 */</span></span><br><span class="line">p = (&amp;a)[<span class="number">1</span>];<span class="comment">/* p不指向数组第二个元素 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="keyword">sizeof</span>((&amp;a)[<span class="number">1</span>])); <span class="comment">/* 输出数组大小 4 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, (&amp;a)[<span class="number">1</span>] == &amp;a[<span class="number">0</span>]+<span class="number">4</span> ); <span class="comment">/* 输出 1 */</span></span><br><span class="line"><span class="keyword">char</span> (*pa)[<span class="number">4</span>] = &amp;a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%c\n"</span>, *(pa+<span class="number">1</span>)[<span class="number">0</span>]); <span class="comment">/* 即((&amp;a)[1]))[0], 输出值不确定 */</span></span><br></pre></td></tr></table></figure>
+
+<p>我们先看看表达式 <code>(&amp;a)[1]</code> 的结果是什么，<del>首先， <code>&amp;a</code> 将得到指向数组 a 的一个指针，</del> 而指针的下标运算 <code>[1]</code> 表示指针所指空间相邻的同大小空间内的对象，虽然我们知道，数组 a 的旁边有什么并不确定，但至少不应该是个和 a 一样的数组，因为我们此前并没有定义一个数组的数组。尽管如此，我们发现系统依然照着 a 的样子，在内存中为我们找到了它旁边一块同样大的空间，并 “假装” 它保存的也是一个同类型的数组，我们用 sizeof 测试时会得到数组大小的值。而且 <code>(&amp;a)[1]</code> 这个 “数组” 还可以转换为一个指向它首元素的指针，我们将它和 <code>&amp;a[0]+4</code> （可以看作指向从 a 的首元素起后面的第 5 个元素的指针，即 &amp; a[4]）比较发现，它们是相等的。</p>
+<p>我们尝试按照取数组 a 中元素那样，从 a 旁边这个并不存在的数组中读取数据，虽然输出值没有意义，但这却并非是一种非法操作，C 语言允许我们这么做。</p>
+<p>顺便说下，数组下标在 C 语言中是被定义为指针运算的，ISO/IEC 9899:201 §6.5.2.1 [Array subscripting] para 2 中的的原文如下：</p>
+<blockquote>
+<p>A postfix expression followed by an expression in square brackets [] is a subscripted designation of an element of an array object. The definition of the subscript operator [] is that E1[E2] is identical to (*((E1)+(E2))). Because of the conversion rules that apply to the binary + operator, if E1 is an array object (equivalently, a pointer to the initial element of an array object) and E2 is an integer, E1[E2] designates the E2-th element of E1 (counting from zero).</p>
+</blockquote>
+<p>因此像 <code>a[-1]</code> 这样的负数下标虽然没有意义，但也是合法的。小于 0 或大于等于数组元素数的下标值是无意义的，那我们如何看待这些越界的下标呢？实际上，下标是定义给指针的。 <code>E1[E2]</code> 中的两个子表达式 E1 和 E2 一个是指针类型一个是整数类型 [^ISO/IEC 9899:201x §6.5.2.1 para1]，因为转换规则的存在，数组才可以成为 E1 和 E2 中的一个。</p>
+<p>为什么说是 E1 和 E2 中的一个？难道数组类型的不应该是 E1 吗？看下面的代码示例：</p>
+<h4 id="STRANGE"><a href="#STRANGE" class="headerlink" title="STRANGE"></a>STRANGE</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> &#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; a[<span class="number">2</span>] &lt;&lt; <span class="built_in">endl</span>;            <span class="comment">// 输出 2</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="number">2</span>[a] &lt;&lt; <span class="built_in">endl</span>;            <span class="comment">// 输出 2</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="number">5</span>[<span class="string">"abcdef"</span>] &lt;&lt; <span class="built_in">endl</span>;     <span class="comment">// 输出 f</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 a[2] 的输出我们没有异议，但后面两个表达式有点 “诡异”。前面在引用 C11 中下标规范时提到， <code>E1[E2]</code> 与 <code>(*((E1)+(E2)))</code> 是等同的（identical ）。那么就会有：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">E1[E2]</span><br><span class="line">(*((E1)+(E2)))    下标定义</span><br><span class="line">(*((E2)+(E1)))    加法交换律</span><br><span class="line">E2[E1]            下标定义</span><br></pre></td></tr></table></figure>
+
+<p>所以， <code>E1[E2]</code> 与 <code>E2[E1]</code> 是等同的。因此，a[2] 和 2[a] 都输出 2，而 <code>5[&quot;abcdef&quot;]</code> 其实是 <code>&quot;abcdef&quot;[5]</code> ，结果是串字面量（字符数组）中的第 5 个（从 0 计）字符 f。</p>
+<p>我们发现，数组和指针在从内存访问数据上并没有本质区别，数组貌似仅意味着数据连续不间断的存放而已，而数组类型都有相应的指针类型对应，如 int 型数组对应有指向 int 型的指针，这种类型信息提供了指针访问内存时每个步长的移动跨度。除此之外，数组好像也不能再给我们太多信息了，它甚至不能做出越界检查。</p>
+<p>从转换来看，数组可谓是 C 语言世界的二等公民，在一切可以的情况下，它都转换为一个指向自身首元素指针。</p>
+<h3 id="作为函数参数的数组"><a href="#作为函数参数的数组" class="headerlink" title="作为函数参数的数组"></a>作为函数参数的数组</h3><p><strong>函数调用中，作为实参的数组会在函数调用前被转换为一个指向其首元素的指针。因此，数组永远都不会真正地被传递给一个函数。</strong> 这样的话，看上去将函数的参数声明未数组类型就会变得没有意义。事实上，函数的参数类型列表中但凡被声明为数组类型的，在编译期间会被调整为对应的指针类型，这意味着，在函数体内操作一个被声明为数组的形参，其实是在操作一个指针。</p>
+<p>有关函数参数中的数组的调整和转换在 C11 规范中有多处说明 <a href="">函数参数数组参考</a>，感兴趣可自行查看。</p>
+<p>需要注意的是，虽然编译器会做调整，但我们不应将数组类型的形参声明都改为指针类型。因为数组和指针意义不同，在定义函数时不要理会编译器的调整有助于我们写出意义更加明确可读性更高的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span> str[])</span> <span class="comment">/* 会被调整为： void f(char *str) */</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str) &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">/* str是指针，而不是数组 */</span></span><br><span class="line">    <span class="keyword">if</span>(str[<span class="number">0</span>] == <span class="string">'\0'</span>)</span><br><span class="line">        str = <span class="string">"none"</span>;   <span class="comment">/* 这里并不是数组被赋值，而是指针str被赋值 */</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> a[<span class="number">3</span>];</span><br><span class="line">    f(a);</span><br><span class="line">    a[<span class="number">0</span>] = <span class="string">'x'</span>;</span><br><span class="line">    f(a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面例子中，函数 f 声明了一个字符数组型的参数 str，实际上在编译时 str 会被调整为指向字符的指针类型。<strong>在 f 内，尽管 str 被我们显式地声明为数组类型，但函数内部它就是作为一个指针来用的，sizeof 操作符给出的结果是指针大小，而且我们看到 str 可以被直接赋值，要知道数组是没有这个特性的。</strong></p>
+<p>字符数组 a 出现在函数调用时的实参列表中时，并不代表 a 本身，而是被转换为指向 a 首元素的指针，因此真正的实参是一个指针而非数组 a。如果忽略 f 中 sizeof 那一行，那么 f 的功能就可被描述为：输出一个字符数组，如果字符数组为空则输出 “none”。</p>
+<h4 id="指向数组的指针"><a href="#指向数组的指针" class="headerlink" title="指向数组的指针"></a>指向数组的指针</h4><p>有本书叫做《当我们谈论爱情时我们在谈论什么》，这里我们套用一下。</p>
+<p>当我们谈论指向数组的指针时我们在讨论什么？</p>
+<p><strong>是的，如果我们并不是特别刻意地说起指向数组的指针时，其实我们想表达的是指向数组首元素的指针。</strong></p>
+<p>因为转换规则的存在，可以很容易地得到一个指向数组首元素的指针，通过这个指针的下标运算和自增减运算就可以非常方便的访问数组中各个元素。然而真正意义上的指向数组的指针，是指向整个数组的，这意味着对这种指针的移动会让操作地址偏移跨过整个数组空间，因此对它的下标和自增减运算通常都没有意义（本文前面已经有过描述）。所以，想要通过指向数组的指针访问数组元素是舍近求远并且最终还得绕回来的做法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> (*pa)[<span class="number">3</span>];           <span class="comment">// pointer to array [3] of int</span></span><br><span class="line">pa = &amp;a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, **pa);    <span class="comment">// 子表达式*pa的结果是数组a，随后转为指向a首元素的指针，再次*后得到 0</span></span><br><span class="line">pa++;                   <span class="comment">// 无意义！指向a以外的空间</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, **pa);    <span class="comment">// ISO/IEC 9899:201x §6.5.3.2 para4，undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>难道指向数组的指针就没有一点儿用武之地了么？答案是当然有，但真是一点儿。如果我们遇到了数组的数组（也就是二维甚至多维数组）时，就可以使用指向数组的指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> D2Matrix[<span class="number">2</span>][<span class="number">4</span>] = &#123;&#123;<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>&#125;,</span><br><span class="line">                      &#123;<span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> (*pa)[<span class="number">4</span>];            <span class="comment">/* pointer to array [4] of int */</span></span><br><span class="line">pa = D2Matrix;           <span class="comment">/* pa = &amp;D2Matrix[0] */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, **pa);    <span class="comment">/* prints 11 */</span></span><br><span class="line">pa++;                    <span class="comment">/* steps over entire (sub)array */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, **pa);     <span class="comment">/* prints 21 */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, (*pa)[<span class="number">1</span>]); <span class="comment">/* prints 22 */</span></span><br></pre></td></tr></table></figure>
+
+<p>[ISO/IEC 9899:201x §6.4.5 para7]: It is unspecified whether these arrays are distinct provided their elements have the appropriate values. If the program attempts to modify such an array, the behavior is undefined.<br>[ISO/IEC 9899:201x §6.5.2.1 para1]: One of the expressions shall have type ‘’pointer to complete object type’’, the other expression shall have integer type, and the result has type ‘’type’’.<br>[函数参数数组参考]: ISO/IEC 9899:201x: §6.9.1 para10，ISO/IEC 9899:201x : Footnote 103，ISO/IEC 9899:201x : §6.7.6.3 para 7， ISO/IEC 9899:201x : Footnote 93</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://c-faq.com/aryptr/" target="_blank" rel="noopener">http://c-faq.com/aryptr/</a></p>
+<p><a href="http://stackoverflow.com/questions/18518255/why-is-array-name-a-pointer-to-the-first-element-of-the-array" target="_blank" rel="noopener">http://stackoverflow.com/questions/18518255/why-is-array-name-a-pointer-to-the-first-element-of-the-array</a></p>
+<p><a href="http://stackoverflow.com/questions/1641957/is-an-array-name-a-pointer-in-c" target="_blank" rel="noopener">http://stackoverflow.com/questions/1641957/is-an-array-name-a-pointer-in-c</a></p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数组与指针的关系"><span class="nav-number">1.</span> <span class="nav-text">数组与指针的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组与指针"><span class="nav-number">1.1.</span> <span class="nav-text">数组与指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#真实的关系"><span class="nav-number">1.1.1.</span> <span class="nav-text">真实的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#误解从何而来"><span class="nav-number">1.1.2.</span> <span class="nav-text">误解从何而来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从-amp-a-与-amp-a-0-说起"><span class="nav-number">1.1.3.</span> <span class="nav-text">从 &amp;a 与 &amp;a[0] 说起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权威的解释——decay"><span class="nav-number">1.1.4.</span> <span class="nav-text">权威的解释——decay</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IMPORTANT"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">IMPORTANT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换规则的例外情况"><span class="nav-number">1.1.5.</span> <span class="nav-text">转换规则的例外情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作为表达式结果的数组"><span class="nav-number">1.1.6.</span> <span class="nav-text">作为表达式结果的数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换的基础"><span class="nav-number">1.1.7.</span> <span class="nav-text">转换的基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#STRANGE"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">STRANGE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作为函数参数的数组"><span class="nav-number">1.1.8.</span> <span class="nav-text">作为函数参数的数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指向数组的指针"><span class="nav-number">1.1.8.1.</span> <span class="nav-text">指向数组的指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.1.9.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

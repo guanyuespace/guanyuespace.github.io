@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Select函数http:&#x2F;&#x2F;hi.baidu.com&#x2F;%B1%D5%C4%BF%B3%C9%B7%F0&#x2F;blog&#x2F;item&#x2F;e7284ef16bcec3c70a46e05e.html select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 &#x2F; 输出模型，原型：        123#include &amp;lt;sys&#x2F;time.h&amp;g">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Select函数">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;C&#x2F;Select.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="Select函数http:&#x2F;&#x2F;hi.baidu.com&#x2F;%B1%D5%C4%BF%B3%C9%B7%F0&#x2F;blog&#x2F;item&#x2F;e7284ef16bcec3c70a46e05e.html select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 &#x2F; 输出模型，原型：        123#include &amp;lt;sys&#x2F;time.h&amp;g">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.306Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/C/Select.html"/>
+
+
+
+
+
+  <title>Select函数 | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">Select函数</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="Select函数"><a href="#Select函数" class="headerlink" title="Select函数"></a>Select函数</h1><p><a href="http://hi.baidu.com/%B1%D5%C4%BF%B3%C9%B7%F0/blog/item/e7284ef16bcec3c70a46e05e.html" target="_blank" rel="noopener">http://hi.baidu.com/%B1%D5%C4%BF%B3%C9%B7%F0/blog/item/e7284ef16bcec3c70a46e05e.html</a></p>
+<p>select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 / 输出模型，原型：       </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;        </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;         </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> maxfd,fd_set *rdset,fd_set *wrset,fd_set *exset,struct timeval *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数:"></a>参数:</h2><ul>
+<li>maxfd 是需要监视的最大的文件描述符值 + 1；</li>
+<li>rdset,wrset,exset 分别对应于需要检测的可读文件描述符的集合，可写文件描述符的集 合及异常文件描述符的集合。</li>
+<li>struct timeval 结构用于描述一段时间长度，如果在这个时间内，需要监视的描述符没有事件发生则函数返回，返回值为 0。</li>
+<li><strong>fd_set</strong> （它比较重要所以先介绍一下）是一组文件描述字 (fd) 的集合，它用一位来表示一个 fd（下面会仔细介绍），</li>
+</ul>
+<p><strong>对于 <code>fd_set</code> 类型通过下面四个宏来操作：</strong></p>
+<ul>
+<li>FD_ZERO(fd_set *fdset);<br>将指定的文件描述符集清空，在对文件描述符集合进行设置前，必须对其进行初始化，如果不清空，由于在系统分配内存空间后，通常并不作清空处理，所以结果是不可知的。    </li>
+<li>FD_SET(fd_set *fdset);<br>用于在文件描述符集合中增加一个新的文件描述符。    </li>
+<li>FD_CLR(fd_set *fdset);<br>用于在文件描述符集合中删除一个文件描述符。</li>
+<li>FD_ISSET(int fd,fd_set *fdset);<br>用于测试指定的文件描述符是否在该集合中。</li>
+</ul>
+<p>过去，一个 fd_set 通常只能包含 &lt;32 的 fd（文件描述字），因为 fd_set 其实只用了一个 32 位矢量来表示 fd；现在, UNIX 系统通常会在头文件 &lt; sys/select.h&gt; 中定义常量 FD_SETSIZE，它是数据类型 fd_set 的描述字数量，其值通常是 1024，这样就能表示 &lt; 1024 的 fd。根据 fd_set 的位矢量实现，我们可以重新理解操作 fd_set 的四个宏：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fd_set <span class="built_in">set</span>;    </span><br><span class="line">FD_ZERO(&amp;<span class="built_in">set</span>);         </span><br><span class="line">FD_SET(<span class="number">0</span>, &amp;<span class="built_in">set</span>);       </span><br><span class="line">FD_CLR(<span class="number">4</span>, &amp;<span class="built_in">set</span>);         </span><br><span class="line">FD_ISSET(<span class="number">5</span>, &amp;<span class="built_in">set</span>);</span><br></pre></td></tr></table></figure>
+
+<p>―――――――――――――――――――――――――――――――――――――――<br>注意 <code>fd</code> 的最大值必须 &lt; <code>FD_SETSIZE</code>。<br>―――――――――――――――――――――――――――――――――――――――</p>
+<h2 id="select-函数的接口比较简单："><a href="#select-函数的接口比较简单：" class="headerlink" title="select 函数的接口比较简单："></a>select 函数的接口比较简单：</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> nfds, fd_set *readset, fd_set *writeset,fd_set* exceptset, struct tim *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>测试指定的 fd 可读？可写？有异常条件待处理？    </p>
+<h3 id="参数："><a href="#参数：" class="headerlink" title="参数："></a>参数：</h3><h4 id="nfds"><a href="#nfds" class="headerlink" title="nfds"></a>nfds</h4><p>需要检查的文件描述字个数（即检查到 fd_set 的第几位），数值应该比三组 fd_set 中所含的最大 fd 值更大，一般设为三组 fd_set 中所含的最大 fd 值加 1（如在 readset,writeset,exceptset 中所含最大的 fd 为 5，则 nfds=6，因为 fd 是从 0 开始的）。设这个值是为提高效率，使函数不必检查 fd_set 的所有 1024 位。</p>
+<h4 id="readset"><a href="#readset" class="headerlink" title="readset"></a>readset</h4><p>用来检查可读性的一组文件描述字。</p>
+<h4 id="writeset"><a href="#writeset" class="headerlink" title="writeset"></a>writeset</h4><p>用来检查可写性的一组文件描述字。</p>
+<h4 id="exceptset"><a href="#exceptset" class="headerlink" title="exceptset"></a>exceptset</h4><p>用来检查是否有异常条件出现的文件描述字。(注：错误不包括在异常条件之内)</p>
+<h4 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h4><p>用于描述一段时间长度，如果在这个时间内，需要监视的描述符没有事件发生则函数返回，返回值为 0。   </p>
+<p><strong>有三种可能：</strong>      </p>
+<ol>
+<li>timeout=NULL（阻塞：select 将一直被阻塞，直到某个文件描述符上发生了事件）</li>
+<li>timeout 所指向的结构设为非零时间（等待固定时间：如果在指定的时间段里有事件发生或者时间耗尽，函数均返回）</li>
+<li><strong>timeout 所指向的结构，时间设为 0（非阻塞：仅检测描述符集合的状态，然后立即返回，并不等待外部事件的发生）</strong></li>
+</ol>
+<h3 id="返回值："><a href="#返回值：" class="headerlink" title="返回值："></a>返回值：</h3><p><strong><em>返回对应位仍然为 1 的 fd 的总数。</em></strong></p>
+<h3 id="Remarks："><a href="#Remarks：" class="headerlink" title="Remarks："></a>Remarks：</h3><p>三组 fd_set 均将某些 fd 位置 0，只有那些可读，可写以及有异常条件待处理的 fd 位仍然为 1。</p>
+<p>举个例子，比如 recv(),   在没有数据到来调用它的时候, 你的线程将被阻塞, 如果数据一直不来, 你的线程就要阻塞很久. 这样显然不好. 所以采用 select 来查看套节字是否可读 (也就是是否有数据读了)    </p>
+<p><strong>步骤如下：</strong>    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">socket   s;   </span><br><span class="line">.....   </span><br><span class="line">fd_set   <span class="built_in">set</span>;   </span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;             </span><br><span class="line">  FD_ZERO(&amp;<span class="built_in">set</span>);<span class="comment">//将你的套节字集合清空         </span></span><br><span class="line">  FD_SET(s,&amp;<span class="built_in">set</span>);<span class="comment">//加入你感兴趣的套节字到集合,这里是一个读数据的套节字s         </span></span><br><span class="line">  select(<span class="number">0</span>,&amp;<span class="built_in">set</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);<span class="comment">//检查套节字是否可读,                                                           </span></span><br><span class="line">  <span class="comment">//很多情况下就是是否有数据(注意,只是说很多情况)                                                          </span></span><br><span class="line">  <span class="comment">//这里select是否出错没有写         </span></span><br><span class="line">  <span class="keyword">if</span>(FD_ISSET(s,   &amp;<span class="built_in">set</span>)   <span class="comment">//检查s是否在这个集合里面,         </span></span><br><span class="line">  &#123;                                           </span><br><span class="line">    <span class="comment">//select将更新这个集合,把其中不可读的套节字去掉                                                     //只保留符合条件的套节字在这个集合里面                                       </span></span><br><span class="line">    recv(s,...);         </span><br><span class="line">  &#125;         </span><br><span class="line">  <span class="comment">//do   something   here   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>理解 <code>select</code> 模型的关键在于理解 <code>fd_set</code>, 为说明方便，取 <code>fd_set</code> 长度为 1 <code>字节，fd_set</code> 中的每一 <code>bit</code> 可以对应一个文件描述符 <code>fd</code>。则 1 字节长的 <code>fd_set</code> 最大可以对应 8 个 <code>fd</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（1）执行 fd_set set; FD_ZERO(&amp;set); 则 set 用位表示是 0000,0000。</span><br><span class="line">（2）若 fd＝5, 执行 FD_SET(fd,&amp;set); 后 set 变为 0001,0000(第 5 位置为 1)</span><br><span class="line">（3）若再加入 fd＝2，fd=1, 则 set 变为 0001,0011</span><br><span class="line">（4）执行 select(6,&amp;set,0,0,0) 阻塞等待</span><br><span class="line">（5）若 fd=1,fd=2 上都发生可读事件，则 select 返回，此时 set 变为 0000,0011。注意：没有事件发生的 fd=5 被清空。</span><br></pre></td></tr></table></figure>
+
+<p>基于上面的讨论，可以轻松得出 select 模型的特点：</p>
+<ol>
+<li>可监控的文件描述符个数取决与 sizeof(fd_set) 的值。<br>我这边服务 器上 sizeof(fd_set)＝512，每 bit 表示一个文件描述符，则我服务器上支持的最大文件描述符是 512*8=4096。<br>据说可调，另有说虽然可调，但调整上限受于编译内核时的变量值。<br>本人对调整 fd_set 的大小不太感兴趣，参考 <a href="http://www.cppblog.com/CppExplore/archive/2008/03/21/45061.html" target="_blank" rel="noopener">技术系列之 网络模型（二）</a>  中的模型 2（1）可以有效突破 select 可监控的文件描述符上限。   </li>
+<li>将 fd 加入 select 监控集的同时，还要再使用一个数据结构 <code>array</code> 保存放到 select 监控集中的 fd.<br>一是用于再 <code>select</code> 返回后，<code>array</code> 作为源数据和 <code>fd_set</code> 进行 <code>FD_ISSET</code> 判断。<br>二是 <code>select</code> 返回后会把以前加入的但并无事件发生的 <code>fd</code> 清空，则每次开始 <code>select</code> 前都要重新从 <code>array</code> 取得 <code>fd</code> 逐一加入（<code>FD_ZERO</code> 最先），扫描 <code>array</code> 的同时取得 <code>fd</code> 最大值 <code>maxfd</code>，用于 <code>select</code> 的第一个 参数。   </li>
+<li>可见 <code>select</code> 模型必须在 <code>select</code> 前循环 <code>array</code>（加 <code>fd</code>，取 <code>maxfd</code>），<code>select</code> 返回后循环 <code>array</code>（<code>FD_ISSET</code> 判断是否有时间发生）。   </li>
+</ol>
+<p>下面给一个伪码说明基本 select 模型的服务器模型：    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>[slect_len];   </span><br><span class="line">nSock=<span class="number">0</span>;</span><br><span class="line"><span class="built_in">array</span>[nSock++]=listen_fd;</span><br><span class="line">(之前listen port已绑定并listen)</span><br><span class="line"></span><br><span class="line">maxfd=listen_fd;</span><br><span class="line"><span class="keyword">while</span>&#123;   </span><br><span class="line">  FD_ZERO(&amp;<span class="built_in">set</span>);   </span><br><span class="line">  foreach (fd in <span class="built_in">array</span>)    &#123;       </span><br><span class="line">    fd大于maxfd，则maxfd=fd       </span><br><span class="line">    FD_SET(fd,&amp;<span class="built_in">set</span>)   </span><br><span class="line">  &#125;   </span><br><span class="line"></span><br><span class="line">  res=select(maxfd+<span class="number">1</span>,&amp;<span class="built_in">set</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)；   </span><br><span class="line">  <span class="keyword">if</span>(FD_ISSET(listen_fd,&amp;<span class="built_in">set</span>))   &#123;       </span><br><span class="line">    newfd=accept(listen_fd);    <span class="comment">//... ...   </span></span><br><span class="line">    <span class="built_in">array</span>[nsock++]=newfd;       <span class="comment">// the fd that can be read       </span></span><br><span class="line">    <span class="keyword">if</span>(--res=<span class="number">0</span>)    <span class="keyword">continue</span>   </span><br><span class="line">  &#125;   </span><br><span class="line">  foreach 下标<span class="number">1</span>开始 (fd in <span class="built_in">array</span>)    &#123;       </span><br><span class="line">    <span class="keyword">if</span>(FD_ISSET(fd,&amp;<span class="built_in">set</span>))         </span><br><span class="line">     执行读等相关操作          </span><br><span class="line">     如果错误或者关闭，则要删除该fd，将<span class="built_in">array</span>中相应位置和最后一个元素互换就好，nsock减一             </span><br><span class="line">     <span class="keyword">if</span>(--res=<span class="number">0</span>) <span class="keyword">continue</span>   </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 select 函数的过程一般是：<br>先调用宏 FD_ZERO 将指定的 fd_set 清零，然后调用宏 FD_SET 将需要测试的 fd 加入 fd_set，接着调用函数 select 测试 fd_set 中的所有 fd，最后用宏 FD_ISSET 检查某个 fd 在函数 select 调用后，相应位是否仍然为 1。  </p>
+<p>以下是一个测试单个文件描述字可读性的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isready</span><span class="params">(<span class="keyword">int</span> fd)</span>     </span>&#123;         </span><br><span class="line">  <span class="keyword">int</span> rc;         </span><br><span class="line">  fd_set fds;         </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">tim</span> <span class="title">tv</span>;</span>             </span><br><span class="line">  FD_ZERO(&amp;fds);         </span><br><span class="line">  FD_SET(fd,&amp;fds);         </span><br><span class="line">  tv.tv_sec = tv.tv_usec = <span class="number">0</span>;             </span><br><span class="line">  rc = select(fd+<span class="number">1</span>, &amp;fds, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;tv);         </span><br><span class="line">  <span class="keyword">if</span> (rc &lt; <span class="number">0</span>)   <span class="comment">//error         return -1;             </span></span><br><span class="line">  <span class="keyword">return</span> FD_ISSET(fd,&amp;fds) ? <span class="number">1</span> : <span class="number">0</span>;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面还有一个复杂一些的应用：<br>// 这段代码将指定测试 Socket 的描述字的可读可写性，因为 Socket 使用的也是 fd</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">uint32 <span class="title">SocketWait</span><span class="params">(TSocket *s,<span class="keyword">bool</span> rd,<span class="keyword">bool</span> wr,uint32 timems)</span>    </span>&#123;     </span><br><span class="line">  fd_set rfds,wfds;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN32     </span></span><br><span class="line">  TIM tv;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>     </span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">tim</span> <span class="title">tv</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>         </span></span><br><span class="line">  FD_ZERO(&amp;rfds);     </span><br><span class="line">  FD_ZERO(&amp;wfds);      </span><br><span class="line">  <span class="keyword">if</span> (rd)     <span class="comment">//TRUE     </span></span><br><span class="line">  FD_SET(*s,&amp;rfds);   <span class="comment">//添加要测试的描述字      </span></span><br><span class="line">  <span class="keyword">if</span> (wr)     <span class="comment">//FALSE       </span></span><br><span class="line">  FD_SET(*s,&amp;wfds);      </span><br><span class="line">  tv.tv_sec=timems/<span class="number">1000</span>;     <span class="comment">//second     </span></span><br><span class="line">  tv.tv_usec=timems%<span class="number">1000</span>;     <span class="comment">//ms      </span></span><br><span class="line">  <span class="keyword">for</span> (;;) <span class="comment">//如果errno==EINTR，反复测试缓冲区的可读性          switch(select((*s)+1,&amp;rfds,&amp;wfds,NULL,              (timems==TIME_INFINITE?NULL:&amp;tv)))</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">//测试在规定的时间内套接口接收缓冲区中是否有数据可读      </span></span><br><span class="line">    <span class="comment">//0－－超时，-1－－出错         </span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:                  <span class="keyword">return</span> <span class="number">0</span>;          </span><br><span class="line">    <span class="keyword">case</span> (<span class="number">-1</span>):                 </span><br><span class="line">      <span class="keyword">if</span> (SocketError()==EINTR)                   </span><br><span class="line">      <span class="keyword">break</span>;                            </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//有错但不是EINTR           </span></span><br><span class="line">    <span class="keyword">default</span>:              </span><br><span class="line">      <span class="keyword">if</span> (FD_ISSET(*s,&amp;rfds))</span><br><span class="line">      <span class="comment">//如果s是fds中的一员返回非0，否则返回0                   </span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;              </span><br><span class="line">      <span class="keyword">if</span> (FD_ISSET(*s,&amp;wfds))                   </span><br><span class="line">      <span class="keyword">return</span> <span class="number">2</span>;              </span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;         </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p><strong>阻塞监听写操作</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// family： AF_INET   type: SOCK_STREAM   protocol: TCP</span></span><br><span class="line"><span class="comment">// 注意：1.type和protocol不可以随意组合，如SOCK_STREAM不可以跟IPPROTO_UDP组合。当第三个参数为0时，会自动选择第二个参数类型对应的默认协议。</span></span><br><span class="line">m_sockClient = socket(family, type, <span class="number">0</span>);<span class="comment">//create socket client ...</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> optval=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(setsockopt(m_sockClient, SOL_SOCKET, SO_KEEPALIVE, (<span class="keyword">char</span> *) &amp;optval, <span class="keyword">sizeof</span>(optval)))</span><br><span class="line">    <span class="comment">//set socket Option    OPTION:SO_KEEPALIVE=VALUE:1</span></span><br><span class="line">    &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"setsockopt error.%d\n"</span>, errno);</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//... ...F_GETFL 取得文件描述符状态旗标，此旗标为open（）的参数flags</span></span><br><span class="line"><span class="comment">// but socket ??</span></span><br><span class="line">flags = fcntl(m_sockClient, F_GETFL, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (flags &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ALOGE(LOG_TAG, <span class="string">" get socket flags fail.%d\n"</span>, errno);</span><br><span class="line">    closeSocket();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//F_SETFL 设置文件描述符状态旗标，参数arg为新旗标，但只允许O_APPEND、O_NONBLOCK和O_ASYNC位的改变，</span></span><br><span class="line"><span class="comment">//其他位的改变将不受影响。</span></span><br><span class="line"><span class="keyword">if</span> (fcntl(m_sockClient, F_SETFL, flags | O_NONBLOCK) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ALOGE(LOG_TAG, <span class="string">" set socket O_NONBLOCK fail.%d\n"</span>, errno);</span><br><span class="line">    closeSocket();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> retries_count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> connect_success = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (retries_count &lt; <span class="number">3</span>) &#123;<span class="comment">//远程连接pszServerIP --&gt; result --&gt; addr_in</span></span><br><span class="line">    <span class="keyword">if</span>(connect(m_sockClient, (sockaddr *)&amp;addr_in, <span class="keyword">sizeof</span>(addr_in)) == SOCKET_ERROR)&#123;</span><br><span class="line">         <span class="keyword">if</span> (errno == EINPROGRESS ||errno == EALREADY || errno == EWOULDBLOCK ||  errno == EISCONN || errno == EAGAIN) &#123;</span><br><span class="line">            retries_count++;</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            ALOGE(LOG_TAG, <span class="string">"connect error:%d:%s\n"</span>,errno, strerror(errno));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        connect_success = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    usleep(<span class="number">10000000</span>); <span class="comment">// 10s</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(connect_success == <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">to</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> *<span class="title">toptr</span> = <span class="title">NULL</span>;</span></span><br><span class="line">    fd_set wfd;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;wfd,<span class="number">0</span>,<span class="keyword">sizeof</span>(wfd));</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="keyword">socklen_t</span> errlen;</span><br><span class="line"></span><br><span class="line">    FD_ZERO(&amp;wfd);</span><br><span class="line">    FD_SET(m_sockClient, &amp;wfd);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//select 阻塞,监听socket发生写操作时---&gt;操作</span></span><br><span class="line">    <span class="keyword">if</span> (select(FD_SETSIZE, <span class="literal">NULL</span>, &amp;wfd, <span class="literal">NULL</span>, toptr) == SOCKET_ERROR) &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"select after connect error:%s"</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket 描述符不在写操作符集</span></span><br><span class="line">    <span class="keyword">if</span> (!FD_ISSET(m_sockClient, &amp;wfd)) &#123;</span><br><span class="line">        errno = ETIMEDOUT;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"select after connect error ETIMEDOUT,%d\n"</span>, errno);</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    err = <span class="number">0</span>;</span><br><span class="line">    errlen = <span class="keyword">sizeof</span>(err);</span><br><span class="line">    <span class="keyword">if</span> (getsockopt(m_sockClient, SOL_SOCKET, SO_ERROR, &amp;err, &amp;errlen) == SOCKET_ERROR) &#123;</span><br><span class="line">      <span class="comment">//option:ERROR</span></span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"getsockopt after connect error :%s"</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        errno = err;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"getsockopt after connect error :%s"</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>读操作状态</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(socket_status == RUNNING)&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125; ;</span><br><span class="line">    <span class="built_in">memset</span>(buf, <span class="number">0</span>, <span class="number">1024</span>);</span><br><span class="line">    fd_set ds_Read, ds_error;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;ds_Read, <span class="number">0</span>, <span class="keyword">sizeof</span>(ds_Read));</span><br><span class="line">    <span class="built_in">memset</span>(&amp;ds_error, <span class="number">0</span>, <span class="keyword">sizeof</span>(ds_error));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> status = <span class="number">0</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">timeout</span>=&#123;</span>TIMEOUT_INTERVAL,<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    FD_ZERO(&amp;ds_Read);</span><br><span class="line">    FD_SET(m_sockClient,&amp;ds_Read);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//select： ok     非阻塞仅检查状态</span></span><br><span class="line">    status = select((m_sockClient + <span class="number">1</span>),&amp;ds_Read,<span class="literal">NULL</span>,<span class="literal">NULL</span>,&amp;timeout);</span><br><span class="line">    <span class="keyword">if</span>(isSocketValid() == <span class="literal">false</span>)&#123;</span><br><span class="line">        ALOGI(LOG_TAG, <span class="string">"receive_func: m_sockClient = %d\n"</span>, m_sockClient);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (status &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"receive_func: select socket status, %s, errno: %d\n"</span>,strerror(errno), errno);</span><br><span class="line">        handle_disconnect();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (status == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">            ALOGI(LOG_TAG, <span class="string">"receive_func: select socket status not readable\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">continue</span>;<span class="comment">//直到readable</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">        ALOGI(LOG_TAG, <span class="string">"receive_func: readable fd returned:%d\n"</span>,status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(FD_ISSET(m_sockClient,&amp;ds_Read) )</span><br><span class="line">    &#123;<span class="comment">/////////ok</span></span><br><span class="line">        <span class="keyword">int</span> buf_len = recv(m_sockClient, buf,<span class="number">1024</span>, <span class="number">0</span>) ;<span class="comment">//read</span></span><br><span class="line">        <span class="keyword">if</span>(LOG_INFO)&#123;</span><br><span class="line">            ALOGI(LOG_TAG, <span class="string">"receive buf_len = %d"</span>, buf_len);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (buf_len &gt; <span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">bool</span> result = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(cloudsink != <span class="literal">NULL</span>)&#123;</span><br><span class="line">                result = cloudsink-&gt;received_cb(buf, buf_len);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(result == <span class="literal">false</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">                    ALOGI(LOG_TAG, <span class="string">"receive_func: the creator do not need the socket any more %d\n"</span>,m_sockClient);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(buf_len == <span class="number">0</span>)&#123;</span><br><span class="line">            ALOGE(LOG_TAG, <span class="string">"receive_func: recv, %s, errno: %d\n"</span>,strerror(errno), errno);</span><br><span class="line">            handle_disconnect();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(errno == EAGAIN)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                ALOGE(LOG_TAG, <span class="string">"receive_func: recv &lt; 0, %s, errno: %d\n"</span>,strerror(errno), errno);</span><br><span class="line">                handle_disconnect();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">"receive_func: FD_ISSET %d error %d\n"</span>,m_sockClient, errno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Select函数"><span class="nav-number">1.</span> <span class="nav-text">Select函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参数"><span class="nav-number">1.1.</span> <span class="nav-text">参数:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-函数的接口比较简单："><span class="nav-number">1.2.</span> <span class="nav-text">select 函数的接口比较简单：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能："><span class="nav-number">1.2.1.</span> <span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数："><span class="nav-number">1.2.2.</span> <span class="nav-text">参数：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nfds"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">nfds</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#readset"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">readset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#writeset"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">writeset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exceptset"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">exceptset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#timeout"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值："><span class="nav-number">1.2.3.</span> <span class="nav-text">返回值：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remarks："><span class="nav-number">1.2.4.</span> <span class="nav-text">Remarks：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

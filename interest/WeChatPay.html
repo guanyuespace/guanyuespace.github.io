@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="微信支付 个人无法开通微信支付    微信支付WeChat Open Platform【主要API列表】        微信支付 申请开通微信支付参数 规范 参数规定 安全规范 签名算法 Example   生成随机数算法 API证书 商户回调API安全   业务流程 业务流程时序图   开发步骤 openid: code2session() 获取（登录api–getSession） 调起数据签名">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小程序-微信支付API">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;WeChatPay.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="微信支付 个人无法开通微信支付    微信支付WeChat Open Platform【主要API列表】        微信支付 申请开通微信支付参数 规范 参数规定 安全规范 签名算法 Example   生成随机数算法 API证书 商户回调API安全   业务流程 业务流程时序图   开发步骤 openid: code2session() 获取（登录api–getSession） 调起数据签名">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;wechat_pay_cer.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;pay.weixin.qq.com&#x2F;wiki&#x2F;doc&#x2F;api&#x2F;img&#x2F;wxa-7-2.jpg">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;wechat_pay_cer.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/interest/WeChatPay.html"/>
+
+
+
+
+
+  <title>小程序-微信支付API | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">小程序-微信支付API</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="微信支付"><a href="#微信支付" class="headerlink" title="微信支付"></a>微信支付</h1><blockquote>
+<p>个人无法开通微信支付   </p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/index.html" target="_blank" rel="noopener">微信支付</a><br><a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">WeChat Open Platform</a><br><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1" target="_blank" rel="noopener">【主要API列表】</a>   </p>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98">微信支付</a><ul>
+<li><a href="#%E7%94%B3%E8%AF%B7%E5%BC%80%E9%80%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%82%E6%95%B0">申请开通微信支付参数</a></li>
+<li><a href="#%E8%A7%84%E8%8C%83">规范</a></li>
+<li><a href="#%E5%8F%82%E6%95%B0%E8%A7%84%E5%AE%9Ahttpspayweixinqqcomwikidocapiwxawxa_apiphpchapter4_2"><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_2" target="_blank" rel="noopener">参数规定</a></a></li>
+<li><a href="#%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83">安全规范</a><ul>
+<li><a href="#%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95">签名算法</a><ul>
+<li><a href="#example">Example</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%AE%97%E6%B3%95">生成随机数算法</a></li>
+<li><a href="#api%E8%AF%81%E4%B9%A6">API证书</a></li>
+<li><a href="#%E5%95%86%E6%88%B7%E5%9B%9E%E8%B0%83api%E5%AE%89%E5%85%A8">商户回调API安全</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B">业务流程</a><ul>
+<li><a href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E6%97%B6%E5%BA%8F%E5%9B%BE">业务流程时序图</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4">开发步骤</a><ul>
+<li><a href="#openid-code2session-%E8%8E%B7%E5%8F%96%E7%99%BB%E5%BD%95api--getsession">openid: code2session() 获取（登录api–getSession）</a></li>
+<li><a href="#%E8%B0%83%E8%B5%B7%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D">调起数据签名</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98api"> <strong>小程序调起支付API</strong> </a><ul>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D%E5%AD%97%E6%AE%B5%E5%88%97%E8%A1%A8"> <strong>小程序调起支付数据签名字段列表</strong> </a></li>
+<li><a href="#%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98"> <strong>发起支付</strong> </a><ul>
+<li><a href="#%E5%9B%9E%E8%B0%83%E7%BB%93%E6%9E%9C">回调结果：</a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81">示例代码：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">最佳实践</a></li>
+</ul>
+</li>
+<li><a href="#https%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE">HTTPS服务器配置</a><ul>
+<li><a href="#%E4%B8%80ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7">一、SSL证书申请</a></li>
+<li><a href="#%E4%BA%8Chttps%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE">二、HTTPS服务器配置</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h2 id="申请开通微信支付参数"><a href="#申请开通微信支付参数" class="headerlink" title="申请开通微信支付参数"></a>申请开通微信支付参数</h2><p>邮件（申请微信支付开通）中的账户参数与接口API参数对应关系见表：<br>账户参数说明</p>
+<p>|邮件中参数    |API参数名    |详细说明|<br>| — | — |<br>| APPID |    appid |    appid是微信小程序后台APP的唯一标识，在小程序后台申请小程序账号后，微信会自动分配对应的appid，用于标识该应用。可在小程序–&gt;设置–&gt;开发设置中查看。|<br>| 微信支付商户号    | mch_id    |商户申请微信支付后，由微信支付分配的商户收款账号。|<br>| API密钥    | key    | <strong>交易过程生成签名的密钥，仅保留在商户系统和微信支付后台，不会在网络中传播。商户妥善保管该Key，切勿在网络中传输，不能在其他客户端中存储，保证key不会被泄漏。商户可根据邮件提示登录微信商户平台进行设置。也可按一下路径设置：微信商户平台(pay.weixin.qq.com)–&gt;账户设置–&gt;API安全–&gt;密钥设置</strong> |<br>| Appsecret |    secret    | AppSecret是APPID对应的接口密码，用于获取接口调用凭证时使用。|</p>
+<h2 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h2><p>商户接入微信支付，调用API必须遵循以下规则：</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>desp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传输方式</td>
+<td>为保证交易安全性，采用HTTPS传输</td>
+</tr>
+<tr>
+<td>提交方式</td>
+<td>采用POST方法提交</td>
+</tr>
+<tr>
+<td>数据格式</td>
+<td>提交和返回数据都为XML格式，根节点名为xml</td>
+</tr>
+<tr>
+<td>字符编码</td>
+<td>统一采用UTF-8字符编码</td>
+</tr>
+<tr>
+<td>签名算法</td>
+<td>MD5，后续会兼容SHA1、SHA256、HMAC等。</td>
+</tr>
+<tr>
+<td>签名要求</td>
+<td>请求和接收数据均需要校验签名，详细方法请参考<a href="">安全规范-签名算法</a></td>
+</tr>
+<tr>
+<td>证书要求</td>
+<td><strong>调用申请退款、撤销订单接口需要商户证书</strong></td>
+</tr>
+<tr>
+<td>判断逻辑</td>
+<td><strong>先判断协议字段返回，再判断业务返回，最后判断交易状态</strong></td>
+</tr>
+</tbody></table>
+<h2 id="参数规定"><a href="#参数规定" class="headerlink" title="参数规定"></a><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_2" target="_blank" rel="noopener">参数规定</a></h2><h2 id="安全规范"><a href="#安全规范" class="headerlink" title="安全规范"></a>安全规范</h2><h3 id="签名算法"><a href="#签名算法" class="headerlink" title="签名算法"></a>签名算法</h3><p>签名生成的通用步骤如下：</p>
+<p>第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即<code>key1=value1&amp;key2=value2…</code>）拼接成字符串<code>stringA</code>。<br><strong>特别注意以下重要规则：</strong>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">◆ 参数名ASCII码从小到大排序（字典序）；  </span><br><span class="line">◆ 如果参数的值为空不参与签名；   </span><br><span class="line">◆ 参数名区分大小写；   </span><br><span class="line">◆ 验证调用返回或微信主动通知签名时，传送的sign参数不参与签名，将生成的签名与该sign值作校验。   </span><br><span class="line">◆ 微信接口可能增加字段，验证签名时必须支持增加的扩展字段</span><br></pre></td></tr></table></figure>
+<p>第二步，在<code>stringA</code>最后拼接上<code>key</code>得到<code>stringSignTemp</code>字符串，并对<code>stringSignTemp</code>进行<code>MD5</code>运算，再将得到的<code>字符串所有字符转换为大写</code>，得到<code>sign</code>值<code>signValue</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">◆ key设置路径：微信商户平台(pay.weixin.qq.com)--&gt;账户设置--&gt;API安全--&gt;密钥设置</span><br></pre></td></tr></table></figure>
+
+<p>即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stringA=&quot;param1=value1&amp;param2=value2...&quot;;</span><br><span class="line">stringSignTemp= stringA +&quot;&amp;key=&quot;+value(key);</span><br><span class="line">signValue=upperCase(MD5(stringSignTemp))</span><br></pre></td></tr></table></figure>
+
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>假设传送的参数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">appid：	wxd930ea5d5a258f4f</span><br><span class="line">mch_id：	10000100                        //商户id</span><br><span class="line">device_info：	1000                      //</span><br><span class="line">body：	test</span><br><span class="line">nonce_str：	ibuaiVcKdpRxkhJA            //随机数</span><br></pre></td></tr></table></figure>
+<p>第一步：对参数按照key=value的格式，并按照参数名ASCII字典序排序如下：   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stringA=&quot;appid=wxd930ea5d5a258f4f&amp;body=test&amp;device_info=1000&amp;mch_id=10000100&amp;nonce_str=ibuaiVcKdpRxkhJA&quot;;</span><br></pre></td></tr></table></figure>
+<p>第二步：拼接API密钥：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stringSignTemp=stringA+&quot;&amp;key=192006250b4c09247ec02edce69f6a2d&quot; //注：key为商户平台设置的密钥key</span><br><span class="line">sign=MD5(stringSignTemp).toUpperCase()=&quot;9A0A8659F005D6984697E2CA0A9CF3B7&quot; //注：MD5签名方式</span><br><span class="line">//////////////////////新的签名方式：HMAC-SHA256签名方式</span><br><span class="line">sign=hash_hmac(&quot;sha256&quot;,stringSignTemp,key).toUpperCase()=&quot;6A9AE1657590FD6257D693A078E1C3E4BB6BA4DC30B23E0EE2496E54170DACD6&quot; //注：HMAC-SHA256签名方式</span><br></pre></td></tr></table></figure>
+<p>最终得到最终发送的数据：   </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appid</span>&gt;</span>wxd930ea5d5a258f4f<span class="tag">&lt;/<span class="name">appid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mch_id</span>&gt;</span>10000100<span class="tag">&lt;/<span class="name">mch_id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">device_info</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">device_info</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span>test<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">nonce_str</span>&gt;</span>ibuaiVcKdpRxkhJA<span class="tag">&lt;/<span class="name">nonce_str</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">sign</span>&gt;</span>9A0A8659F005D6984697E2CA0A9CF3B7<span class="tag">&lt;/<span class="name">sign</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成随机数算法"><a href="#生成随机数算法" class="headerlink" title="生成随机数算法"></a>生成随机数算法</h3><p>微信支付API接口协议中包含字段nonce_str，主要保证签名不可预测。我们推荐生成随机数算法如下：调用随机数函数生成，将得到的值转换为字符串。    </p>
+<h3 id="API证书"><a href="#API证书" class="headerlink" title="API证书"></a>API证书</h3><p>（1）获取API证书(SSL… 校验身份<a href="http://kf.qq.com/faq/180824JvUZ3i180824YvMNJj.html" target="_blank" rel="noopener">什么是api证书？如何升级？</a>)<br>微信支付接口中，涉及资金回滚的接口会使用到API证书，包括退款、撤销接口。商家在申请微信支付成功后，收到的相应邮件后，可以按照指引下载API证书，也可以按照以下路径下载：微信商户平台(pay.weixin.qq.com)–&gt;账户中心–&gt;账户设置–&gt;API安全 。证书文件说明如下：<br><img src="./wechat_pay_cer.jpg" alt="证书文件">   </p>
+<p>（2）使用API证书</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">◆ apiclient_cert.p12是商户证书文件，除PHP外的开发均使用此证书文件。</span><br><span class="line">◆ 商户如果使用.NET环境开发，请确认Framework版本大于2.0，必须在操作系统上双击安装证书apiclient_cert.p12后才能被正常调用。</span><br><span class="line">◆ API证书调用或安装需要使用到密码，该密码的值为微信商户号（mch_id）</span><br></pre></td></tr></table></figure>
+<p>（3）API证书安全   </p>
+<ol>
+<li>证书文件不能放在web服务器虚拟目录，应放在有访问权限控制的目录中，防止被他人下载；</li>
+<li>建议将证书文件名改为复杂且不容易猜测的文件名；</li>
+<li>商户服务器要做好病毒和木马防护工作，不被非法侵入者窃取证书文件。</li>
+</ol>
+<h3 id="商户回调API安全"><a href="#商户回调API安全" class="headerlink" title="商户回调API安全"></a>商户回调API安全</h3><p>在普通的网络环境下，HTTP请求存在DNS劫持、运营商插入广告、数据被窃取，正常数据被修改等安全风险。商户回调接口使用HTTPS协议可以保证数据传输的安全性。所以微信支付建议商户提供给微信支付的各种回调采用HTTPS协议。请参考：HTTPS搭建指南。</p>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><h3 id="业务流程时序图"><a href="#业务流程时序图" class="headerlink" title="业务流程时序图"></a>业务流程时序图</h3><p>小程序支付的交互图如下：<br><img src="https://pay.weixin.qq.com/wiki/doc/api/img/wxa-7-2.jpg" alt="业务流程时序图" title="业务流程时序图"><br>商户系统和微信支付系统主要交互：<br>1、小程序内调用登录接口，获取到用户的openid,api参见公共api<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/api-login.html?t=20161122" target="_blank" rel="noopener">【小程序登录API】</a><br>2、商户server调用支付统一下单，api参见公共api<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1&index=1" target="_blank" rel="noopener">【统一下单API】</a><br>3、商户server调用再次签名，api参见公共api<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=3" target="_blank" rel="noopener">【再次签名】</a><br>4、商户server接收支付通知，api参见公共api<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_7" target="_blank" rel="noopener">【支付结果通知API】</a><br>5、商户server查询支付结果，api参见公共api<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_2" target="_blank" rel="noopener">【查询订单API】</a>   </p>
+<h2 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h2><p>如果开发者已做过JSAPI或JSSDK调起微信支付，接入小程序支付非常相似，以下是三种接入方式的对比：</p>
+<p>| 对比栏目| JSAPI |    JSSDK|    小程序|<br>|— | —|<br>|统一下单|    都需要先获取到Openid，调用相同的API|||<br>|调起数据签名    |五个字段参与签名(区分大小写)：appId,nonceStr,package,signType,timeStamp |||<br>|调起支付页面协议    | HTTP或HTTPS    |HTTP或HTTPS|    HTTPS|<br>|支付目录    |有    |有    |无|<br>|授权域名    |有    |有    |无|<br>|回调函数    |有    |success回调    |complete、fail、success回调函数|</p>
+<p>程序访问商户服务都是通过HTTPS,开发部署的时候需要安装<a href="">HTTPS服务器</a></p>
+<h3 id="openid-code2session-获取（登录api–getSession）"><a href="#openid-code2session-获取（登录api–getSession）" class="headerlink" title="openid: code2session() 获取（登录api–getSession）"></a>openid: code2session() 获取（登录api–getSession）</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"data"</span>: &#123;</span><br><span class="line">		<span class="attr">"session_key"</span>: <span class="string">"OpCABq/5O1T9MctGd/fq9Q=="</span>,</span><br><span class="line">		<span class="attr">"openid"</span>: <span class="string">"ofAqB4n1m4IKBnvrixY5qshNZrTg"</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">"header"</span>: &#123;</span><br><span class="line">		<span class="attr">"Content-Type"</span>: <span class="string">"text/plain;charset=utf-8"</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">"statusCode"</span>: <span class="number">200</span>,</span><br><span class="line">	<span class="attr">"cookies"</span>: [],</span><br><span class="line">	<span class="attr">"errMsg"</span>: <span class="string">"request:ok"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="调起数据签名"><a href="#调起数据签名" class="headerlink" title="调起数据签名"></a>调起数据签名</h3><p>详解<a href="">小程序调起支付API-小程序调起支付数据签名字段列表</a><br>appid,nonceStr(随机数),package(…),signType(MD5/HMAC-SHA256),timeStamp   </p>
+<h2 id="小程序调起支付API"><a href="#小程序调起支付API" class="headerlink" title="小程序调起支付API"></a><strong>小程序调起支付API</strong></h2><h3 id="小程序调起支付数据签名字段列表"><a href="#小程序调起支付数据签名字段列表" class="headerlink" title="小程序调起支付数据签名字段列表"></a><strong>小程序调起支付数据签名字段列表</strong></h3><p>|字段名    |变量名    |必填    |类型    |示例值    |描述|<br>|—|—|<br>|小程序ID    |appId    |是    |String    |wxd678efh567hg6787    |微信分配的小程序ID|<br>|时间戳    |timeStamp    |是    |String    |1490840662    |时间戳从1970年1月1日00:00:00至今的<strong>秒数</strong>,即当前的时间|<br>|随机串    |nonceStr    |是    |String    |5K8264ILTKCH16CQ2502SI8ZNMTM67VS    |随机字符串，<strong>不长于32位</strong>。推荐随机数生成算法|<br>|数据包    |package    |是    |String|    prepay_id=wx2017033010242291fcfe0db70013231072    |统一下单接口返回的prepay_id 参数值，提交格式如：prepay_id=wx2017033010242291fcfe0db70013231072|<br>|签名方式    |signType    |是    |String    |MD5    |签名类型，默认为MD5，支持HMAC-SHA256和MD5。<strong>注意此处需与统一下单的签名类型一致</strong> |<br>举例如下:   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">paySign = MD5(appId=wxd678efh567hg6787&amp;nonceStr=5K8264ILTKCH16CQ2502SI8ZNMTM67VS</span><br><span class="line">              &amp;package=prepay_id=wx2017033010242291fcfe0db70013231072</span><br><span class="line">              &amp;signType=MD5&amp;timeStamp=1490840662&amp;key=qazwsxedcrfvtgbyhnujmikolp111111) = 22D9B4E54AB1950F51E0649E8810ACD6</span><br></pre></td></tr></table></figure>
+<h3 id="发起支付"><a href="#发起支付" class="headerlink" title="发起支付"></a><strong>发起支付</strong></h3><p>调用wx.requestPayment(<code>OBJECT</code>)发起微信支付<br><code>Object</code>参数说明：</p>
+<p>| 参数    | 类型    | 必填    | 说明|<br>|—|—|<br>| timeStamp    | String    | 是    | 时间戳从1970年1月1日00:00:00至今的秒数,即当前的时间 |<br>| nonceStr    | String    | 是    | 随机字符串，长度为32个字符以下。 |<br>| package    | String    |是    | 统一下单接口返回的 prepay_id 参数值，提交格式如：prepay_id=* |<br>| signType    | String    | 是    | 签名类型，默认为MD5，支持HMAC-SHA256和MD5。注意此处需与统一下单的签名类型一致 |<br>| paySign    | String    | 是    | 签名,<strong>ok 上一步结果</strong> |<br>| success    | Function    | 否    | 接口调用成功的回调函数 |<br>| fail    | Function    | 否    | 接口调用失败的回调函数 |<br>| complete    | Function    | 否    | 接口调用结束的回调函数（调用成功、失败都会执行） |</p>
+<h4 id="回调结果："><a href="#回调结果：" class="headerlink" title="回调结果："></a>回调结果：</h4><p>| 回调类型    | errMsg    | 说明 |<br>|—-|—-|<br>| success    | requestPayment:ok    | 调用支付成功 |<br>| fail    | requestPayment:fail cancel     | 用户取消支付 |<br>| fail     | requestPayment:fail (detail message)     | 调用支付失败，其中 detail message 为后台返回的详细失败原因 |</p>
+<h4 id="示例代码："><a href="#示例代码：" class="headerlink" title="示例代码："></a>示例代码：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wx.requestPayment(</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="string">'timeStamp'</span>: <span class="string">''</span>,</span><br><span class="line">  <span class="string">'nonceStr'</span>: <span class="string">''</span>,</span><br><span class="line">  <span class="string">'package'</span>: <span class="string">''</span>,</span><br><span class="line">  <span class="string">'signType'</span>: <span class="string">'MD5'</span>,</span><br><span class="line">  <span class="string">'paySign'</span>: <span class="string">''</span>,</span><br><span class="line">  <span class="string">'success'</span>:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;&#125;,</span><br><span class="line">  <span class="string">'fail'</span>:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;&#125;,</span><br><span class="line">  <span class="string">'complete'</span>:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;&#125;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=23_2&index=1" target="_blank" rel="noopener">网络设置指引</a><br><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=23_3&index=2" target="_blank" rel="noopener">最佳安全实践</a>   </p>
+<hr>
+<h1 id="HTTPS服务器配置"><a href="#HTTPS服务器配置" class="headerlink" title="HTTPS服务器配置"></a>HTTPS服务器配置</h1><h2 id="一、SSL证书申请"><a href="#一、SSL证书申请" class="headerlink" title="一、SSL证书申请"></a>一、SSL证书申请</h2><ol>
+<li><p>确认需要申请证书的域名</p>
+</li>
+<li><p>生成私钥和csr文件<br>在linux机器上执行以下命令生成私钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">openssl genrsa -out server.key 2048</span></span><br></pre></td></tr></table></figure>
+<p>在linux机器上执行以下命令生成csr文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">openssl req -new -key server.key -out certreq.csr</span></span><br></pre></td></tr></table></figure>
+<p>以下黑色标识文字仅供参考，请根据商户自己实际情况进行填写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Country Name： CN                      //您所在国家的ISO标准代号，中国为CN</span><br><span class="line">State or Province Name：guandong       //您单位所在地省/自治区/直辖市</span><br><span class="line">Locality Name：shenzhen                 //您单位所在地的市/县/区</span><br><span class="line">Organization Name： Tencent Technology (Shenzhen) Company Limited                 //您单位/机构/企业合法的名称</span><br><span class="line">Organizational Unit Name： R&amp;D         //部门名称</span><br><span class="line">Common Name： www.example.com     //通用名，例如：www.itrus.com.cn。此项必须与您访问提供SSL服务的服务器时所应用的域名完全匹配。</span><br><span class="line">Email Address：                          //您的邮件地址，不必输入，直接回车跳过</span><br><span class="line">&quot;extra&quot;attributes                        //以下信息不必输入，回车跳过直到命令执行完毕。</span><br></pre></td></tr></table></figure>
+<p>执行上面的命令后，在当前目录下即可生成私钥文件server.key和certreq.csr csr文件    </p>
+</li>
+<li><p>将生成的csr文件提交给第三方证书颁发机构申请对应域名的服务器证书，同时将私钥文件保存好，以免丢失。</p>
+</li>
+<li><p>证书申请后，证书颁发机构会提供服务器证书内容和两张中级CA证书，请按证书颁发机器说明生成服务器证书，此处假设服务器证书文件名称为server.pem</p>
+</li>
+<li><p>将生成的私钥文件server.key和服务器证书server.pem拷贝至服务器指定的目录即可进行HTTPS服务器配置</p>
+</li>
+</ol>
+<h2 id="二、HTTPS服务器配置"><a href="#二、HTTPS服务器配置" class="headerlink" title="二、HTTPS服务器配置"></a>二、HTTPS服务器配置</h2><ol>
+<li>Nginx配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen       443;   #指定ssl监听端口</span><br><span class="line">server_name  www.example.com;</span><br><span class="line">ssl on;    #开启ssl支持</span><br><span class="line">ssl_certificate      /etc/nginx/server.pem;    #指定服务器证书路径</span><br><span class="line">ssl_certificate_key  /etc/nginx/server.key;    #指定私钥证书路径</span><br><span class="line">ssl_session_timeout  5m;</span><br><span class="line">ssl_protocols TLSv1 TLSv1.1 TLSv1.2;     #指定SSL服务器端支持的协议版本</span><br><span class="line">ssl_ciphers  ALL：!ADH：!EXPORT56：RC4+RSA：+HIGH：+MEDIUM：+LOW：+SSLv2：+EXP;    #指定加密算法</span><br><span class="line">ssl_prefer_server_ciphers   on;    #在使用SSLv3和TLS协议时指定服务器的加密算法要优先于客户端的加密算法</span><br><span class="line">#以下内容请按域名需要进行配置，此处仅供参考</span><br><span class="line">location / &#123;</span><br><span class="line">return 444;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>其它web服务器配置<br>请参考文档：<a href="http://www.itrus.cn/html/fuwuyuzhichi/fuwuqizhengshuanzhuangpeizhizhinan" target="_blank" rel="noopener">《服务器证书配置指南》</a></li>
+</ol>
+<p>三、相关事项</p>
+<ol>
+<li><p>证书颁发机构<br>推荐天威诚信，具体请见：<a href="http://www.itrus.com.cn" target="_blank" rel="noopener">链接</a></p>
+</li>
+<li><p>参考文档<br><a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_prefer_server_ciphers" target="_blank" rel="noopener">《ngx_http_ssl_module》</a><br><a href="http://nginx.org/cn/docs/http/configuring_https_servers.html" target="_blank" rel="noopener">《nginx配置HTTPS服务器》</a><br><a href="http://www.itrus.cn/html/fuwuyuzhichi/fuwuqizhengshuanzhuangpeizhizhinan" target="_blank" rel="noopener">《服务器证书配置指南》</a></p>
+</li>
+<li><p>常见问题   </p>
+<ol>
+<li>证书受信任的问题<br>部分国内签发的SSL证书，在Android上不受信任，推荐GeoTrust；</li>
+<li>如果页面有动静分离，静态资源使用独立域名的话，也需要为该域名申请证书；</li>
+<li>android低版本不支持SNI扩展，受此限制，一台服务器只能部署一个数字证书；</li>
+</ol>
+</li>
+</ol>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#微信支付"><span class="nav-number">1.</span> <span class="nav-text">微信支付</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#申请开通微信支付参数"><span class="nav-number">1.1.</span> <span class="nav-text">申请开通微信支付参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范"><span class="nav-number">1.2.</span> <span class="nav-text">规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数规定"><span class="nav-number">1.3.</span> <span class="nav-text">参数规定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全规范"><span class="nav-number">1.4.</span> <span class="nav-text">安全规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#签名算法"><span class="nav-number">1.4.1.</span> <span class="nav-text">签名算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成随机数算法"><span class="nav-number">1.4.2.</span> <span class="nav-text">生成随机数算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API证书"><span class="nav-number">1.4.3.</span> <span class="nav-text">API证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#商户回调API安全"><span class="nav-number">1.4.4.</span> <span class="nav-text">商户回调API安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务流程"><span class="nav-number">1.5.</span> <span class="nav-text">业务流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#业务流程时序图"><span class="nav-number">1.5.1.</span> <span class="nav-text">业务流程时序图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发步骤"><span class="nav-number">1.6.</span> <span class="nav-text">开发步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#openid-code2session-获取（登录api–getSession）"><span class="nav-number">1.6.1.</span> <span class="nav-text">openid: code2session() 获取（登录api–getSession）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调起数据签名"><span class="nav-number">1.6.2.</span> <span class="nav-text">调起数据签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序调起支付API"><span class="nav-number">1.7.</span> <span class="nav-text">小程序调起支付API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序调起支付数据签名字段列表"><span class="nav-number">1.7.1.</span> <span class="nav-text">小程序调起支付数据签名字段列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发起支付"><span class="nav-number">1.7.2.</span> <span class="nav-text">发起支付</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回调结果："><span class="nav-number">1.7.2.1.</span> <span class="nav-text">回调结果：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例代码："><span class="nav-number">1.7.2.2.</span> <span class="nav-text">示例代码：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">1.8.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTPS服务器配置"><span class="nav-number">2.</span> <span class="nav-text">HTTPS服务器配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、SSL证书申请"><span class="nav-number">2.1.</span> <span class="nav-text">一、SSL证书申请</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、HTTPS服务器配置"><span class="nav-number">2.2.</span> <span class="nav-text">二、HTTPS服务器配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

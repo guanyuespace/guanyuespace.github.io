@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;segmentfault.com&#x2F;a&#x2F;1190000004417288   Java 语言特性系列   Java5 的新特性 Java6 的新特性 Java7 的新特性 Java8 的新特性 Java9 的新特性 Java10 的新特性 Java11 的新特性 Java12 的新特性 Java13 的新特性  序这是 Java 语">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;java_updates&#x2F;simpread-Java5%20%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7%20-%20code-craft%20-%20SegmentFault%20%E6%80%9D%E5%90%A6.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;segmentfault.com&#x2F;a&#x2F;1190000004417288   Java 语言特性系列   Java5 的新特性 Java6 的新特性 Java7 的新特性 Java8 的新特性 Java9 的新特性 Java10 的新特性 Java11 的新特性 Java12 的新特性 Java13 的新特性  序这是 Java 语">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.513Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/java_updates/simpread-Java5 的新特性 - code-craft - SegmentFault 思否.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://segmentfault.com/a/1190000004417288" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004417288</a></p>
+</blockquote>
+<blockquote>
+<p>Java 语言特性系列</p>
+</blockquote>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000004417288" target="_blank" rel="noopener">Java5 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000004417536" target="_blank" rel="noopener">Java6 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000004417830" target="_blank" rel="noopener">Java7 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000004419611" target="_blank" rel="noopener">Java8 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000013620826" target="_blank" rel="noopener">Java9 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000014076481" target="_blank" rel="noopener">Java10 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000016527932" target="_blank" rel="noopener">Java11 的新特性</a></li>
+<li><a href="https://segmentfault.com/a/1190000018588495" target="_blank" rel="noopener">Java12 的新特性</a></li>
+<li><a>Java13 的新特性</a></li>
+</ul>
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>这是 Java 语言特性系列的第一篇，从 java5 的新特性开始讲起。初衷就是可以方便的查看语言的演进历史。</p>
+<h2 id="特性列表"><a href="#特性列表" class="headerlink" title="特性列表"></a>特性列表</h2><ul>
+<li>泛型</li>
+<li>枚举</li>
+<li>装箱拆箱</li>
+<li>变长参数</li>
+<li>注解</li>
+<li>foreach 循环</li>
+<li>静态导入</li>
+<li>格式化</li>
+<li>线程框架 / 数据结构</li>
+<li>Arrays 工具类 / StringBuilder/instrument</li>
+</ul>
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><p>所谓类型擦除指的就是 Java 源码中的范型信息只允许停留在编译前期，而编译后的字节码文件中将不再保留任何的范型信息。也就是说，范型信息在编译时将会被全部删除，其中范型类型的类型参数则会被替换为 Object 类型，并在实际使用时强制转换为指定的目标数据类型。而 C++ 中的模板则会在编译时将模板类型中的类型参数根据所传递的指定数据类型生成相对应的目标代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, Integer&gt; squares = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</span><br></pre></td></tr></table></figure>
+
+<h4 id="通配符类型：避免-unchecked-警告，问号表示任何类型都可以接受"><a href="#通配符类型：避免-unchecked-警告，问号表示任何类型都可以接受" class="headerlink" title="通配符类型：避免 unchecked 警告，问号表示任何类型都可以接受"></a>通配符类型：避免 unchecked 警告，问号表示任何类型都可以接受</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(List&lt;?&gt; list, PrintStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (Iterator&lt;?&gt; i = list.iterator(); i.hasNext(); ) &#123;</span><br><span class="line">    out.println(i.next().toString());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="限制类型"><a href="#限制类型" class="headerlink" title="限制类型"></a>限制类型</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;A extends Number&gt; <span class="function"><span class="keyword">double</span> <span class="title">sum</span><span class="params">(Box&lt;A&gt; box1,Box&lt;A&gt; box2)</span></span>&#123;</span><br><span class="line">  <span class="keyword">double</span> total = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (Iterator&lt;A&gt; i = box1.contents.iterator(); i.hasNext(); ) &#123;</span><br><span class="line">    total = total + i.next().doubleValue();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (Iterator&lt;A&gt; i = box2.contents.iterator(); i.hasNext(); ) &#123;</span><br><span class="line">    total = total + i.next().doubleValue();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h4><blockquote>
+<p>&lt;? extends T&gt;<br>&lt;? super T&gt;<br>参数化类型，存储，纯字面意思！什么破上界、下界无语。<br>关于 add()、get() 受限，理解。<br>参数化类型 T</p>
+</blockquote>
+<ul>
+<li><p>&lt;? extends Fruit&gt;  参数化类型为 Fruit 及其子类之一。。。。。。</p>
+<ul>
+<li>编译器也仅知道可以放入 Fruit 或是其子类，但是无法确定具体类型是 Fruit 或 Apple 或 Pear，因此 add() 方法受限！！！</li>
+<li>get() 取出时, 赋值给 Fruit    √</li>
+</ul>
+</li>
+<li><p>反之 &lt;? super Fruit&gt;  参数化类型为 Fruit 及其父类之一。</p>
+<ul>
+<li>此时 get() 方法获取时，无法预知类型，可以按 Object 获取，但是毫无用处！！！</li>
+<li>add() 放入时，由于参数化类型为 Fruit 或其父类之一，因而可以直接放入 Fruit 或其子类。</li>
+</ul>
+</li>
+</ul>
+<h5 id="反射绕过编译器泛型检查"><a href="#反射绕过编译器泛型检查" class="headerlink" title="反射绕过编译器泛型检查"></a>反射绕过编译器泛型检查</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;? extends Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">Method addMethod =  list.getClass().getMethod(<span class="string">"add"</span>,Integer.class);</span><br><span class="line">addMethod.invoke(list,<span class="number">5</span>);  <span class="comment">//    list.add(5);</span></span><br><span class="line">Integer a =  list.get(<span class="number">0</span>);</span><br><span class="line">System.out.println(a);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、枚举"><a href="#2、枚举" class="headerlink" title="2、枚举"></a>2、枚举</h3><h4 id="EnumMap"><a href="#EnumMap" class="headerlink" title="EnumMap"></a>EnumMap</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEnumMap</span><span class="params">(PrintStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  <span class="comment">// Create a map with the key and a String message</span></span><br><span class="line">  EnumMap&lt;AntStatus, String&gt; antMessages =</span><br><span class="line">    <span class="keyword">new</span> EnumMap&lt;AntStatus, String&gt;(AntStatus.class);</span><br><span class="line">  <span class="comment">// Initialize the map</span></span><br><span class="line">  antMessages.put(AntStatus.INITIALIZING, <span class="string">"Initializing Ant..."</span>);</span><br><span class="line">  antMessages.put(AntStatus.COMPILING,    <span class="string">"Compiling Java classes..."</span>);</span><br><span class="line">  antMessages.put(AntStatus.COPYING,      <span class="string">"Copying files..."</span>);</span><br><span class="line">  antMessages.put(AntStatus.JARRING,      <span class="string">"JARring up files..."</span>);</span><br><span class="line">  antMessages.put(AntStatus.ZIPPING,      <span class="string">"ZIPping up files..."</span>);</span><br><span class="line">  antMessages.put(AntStatus.DONE,         <span class="string">"Build complete."</span>);</span><br><span class="line">  antMessages.put(AntStatus.ERROR,        <span class="string">"Error occurred."</span>);</span><br><span class="line">  <span class="comment">// Iterate and print messages</span></span><br><span class="line">  <span class="keyword">for</span> (AntStatus status : AntStatus.values() ) &#123;</span><br><span class="line">    out.println(<span class="string">"For status "</span> + status + <span class="string">", message is: "</span> +</span><br><span class="line">                antMessages.get(status));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="switch-枚举"><a href="#switch-枚举" class="headerlink" title="switch 枚举"></a>switch 枚举</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> ROSEWOOD:      <span class="keyword">return</span> <span class="string">"Rosewood back and sides"</span>;</span><br><span class="line">    <span class="keyword">case</span> MAHOGANY:      <span class="keyword">return</span> <span class="string">"Mahogany back and sides"</span>;</span><br><span class="line">    <span class="keyword">case</span> ZIRICOTE:      <span class="keyword">return</span> <span class="string">"Ziricote back and sides"</span>;</span><br><span class="line">    <span class="keyword">case</span> SPRUCE:        <span class="keyword">return</span> <span class="string">"Sitka Spruce top"</span>;</span><br><span class="line">    <span class="keyword">case</span> CEDAR:         <span class="keyword">return</span> <span class="string">"Wester Red Cedar top"</span>;</span><br><span class="line">    <span class="keyword">case</span> AB_ROSETTE:    <span class="keyword">return</span> <span class="string">"Abalone rosette"</span>;</span><br><span class="line">    <span class="keyword">case</span> AB_TOP_BORDER: <span class="keyword">return</span> <span class="string">"Abalone top border"</span>;</span><br><span class="line">    <span class="keyword">case</span> IL_DIAMONDS:</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"Diamonds and squares fretboard inlay"</span>;</span><br><span class="line">    <span class="keyword">case</span> IL_DOTS:</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"Small dots fretboard inlay"</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> <span class="string">"Unknown feature"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、Autoboxing-与-Unboxing"><a href="#3、Autoboxing-与-Unboxing" class="headerlink" title="3、Autoboxing 与 Unboxing"></a>3、Autoboxing 与 Unboxing</h3><p>将 primitive 类型转换成对应的 wrapper 类型：Boolean、Byte、Short、Character、Integer、Long、Float、Double</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">(Integer i)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"this is integer"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">(Double d)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"this is double"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>m1(1) 输出的是 double，方法匹配时线下兼容，不考虑 boxing 与 unboxing。</p>
+<h3 id="4、vararg-变长参数"><a href="#4、vararg-变长参数" class="headerlink" title="4、vararg 变长参数"></a>4、vararg <strong><em>变长参数</em></strong></h3><blockquote>
+<p>内部实现：数组</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">print</span><span class="params">(Object... values)</span> </span>&#123;</span><br><span class="line">  StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">  <span class="keyword">for</span> (Object o : values) &#123;</span><br><span class="line">    sb.append(o.toString())</span><br><span class="line">      .append(<span class="string">" "</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、annotation-注解与反射相结合"><a href="#5、annotation-注解与反射相结合" class="headerlink" title="5、annotation 注解与反射相结合"></a>5、annotation 注解与反射相结合</h3><blockquote>
+<p>注解信息结合反射，获取注解信息进行相应操作</p>
+</blockquote>
+<p>Inherited 表示该注解是否对类的子类继承的方法等起作用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> InProgress &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="指定Target"><a href="#指定Target" class="headerlink" title="指定Target"></a>指定Target</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.TYPE,</span><br><span class="line">         ElementType.METHOD,</span><br><span class="line">         ElementType.CONSTRUCTOR,</span><br><span class="line">         ElementType.ANNOTATION_TYPE&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TODO &#123;</span><br><span class="line">  <span class="function">String <span class="title">value</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function">String <span class="title">author</span><span class="params">()</span> <span class="keyword">default</span> "guanyue"</span>;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">intValue</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Target类型"><a href="#Target类型" class="headerlink" title="Target类型"></a>Target类型</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ElementType &#123;</span><br><span class="line">    <span class="comment">/** Class, interface (including annotation type), or enum declaration */</span></span><br><span class="line">    TYPE,</span><br><span class="line">    <span class="comment">/** Field declaration (includes enum constants) */</span></span><br><span class="line">    FIELD,</span><br><span class="line">    <span class="comment">/** Method declaration */</span></span><br><span class="line">    METHOD,</span><br><span class="line">    <span class="comment">/** Parameter declaration */</span></span><br><span class="line">    PARAMETER,</span><br><span class="line">    <span class="comment">/** Constructor declaration */</span></span><br><span class="line">    CONSTRUCTOR,</span><br><span class="line">    <span class="comment">/** Local variable declaration */</span></span><br><span class="line">    LOCAL_VARIABLE,</span><br><span class="line">    <span class="comment">/** Annotation type declaration */</span></span><br><span class="line">    ANNOTATION_TYPE,</span><br><span class="line">    <span class="comment">/** Package declaration */</span></span><br><span class="line">    PACKAGE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="rentation-表示-annotation-是否保留在编译过的-class-文件中还是在运行时可读。"><a href="#rentation-表示-annotation-是否保留在编译过的-class-文件中还是在运行时可读。" class="headerlink" title="rentation 表示 annotation 是否保留在编译过的 class 文件中还是在运行时可读。"></a>rentation 表示 annotation 是否保留在编译过的 class 文件中还是在运行时可读。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> RetentionPolicy &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Annotations are to be discarded by the compiler.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SOURCE,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Annotations are to be recorded in the class file by the compiler</span></span><br><span class="line"><span class="comment">     * but need not be retained by the VM at run time.  This is the default</span></span><br><span class="line"><span class="comment">     * behavior.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    CLASS,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Annotations are to be recorded in the class file by the compiler and</span></span><br><span class="line"><span class="comment">     * retained by the VM at run time, so they may be read reflectively.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> java.lang.reflect.AnnotatedElement</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    RUNTIME</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过反射获取元信息"><a href="#通过反射获取元信息" class="headerlink" title="通过反射获取元信息"></a>通过反射获取元信息</h4><blockquote>
+<p>通过获取的自定义注解信息进行下一步操作，此处实例为InProgress… …相关信息</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectionTester</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ReflectionTester</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAnnotationPresent</span><span class="params">(PrintStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Class c = Super.class;</span><br><span class="line">    <span class="keyword">boolean</span> inProgress = c.isAnnotationPresent(InProgress.class);</span><br><span class="line">    <span class="keyword">if</span> (inProgress) &#123;</span><br><span class="line">      out.println(<span class="string">"Super is In Progress"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      out.println(<span class="string">"Super is not In Progress"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testInheritedAnnotation</span><span class="params">(PrintStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Class c = Sub.class;</span><br><span class="line">    <span class="keyword">boolean</span> inProgress = c.isAnnotationPresent(InProgress.class);</span><br><span class="line">    <span class="keyword">if</span> (inProgress) &#123;</span><br><span class="line">      out.println(<span class="string">"Sub is In Progress"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      out.println(<span class="string">"Sub is not In Progress"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetAnnotation</span><span class="params">(PrintStream out)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException, NoSuchMethodException </span>&#123;</span><br><span class="line">    Class c = AnnotationTester.class;</span><br><span class="line">    AnnotatedElement element = c.getMethod(<span class="string">"calculateInterest"</span>,<span class="comment">//calculateInterest(float,float)</span></span><br><span class="line">                                  <span class="keyword">float</span>.class, <span class="keyword">float</span>.class);</span><br><span class="line">    GroupTODO groupTodo = element.getAnnotation(GroupTODO.class);</span><br><span class="line">    String assignedTo = groupTodo.assignedTo();</span><br><span class="line">    out.println(<span class="string">"TODO Item on Annotation Tester is assigned to: '"</span> +</span><br><span class="line">        assignedTo + <span class="string">"'"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printAnnotations</span><span class="params">(AnnotatedElement e, PrintStream out)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    out.printf(<span class="string">"Printing annotations for '%s'%n%n"</span>, e.toString());</span><br><span class="line">    Annotation[] annotations = e.getAnnotations();</span><br><span class="line">    <span class="keyword">for</span> (Annotation a : annotations) &#123;</span><br><span class="line">      out.printf(<span class="string">"    * Annotation '%s' found%n"</span>,</span><br><span class="line">        a.annotationType().getName());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      ReflectionTester tester = <span class="keyword">new</span> ReflectionTester();</span><br><span class="line">      tester.testAnnotationPresent(System.out);</span><br><span class="line">      tester.testInheritedAnnotation(System.out);</span><br><span class="line">      tester.testGetAnnotation(System.out);</span><br><span class="line">      Class c = AnnotationTester.class;</span><br><span class="line">      AnnotatedElement element = c.getMethod(<span class="string">"calculateInterest"</span>,</span><br><span class="line">                                    <span class="keyword">float</span>.class, <span class="keyword">float</span>.class);</span><br><span class="line">      tester.printAnnotations(element, System.out);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、for-in"><a href="#6、for-in" class="headerlink" title="6、for/in"></a>6、for/in</h3><p>for/in 循环办不到的事情：<br>（1）遍历同时获取 index<br>（2）集合逗号拼接时去掉最后一个<br>（3）遍历的同时删除元素   <!-- XXXCount变更 --></p>
+<h3 id="7、静态-import"><a href="#7、静态-import" class="headerlink" title="7、静态 import"></a>7、静态 import</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.err;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.out;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintStream;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticImporter</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeError</span><span class="params">(PrintStream err, String msg)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// Note that err in the parameter list overshadows the imported err</span></span><br><span class="line">    err.println(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &lt; <span class="number">2</span>) &#123;</span><br><span class="line">      err.println(<span class="string">"Incorrect usage: java com.oreilly.tiger.ch08 [arg1] [arg2]"</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    out.println(<span class="string">"Good morning, "</span> + args[<span class="number">0</span>]);</span><br><span class="line">    out.println(<span class="string">"Have a "</span> + args[<span class="number">1</span>] + <span class="string">" day!"</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      writeError(System.out, <span class="string">"Error occurred."</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8、格式化"><a href="#8、格式化" class="headerlink" title="8、格式化"></a>8、格式化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * java.text.DateFormat</span></span><br><span class="line"><span class="comment"> * java.text.SimpleDateFormat</span></span><br><span class="line"><span class="comment"> * java.text.MessageFormat</span></span><br><span class="line"><span class="comment"> * java.text.NumberFormat</span></span><br><span class="line"><span class="comment"> * java.text.ChoiceFormat</span></span><br><span class="line"><span class="comment"> * java.text.DecimalFormat</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FormatTester</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printf</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//printf</span></span><br><span class="line">        String filename = <span class="string">"this is a file"</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            File file = <span class="keyword">new</span> File(filename);</span><br><span class="line">            FileReader fileReader = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">            BufferedReader reader = <span class="keyword">new</span> BufferedReader(fileReader);</span><br><span class="line">            String line;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> ((line = reader.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                System.out.printf(<span class="string">"Line %d: %s%n"</span>, i++, line);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            System.err.printf(<span class="string">"Unable to open file named '%s': %s"</span>,</span><br><span class="line">                    filename, e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">stringFormat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Format a string containing a date.</span></span><br><span class="line">        Calendar c = <span class="keyword">new</span> GregorianCalendar(<span class="number">1995</span>, MAY, <span class="number">23</span>);</span><br><span class="line">        String s = String.format(<span class="string">"Duke's Birthday: %1$tm %1$te,%1$tY"</span>, c);</span><br><span class="line">        <span class="comment">// -&gt; s == "Duke's Birthday: May 23, 1995"</span></span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">formatter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="comment">// Send all output to the Appendable object sb</span></span><br><span class="line">        Formatter formatter = <span class="keyword">new</span> Formatter(sb, Locale.US);</span><br><span class="line">        <span class="comment">// Explicit argument indices may be used to re-order output.</span></span><br><span class="line">        formatter.format(<span class="string">"%4$2s %3$2s %2$2s %1$2s"</span>, <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>);</span><br><span class="line">        <span class="comment">// -&gt; " d  c  b  a"</span></span><br><span class="line">        <span class="comment">// Optional locale as the first argument can be used to get</span></span><br><span class="line">        <span class="comment">// locale-specific formatting of numbers.  The precision and width can be</span></span><br><span class="line">        <span class="comment">// given to round and align the value.</span></span><br><span class="line">        formatter.format(Locale.FRANCE, <span class="string">"e = %+10.4f"</span>, Math.E);</span><br><span class="line">        <span class="comment">// -&gt; "e =    +2,7183"</span></span><br><span class="line">        <span class="comment">// The '(' numeric flag may be used to format negative numbers with</span></span><br><span class="line">        <span class="comment">// parentheses rather than a minus sign.  Group separators are</span></span><br><span class="line">        <span class="comment">// automatically inserted.</span></span><br><span class="line">        formatter.format(<span class="string">"Amount gained or lost since last statement: $ %(,.2f"</span>,</span><br><span class="line">                <span class="number">6217.58</span>);</span><br><span class="line">        <span class="comment">// -&gt; "Amount gained or lost since last statement: $ (6,217.58)"</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">messageFormat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String msg = <span class="string">"欢迎光临，当前（&#123;0&#125;）等待的业务受理的顾客有&#123;1&#125;位，请排号办理业务！"</span>;</span><br><span class="line">        MessageFormat mf = <span class="keyword">new</span> MessageFormat(msg);</span><br><span class="line">        String fmsg = mf.format(<span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> Date(), <span class="number">35</span>&#125;);</span><br><span class="line">        System.out.println(fmsg);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">///use it carefully, beause thread-security</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dateFormat</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String str = <span class="string">"2010-1-10 17:39:21"</span>;</span><br><span class="line">        SimpleDateFormat format = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyyMMddHHmmss"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(format.format(format.parse(str)));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ParseException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        formatter();</span><br><span class="line">        stringFormat();</span><br><span class="line">        messageFormat();</span><br><span class="line">        dateFormat();</span><br><span class="line">        printf();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、threading"><a href="#9、threading" class="headerlink" title="9、threading"></a>9、threading</h3><h4 id="uncaught-exception"><a href="#uncaught-exception" class="headerlink" title="uncaught exception"></a>uncaught exception</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BubbleSortThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span>[] numbers;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BubbleSortThread</span><span class="params">(<span class="keyword">int</span>[] numbers)</span> </span>&#123;</span><br><span class="line">    setName(<span class="string">"Simple Thread"</span>);</span><br><span class="line">    setUncaughtExceptionHandler(</span><br><span class="line">      <span class="keyword">new</span> SimpleThreadExceptionHandler());</span><br><span class="line">    <span class="keyword">this</span>.numbers = numbers;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//一次冒泡</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> index = numbers.length;</span><br><span class="line">    <span class="keyword">boolean</span> finished = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (!finished) &#123;</span><br><span class="line">      index--;</span><br><span class="line">      finished = <span class="keyword">true</span>;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;index; i++) &#123;</span><br><span class="line">        <span class="comment">// Create error condition</span></span><br><span class="line">        <span class="keyword">if</span> (numbers[i+<span class="number">1</span>] &lt; <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</span><br><span class="line">            <span class="string">"Cannot pass negative numbers into this thread!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (numbers[i] &gt; numbers[i+<span class="number">1</span>]) &#123;</span><br><span class="line">          <span class="comment">// swap</span></span><br><span class="line">          <span class="keyword">int</span> temp = numbers[i];</span><br><span class="line">          numbers[i] = numbers[i+<span class="number">1</span>];</span><br><span class="line">          numbers[i+<span class="number">1</span>] = temp;</span><br><span class="line">          finished = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleThreadExceptionHandler</span> <span class="keyword">implements</span></span></span><br><span class="line"><span class="class">    <span class="title">Thread</span>.<span class="title">UncaughtExceptionHandler</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;</span><br><span class="line">    System.err.printf(<span class="string">"%s: %s at line %d of %s%n"</span>,</span><br><span class="line">        t.getName(),</span><br><span class="line">        e.toString(),</span><br><span class="line">        e.getStackTrace()[<span class="number">0</span>].getLineNumber(),</span><br><span class="line">        e.getStackTrace()[<span class="number">0</span>].getFileName());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="blocking-queue"><a href="#blocking-queue" class="headerlink" title="blocking queue"></a>blocking queue</h4><blockquote>
+<p>阻塞队列</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BlockingQueue q;<span class="comment">//阻塞队列</span></span><br><span class="line">  <span class="keyword">private</span> PrintStream out;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Producer</span><span class="params">(BlockingQueue q, PrintStream out)</span> </span>&#123;</span><br><span class="line">    setName(<span class="string">"Producer"</span>);</span><br><span class="line">    <span class="keyword">this</span>.q = q;</span><br><span class="line">    <span class="keyword">this</span>.out = out;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        q.put(produce());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">      out.printf(<span class="string">"%s interrupted: %s"</span>, getName(), e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> String <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">double</span> r = Math.random();</span><br><span class="line">      <span class="comment">// Only goes forward 1/10 of the time</span></span><br><span class="line">      <span class="keyword">if</span> ((r*<span class="number">100</span>) &lt; <span class="number">10</span>) &#123;</span><br><span class="line">        String s = String.format(<span class="string">"Inserted at %tc"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a><strong><em>线程池</em></strong></h4><blockquote>
+<p>ThreadExecutorPool</p>
+</blockquote>
+<p>著名的 JUC 类库。</p>
+<ul>
+<li>每次提交任务时，如果线程数还没达到 coreSize 就创建新线程并绑定该任务。 所以第 coreSize 次提交任务后线程总数必达到 coreSize，不会重用之前的空闲线程。</li>
+<li>线程数达到 coreSize 后，新增的任务就放到工作队列里，而线程池里的线程则努力的使用 take() 从工作队列里拉活来干。</li>
+<li>如果队列是个有界队列，又如果线程池里的线程不能及时将任务取走，工作队列可能会满掉，插入任务就会失败，此时线程池就会紧急的再创建新的临时线程来补救。</li>
+<li>临时线程使用 poll(keepAliveTime，timeUnit) 来从工作队列拉活，如果时候到了仍然两手空空没拉到活，表明它太闲了，就会被解雇掉。</li>
+<li>如果 core 线程数＋临时线程数 &gt;maxSize，则不能再创建新的临时线程了，转头执行 RejectExecutionHanlder。默认的 AbortPolicy 抛 RejectedExecutionException 异常，其他选择包括静默放弃当前任务 (Discard)，放弃工作队列里最老的任务 (DisacardOldest)，或由主线程来直接执行 (CallerRuns)，或你自己发挥想象力写的一个。</li>
+</ul>
+<h3 id="10、其他"><a href="#10、其他" class="headerlink" title="10、其他"></a>10、其他</h3><h4 id="Arrays"><a href="#Arrays" class="headerlink" title="Arrays"></a>Arrays</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Arrays.sort(myArray)</span><br><span class="line">Arrays.toString(myArray)</span><br><span class="line">Arrays.binarySearch(myArray, <span class="number">98</span>)</span><br><span class="line">Arrays.deepToString(ticTacToe)</span><br><span class="line">Arrays.deepEquals(ticTacToe, ticTacToe3)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><p>避开集合的 add/remove 操作，使用 offer、poll 操作（不抛异常）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Queue q = <span class="keyword">new</span> LinkedList();</span><br></pre></td></tr></table></figure>
+
+<p>采用它来实现queue</p>
+<h4 id="Override-返回类型"><a href="#Override-返回类型" class="headerlink" title="Override 返回类型"></a>Override 返回类型</h4><p>支持协变返回</p>
+<h4 id="单线程-StringBuilder"><a href="#单线程-StringBuilder" class="headerlink" title="单线程 StringBuilder"></a>单线程 StringBuilder</h4><p>线程不安全，在单线程下替换 string buffer 提高性能</p>
+<h4 id="java-lang-instrument"><a href="#java-lang-instrument" class="headerlink" title="java.lang.instrument"></a>java.lang.instrument</h4><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html" target="_blank" rel="noopener">New Features and Enhancements J2SE 5.0</a></li>
+</ul>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特性列表"><span class="nav-number">2.</span> <span class="nav-text">特性列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型"><span class="nav-number">2.1.</span> <span class="nav-text">泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通配符类型：避免-unchecked-警告，问号表示任何类型都可以接受"><span class="nav-number">2.1.1.</span> <span class="nav-text">通配符类型：避免 unchecked 警告，问号表示任何类型都可以接受</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制类型"><span class="nav-number">2.1.2.</span> <span class="nav-text">限制类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#个人理解"><span class="nav-number">2.1.3.</span> <span class="nav-text">个人理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#反射绕过编译器泛型检查"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">反射绕过编译器泛型检查</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、枚举"><span class="nav-number">2.2.</span> <span class="nav-text">2、枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EnumMap"><span class="nav-number">2.2.1.</span> <span class="nav-text">EnumMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#switch-枚举"><span class="nav-number">2.2.2.</span> <span class="nav-text">switch 枚举</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、Autoboxing-与-Unboxing"><span class="nav-number">2.3.</span> <span class="nav-text">3、Autoboxing 与 Unboxing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、vararg-变长参数"><span class="nav-number">2.4.</span> <span class="nav-text">4、vararg 变长参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、annotation-注解与反射相结合"><span class="nav-number">2.5.</span> <span class="nav-text">5、annotation 注解与反射相结合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定Target"><span class="nav-number">2.5.1.</span> <span class="nav-text">指定Target</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Target类型"><span class="nav-number">2.5.2.</span> <span class="nav-text">Target类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rentation-表示-annotation-是否保留在编译过的-class-文件中还是在运行时可读。"><span class="nav-number">2.5.3.</span> <span class="nav-text">rentation 表示 annotation 是否保留在编译过的 class 文件中还是在运行时可读。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过反射获取元信息"><span class="nav-number">2.5.4.</span> <span class="nav-text">通过反射获取元信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、for-in"><span class="nav-number">2.6.</span> <span class="nav-text">6、for/in</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、静态-import"><span class="nav-number">2.7.</span> <span class="nav-text">7、静态 import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、格式化"><span class="nav-number">2.8.</span> <span class="nav-text">8、格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、threading"><span class="nav-number">2.9.</span> <span class="nav-text">9、threading</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uncaught-exception"><span class="nav-number">2.9.1.</span> <span class="nav-text">uncaught exception</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blocking-queue"><span class="nav-number">2.9.2.</span> <span class="nav-text">blocking queue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池"><span class="nav-number">2.9.3.</span> <span class="nav-text">线程池</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10、其他"><span class="nav-number">2.10.</span> <span class="nav-text">10、其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arrays"><span class="nav-number">2.10.1.</span> <span class="nav-text">Arrays</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Queue"><span class="nav-number">2.10.2.</span> <span class="nav-text">Queue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Override-返回类型"><span class="nav-number">2.10.3.</span> <span class="nav-text">Override 返回类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单线程-StringBuilder"><span class="nav-number">2.10.4.</span> <span class="nav-text">单线程 StringBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java-lang-instrument"><span class="nav-number">2.10.5.</span> <span class="nav-text">java.lang.instrument</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="StampedLock分析 原文地址本文首发于一世流云的专栏：https:&#x2F;&#x2F;segmentfault.com&#x2F;blog…  一、StampedLock 类简介StampedLock 类，在 JDK1.8 时引入，是对读写锁 ReentrantReadWriteLock 的增强，该类提供了一些功能，优化了读锁、写锁的访问，同时使读写锁之间可以互相转换，更细粒度控制并发。 首先明确下，该类的设计初衷">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;java_updates&#x2F;simpread-Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%BF%9B%E9%98%B6%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%20J.U.C%20%E4%B9%8B%20locks%20%E6%A1%86%E6%9E%B6%EF%BC%9AStampedLock%20-%20%E9%80%8F%E5%BD%BB%E7%90%86%E8%A7%A3%20Java%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%20-%20SegmentFault%20%E6%80%9D%E5%90%A6.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="StampedLock分析 原文地址本文首发于一世流云的专栏：https:&#x2F;&#x2F;segmentfault.com&#x2F;blog…  一、StampedLock 类简介StampedLock 类，在 JDK1.8 时引入，是对读写锁 ReentrantReadWriteLock 的增强，该类提供了一些功能，优化了读锁、写锁的访问，同时使读写锁之间可以互相转换，更细粒度控制并发。 首先明确下，该类的设计初衷">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuzV?w=993&amp;h=442">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuzX?w=934&amp;h=330">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuz4?w=810&amp;h=426">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAn?w=639&amp;h=142">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAp?w=582&amp;h=105">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAw?w=970&amp;h=523">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAz?w=1202&amp;h=244">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAI?w=145&amp;h=201">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAX?w=722&amp;h=714">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAZ?w=1129&amp;h=286">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuBF?w=1233&amp;h=315">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuIU?w=621&amp;h=332">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuB3?w=1042&amp;h=254">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuIT?w=685&amp;h=352">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuCj?w=1063&amp;h=673">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuII?w=643&amp;h=350">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuHf?w=1304&amp;h=69">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuIB?w=760&amp;h=554">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuHn?w=888&amp;h=489">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuIv?w=696&amp;h=550">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuAz?w=1202&amp;h=244">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuH2?w=903&amp;h=610">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuIg?w=931&amp;h=549">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuI3?w=967&amp;h=545">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuI8?w=946&amp;h=430">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJr?w=946&amp;h=430">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJv?w=1230&amp;h=248">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJw?w=1129&amp;h=417">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJA?w=946&amp;h=430">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJB?w=1026&amp;h=668">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJC?w=1220&amp;h=493">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJK?w=777&amp;h=459">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJQ?w=815&amp;h=886">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJT?w=798&amp;h=291">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJY?w=1143&amp;h=432">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJw?w=1129&amp;h=417">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuJ2?w=791&amp;h=308">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKh?w=882&amp;h=987">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKk?w=506&amp;h=291">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKu?w=487&amp;h=288">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKP?w=215&amp;h=258">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKZ?w=278&amp;h=82">
+<meta property="og:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuKX?w=1406&amp;h=1828">
+<meta property="og:updated_time" content="2019-11-13T10:19:48.362Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;segmentfault.com&#x2F;img&#x2F;bVbeuzV?w=993&amp;h=442">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/java_updates/simpread-Java 多线程进阶（十一）—— J.U.C 之 locks 框架：StampedLock - 透彻理解 Java 并发编程 - SegmentFault 思否.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="StampedLock分析"><a href="#StampedLock分析" class="headerlink" title="StampedLock分析"></a>StampedLock分析</h1><blockquote>
+<p><a href="https://segmentfault.com/a/1190000015808032?utm_source=tag-newest" target="_blank" rel="noopener">原文地址</a><br>本文首发于一世流云的专栏：<a href="https://segmentfault.com/blog/ressmix_multithread" target="_blank" rel="noopener">https://segmentfault.com/blog…</a></p>
+</blockquote>
+<h2 id="一、StampedLock-类简介"><a href="#一、StampedLock-类简介" class="headerlink" title="一、StampedLock 类简介"></a>一、StampedLock 类简介</h2><p><code>StampedLock</code> 类，在 JDK1.8 时引入，是对读写锁 <code>ReentrantReadWriteLock</code> 的增强，该类提供了一些功能，优化了读锁、写锁的访问，同时使读写锁之间可以互相转换，更细粒度控制并发。</p>
+<p><strong>首先明确下，该类的设计初衷是作为一个内部工具类，用于辅助开发其它线程安全组件，用得好，该类可以提升系统性能，用不好，容易产生死锁和其它莫名其妙的问题</strong>。</p>
+<h3 id="1-1-StampedLock-的引入"><a href="#1-1-StampedLock-的引入" class="headerlink" title="1.1 StampedLock 的引入"></a>1.1 StampedLock 的引入</h3><blockquote>
+<p>为什么有了 ReentrantReadWriteLock，还要引入 StampedLock？</p>
+</blockquote>
+<p>ReentrantReadWriteLock 使得多个读线程同时持有读锁（只要写锁未被占用），而写锁是独占的。</p>
+<p>但是，读写锁如果使用不当，很容易产生 “饥饿” 问题：</p>
+<p>比如在读线程非常多，写线程很少的情况下，很容易导致写线程 “饥饿”，虽然使用“公平” 策略可以一定程度上缓解这个问题，但是 “公平” 策略是以牺牲系统吞吐量为代价的。（在 <a href="https://segmentfault.com/a/1190000015562293" target="_blank" rel="noopener">ReentrantLock 类</a>的介绍章节中，介绍过这种情况）</p>
+<h3 id="1-2-StampedLock-的特点"><a href="#1-2-StampedLock-的特点" class="headerlink" title="1.2 StampedLock 的特点"></a>1.2 StampedLock 的特点</h3><p><code>StampedLock</code> 的主要特点概括一下，有以下几点：</p>
+<ol>
+<li>所有获取锁的方法，都返回一个邮戳（Stamp），<code>Stamp</code> 为 0 表示获取失败，其余都表示成功；</li>
+<li>所有释放锁的方法，都需要一个邮戳（Stamp），这个 <code>Stamp</code> 必须是和成功获取锁时得到的 Stamp 一致；</li>
+<li>StampedLock 是不可重入的；（如果一个线程已经持有了写锁，再去获取写锁的话就会造成死锁）</li>
+<li>StampedLock 有三种访问模式：<ul>
+<li>①Reading（读模式）：功能和 <code>ReentrantReadWriteLock</code> 的读锁类似</li>
+<li>②Writing（写模式）：功能和 <code>ReentrantReadWriteLock</code> 的写锁类似</li>
+<li>③Optimistic reading（乐观读模式）：这是一种优化的读模式。</li>
+</ul>
+</li>
+<li>StampedLock 支持读锁和写锁的相互转换<br> 我们知道 <code>ReentrantReadWriteLock</code> 中，当线程获取到写锁后，可以降级为读锁，但是读锁是不能直接升级为写锁的。<br> <code>StampedLock</code> 提供了读锁和写锁相互转换的功能，使得该类支持更多的应用场景。</li>
+<li>无论写锁还是读锁，都不支持 <code>Conditon</code> 等待</li>
+</ol>
+<p>我们知道，在 ReentrantReadWriteLock 中，当读锁被使用时，如果有线程尝试获取写锁，该写线程会阻塞。<br>但是，在 Optimistic reading 中，<strong>即使读线程获取到了读锁，写线程尝试获取写锁也不会阻塞，这相当于对读模式的优化，但是可能会导致数据不一致的问题</strong>。所以，当使用 Optimistic reading 获取到读锁时，必须对获取结果进行校验。</p>
+<h2 id="二、StampedLock-使用示例"><a href="#二、StampedLock-使用示例" class="headerlink" title="二、StampedLock 使用示例"></a>二、StampedLock 使用示例</h2><p>先来看一个 Oracle 官方的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> x, y;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> StampedLock sl = <span class="keyword">new</span> StampedLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">move</span><span class="params">(<span class="keyword">double</span> deltaX, <span class="keyword">double</span> deltaY)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> stamp = sl.writeLock();    <span class="comment">//涉及对共享资源的修改，使用写锁-独占操作</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            x += deltaX;</span><br><span class="line">            y += deltaY;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            sl.unlockWrite(stamp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用乐观读锁访问共享资源</span></span><br><span class="line"><span class="comment">     * 注意：乐观读锁在保证数据一致性上需要拷贝一份要操作的变量到方法栈，并且在操作数据时候可能其他写线程已经修改了数据，</span></span><br><span class="line"><span class="comment">     * 而我们操作的是方法栈里面的数据，也就是一个快照，所以最多返回的不是最新的数据，但是一致性还是得到保障的。</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">distanceFromOrigin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> stamp = sl.tryOptimisticRead();    <span class="comment">// 使用乐观读锁</span></span><br><span class="line">        <span class="keyword">double</span> currentX = x, currentY = y;      <span class="comment">// 拷贝共享资源到本地方法栈中</span></span><br><span class="line">        <span class="keyword">if</span> (!sl.validate(stamp)) &#123;              <span class="comment">// 如果有写锁被占用，可能造成数据不一致，所以要切换到普通读锁模式</span></span><br><span class="line">            stamp = sl.readLock();              <span class="comment">// 乐观锁失效，采用共享读锁</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                currentX = x;</span><br><span class="line">                currentY = y;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                sl.unlockRead(stamp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.sqrt(currentX * currentX + currentY * currentY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">moveIfAtOrigin</span><span class="params">(<span class="keyword">double</span> newX, <span class="keyword">double</span> newY)</span> </span>&#123; <span class="comment">// upgrade</span></span><br><span class="line">        <span class="comment">// Could instead start with optimistic, not read mode</span></span><br><span class="line">        <span class="keyword">long</span> stamp = sl.readLock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (x == <span class="number">0.0</span> &amp;amp;&amp;amp; y == <span class="number">0.0</span>) &#123;</span><br><span class="line">                <span class="keyword">long</span> ws = sl.tryConvertToWriteLock(stamp);  <span class="comment">//读锁转换为写锁</span></span><br><span class="line">                <span class="keyword">if</span> (ws != <span class="number">0L</span>) &#123;</span><br><span class="line">                    stamp = ws;</span><br><span class="line">                    x = newX;</span><br><span class="line">                    y = newY;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    sl.unlockRead(stamp);</span><br><span class="line">                    stamp = sl.writeLock();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            sl.unlock(stamp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，上述示例最特殊的其实是 <strong>distanceFromOrigin</strong> 方法，这个方法中使用了 “Optimistic reading” 乐观读锁，使得读写可以并发执行，但是 “Optimistic reading” 的使用必须遵循以下模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// static StamedLock lock=new StamedLock();</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> stamp = lock.tryOptimisticRead();  <span class="comment">// 非阻塞获取版本信息</span></span><br><span class="line">copyVaraibale2ThreadMemory();           <span class="comment">// 拷贝变量到线程本地堆栈</span></span><br><span class="line"><span class="keyword">if</span>(!lock.validate(stamp))&#123;              <span class="comment">// 校验</span></span><br><span class="line">  <span class="keyword">long</span> stamp = lock.readLock();         <span class="comment">// 获取读锁</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    copyVaraibale2ThreadMemory();       <span class="comment">// 拷贝变量到线程本地堆栈</span></span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    lock.unlock(stamp);                 <span class="comment">// 释放悲观锁</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">useThreadMemoryVarables();              <span class="comment">// 使用线程本地堆栈里面的数据进行操作</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、StampedLock-原理"><a href="#三、StampedLock-原理" class="headerlink" title="三、StampedLock 原理"></a>三、StampedLock 原理</h2><h3 id="3-1-StampedLock-的内部常量"><a href="#3-1-StampedLock-的内部常量" class="headerlink" title="3.1 StampedLock 的内部常量"></a>3.1 StampedLock 的内部常量</h3><p><code>StampedLock</code> 虽然不像其它锁一样定义了内部类来实现 <code>AQS</code> 框架，但是 <code>StampedLock</code> 的基本实现思路还是利用 <code>CLH</code> 队列进行线程的管理，通过同步状态值来表示锁的状态和类型。</p>
+<p><code>StampedLock</code> 内部定义了很多常量，定义这些常量的根本目的还是和 <code>ReentrantReadWriteLock</code> 一样，对同步状态值按位切分，以通过位运算对 <code>State</code> 进行操作：</p>
+<blockquote>
+<p>对于 <code>StampedLock</code> 来说，写锁被占用的标志是第 8 位为 1，读锁使用 0-7 位，正常情况下读锁数目为 1-126，超过 126 时，使用一个名为<code>readerOverflow</code>的 <code>int</code> 整型保存超出数。</p>
+</blockquote>
+<p><img src="https://segmentfault.com/img/bVbeuzV?w=993&h=442" alt=""></p>
+<p>部分常量的比特位表示如下：<br><img src="https://segmentfault.com/img/bVbeuzX?w=934&h=330" alt=""></p>
+<p>另外，StampedLock 相比 ReentrantReadWriteLock，对多核 CPU 进行了优化，可以看到，当 CPU 核数超过 1 时，会有一些自旋操作:<br><img src="https://segmentfault.com/img/bVbeuz4?w=810&h=426" alt=""></p>
+<h3 id="3-2-示例分析"><a href="#3-2-示例分析" class="headerlink" title="3.2 示例分析"></a>3.2 示例分析</h3><blockquote>
+<p>假设现在有三个线程：ThreadA、ThreadB、ThreadC、ThreadD。操作如下：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ThreadA调用writeLock, 获取写锁</span><br><span class="line">ThreadB调用readLock, 获取读锁</span><br><span class="line">ThreadC调用readLock, 获取读锁</span><br><span class="line">ThreadD调用writeLock, 获取写锁</span><br><span class="line">ThreadE调用readLock, 获取读锁</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-StampedLock-对象的创建"><a href="#1-StampedLock-对象的创建" class="headerlink" title="1. StampedLock 对象的创建"></a>1. StampedLock 对象的创建</h3><p>StampedLock 的构造器很简单，构造时设置下同步状态值：<br><img src="https://segmentfault.com/img/bVbeuAn?w=639&h=142" alt=""></p>
+<p>另外，StamedLock 提供了三类视图：<br><img src="https://segmentfault.com/img/bVbeuAp?w=582&h=105" alt=""></p>
+<p>这些视图其实是对 StamedLock 方法的封装，便于习惯了 ReentrantReadWriteLock 的用户使用：<br>例如，<strong>ReadLockView</strong> 其实相当于<code>ReentrantReadWriteLock.readLock()</code>返回的读锁;<br><img src="https://segmentfault.com/img/bVbeuAw?w=970&h=523" alt=""></p>
+<h3 id="2-ThreadA-调用-writeLock-获取写锁"><a href="#2-ThreadA-调用-writeLock-获取写锁" class="headerlink" title="2. ThreadA 调用 writeLock 获取写锁"></a>2. ThreadA 调用 writeLock 获取写锁</h3><p>来看下 <strong>writeLock</strong> 方法：<br><img src="https://segmentfault.com/img/bVbeuAz?w=1202&h=244" alt=""></p>
+<p>StampedLock 中大量运用了位运算，这里<code>(s = state) &amp; ABITS == 0L</code> 表示读锁和写锁都未被使用，这里写锁可以立即获取成功，然后 CAS 操作更新同步状态值 State。</p>
+<p>操作完成后，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuAI?w=145&h=201" alt=""></p>
+<blockquote>
+<p>注意：StampedLock 中，等待队列的结点要比 AQS 中简单些，仅仅三种状态。<br>0：初始状态<br>-1：等待中<br>1：取消</p>
+</blockquote>
+<p>另外，结点的定义中有个<code>cowait</code>字段，该字段指向一个栈，用于保存读线程，这个后续会讲到。<br><img src="https://segmentfault.com/img/bVbeuAX?w=722&h=714" alt=""></p>
+<h3 id="3-ThreadB-调用-readLock-获取读锁"><a href="#3-ThreadB-调用-readLock-获取读锁" class="headerlink" title="3. ThreadB 调用 readLock 获取读锁"></a>3. ThreadB 调用 readLock 获取读锁</h3><p>来看下 <strong>readLock</strong> 方法：<br>由于 ThreadA 此时持有写锁，所以 ThreadB 获取读锁失败，将调用 <strong>acquireRead</strong> 方法，加入等待队列：<br><img src="https://segmentfault.com/img/bVbeuAZ?w=1129&h=286" alt=""></p>
+<p><strong>acquireRead</strong> 方法非常复杂，用到了大量自旋操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 尝试自旋的获取读锁, 获取不到则加入等待队列, 并阻塞线程</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> interruptible true 表示检测中断, 如果线程被中断过, 则最终返回INTERRUPTED</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> deadline      如果非0, 则表示限时获取</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 非0表示获取成功, INTERRUPTED表示中途被中断过</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">acquireRead</span><span class="params">(<span class="keyword">boolean</span> interruptible, <span class="keyword">long</span> deadline)</span> </span>&#123;</span><br><span class="line">    WNode node = <span class="keyword">null</span>, p;   <span class="comment">// node指向入队结点, p指向入队前的队尾结点</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自旋入队操作</span></span><br><span class="line"><span class="comment">     * 如果写锁未被占用, 则立即尝试获取读锁, 获取成功则返回.</span></span><br><span class="line"><span class="comment">     * 如果写锁被占用, 则将当前读线程包装成结点, 并插入等待队列（如果队尾是写结点,直接链接到队尾;否则,链接到队尾读结点的栈中）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> spins = -<span class="number">1</span>; ; ) &#123;</span><br><span class="line">        WNode h;</span><br><span class="line">        <span class="keyword">if</span> ((h = whead) == (p = wtail)) &#123;   <span class="comment">// 如果队列为空或只有头结点, 则会立即尝试获取读锁</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">long</span> m, s, ns; ; ) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((m = (s = state) &amp;amp; ABITS) &lt; RFULL ?     <span class="comment">// 判断写锁是否被占用</span></span><br><span class="line">                    U.compareAndSwapLong(<span class="keyword">this</span>, STATE, s, ns = s + RUNIT) :  <span class="comment">//写锁未占用,且读锁数量未超限, 则更新同步状态</span></span><br><span class="line">                    (m &lt; WBIT &amp;amp;&amp;amp; (ns = tryIncReaderOverflow(s)) != <span class="number">0L</span>))        <span class="comment">//写锁未占用,但读锁数量超限, 超出部分放到readerOverflow字段中</span></span><br><span class="line">                    <span class="keyword">return</span> ns;          <span class="comment">// 获取成功后, 直接返回</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (m &gt;= WBIT) &#123;   <span class="comment">// 写锁被占用,以随机方式探测是否要退出自旋</span></span><br><span class="line">                    <span class="keyword">if</span> (spins &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (LockSupport.nextSecondarySeed() &gt;= <span class="number">0</span>)</span><br><span class="line">                            --spins;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (spins == <span class="number">0</span>) &#123;</span><br><span class="line">                            WNode nh = whead, np = wtail;</span><br><span class="line">                            <span class="keyword">if</span> ((nh == h &amp;amp;&amp;amp; np == p) || (h = nh) != (p = np))</span><br><span class="line">                                <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        spins = SPINS;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p == <span class="keyword">null</span>) &#123;                            <span class="comment">// p == null表示队列为空, 则初始化队列(构造头结点)</span></span><br><span class="line">            WNode hd = <span class="keyword">new</span> WNode(WMODE, <span class="keyword">null</span>);</span><br><span class="line">            <span class="keyword">if</span> (U.compareAndSwapObject(<span class="keyword">this</span>, WHEAD, <span class="keyword">null</span>, hd))</span><br><span class="line">                wtail = hd;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (node == <span class="keyword">null</span>) &#123;                  <span class="comment">// 将当前线程包装成读结点</span></span><br><span class="line">            node = <span class="keyword">new</span> WNode(RMODE, p);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (h == p || p.mode != RMODE) &#123;     <span class="comment">// 如果队列只有一个头结点, 或队尾结点不是读结点, 则直接将结点链接到队尾, 链接完成后退出自旋</span></span><br><span class="line">            <span class="keyword">if</span> (node.prev != p)</span><br><span class="line">                node.prev = p;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (U.compareAndSwapObject(<span class="keyword">this</span>, WTAIL, p, node)) &#123;</span><br><span class="line">                p.next = node;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 队列不为空, 且队尾是读结点, 则将添加当前结点链接到队尾结点的cowait链中（实际上构成一个栈, p是栈顶指针 ）</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!U.compareAndSwapObject(p, WCOWAIT, node.cowait = p.cowait, node)) &#123;    <span class="comment">// CAS操作队尾结点p的cowait字段,实际上就是头插法插入结点</span></span><br><span class="line">            node.cowait = <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (; ; ) &#123;</span><br><span class="line">                WNode pp, c;</span><br><span class="line">                Thread w;</span><br><span class="line">                <span class="comment">// 尝试唤醒头结点的cowait中的第一个元素, 假如是读锁会通过循环释放cowait链</span></span><br><span class="line">                <span class="keyword">if</span> ((h = whead) != <span class="keyword">null</span> &amp;amp;&amp;amp; (c = h.cowait) != <span class="keyword">null</span> &amp;amp;&amp;amp;</span><br><span class="line">                    U.compareAndSwapObject(h, WCOWAIT, c, c.cowait) &amp;amp;&amp;amp;</span><br><span class="line">                    (w = c.thread) != <span class="keyword">null</span>) <span class="comment">// help release</span></span><br><span class="line">                    U.unpark(w);</span><br><span class="line">                <span class="keyword">if</span> (h == (pp = p.prev) || h == p || pp == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">long</span> m, s, ns;</span><br><span class="line">                    <span class="keyword">do</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> ((m = (s = state) &amp;amp; ABITS) &lt; RFULL ?</span><br><span class="line">                            U.compareAndSwapLong(<span class="keyword">this</span>, STATE, s,</span><br><span class="line">                                ns = s + RUNIT) :</span><br><span class="line">                            (m &lt; WBIT &amp;amp;&amp;amp;</span><br><span class="line">                                (ns = tryIncReaderOverflow(s)) != <span class="number">0L</span>))</span><br><span class="line">                            <span class="keyword">return</span> ns;</span><br><span class="line">                    &#125; <span class="keyword">while</span> (m &lt; WBIT);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (whead == h &amp;amp;&amp;amp; p.prev == pp) &#123;</span><br><span class="line">                    <span class="keyword">long</span> time;</span><br><span class="line">                    <span class="keyword">if</span> (pp == <span class="keyword">null</span> || h == p || p.status &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        node = <span class="keyword">null</span>; <span class="comment">// throw away</span></span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (deadline == <span class="number">0L</span>)</span><br><span class="line">                        time = <span class="number">0L</span>;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> ((time = deadline - System.nanoTime()) &lt;= <span class="number">0L</span>)</span><br><span class="line">                        <span class="keyword">return</span> cancelWaiter(node, p, <span class="keyword">false</span>);</span><br><span class="line">                    Thread wt = Thread.currentThread();</span><br><span class="line">                    U.putObject(wt, PARKBLOCKER, <span class="keyword">this</span>);</span><br><span class="line">                    node.thread = wt;</span><br><span class="line">                    <span class="keyword">if</span> ((h != pp || (state &amp;amp; ABITS) == WBIT) &amp;amp;&amp;amp; whead == h &amp;amp;&amp;amp; p.prev == pp) &#123;</span><br><span class="line">                        <span class="comment">// 写锁被占用, 且当前结点不是队首结点, 则阻塞当前线程</span></span><br><span class="line">                        U.park(<span class="keyword">false</span>, time);</span><br><span class="line">                    &#125;</span><br><span class="line">                    node.thread = <span class="keyword">null</span>;</span><br><span class="line">                    U.putObject(wt, PARKBLOCKER, <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (interruptible &amp;amp;&amp;amp; Thread.interrupted())</span><br><span class="line">                        <span class="keyword">return</span> cancelWaiter(node, p, <span class="keyword">true</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> spins = -<span class="number">1</span>; ; ) &#123;</span><br><span class="line">        WNode h, np, pp;</span><br><span class="line">        <span class="keyword">int</span> ps;</span><br><span class="line">        <span class="keyword">if</span> ((h = whead) == p) &#123;     <span class="comment">// 如果当前线程是队首结点, 则尝试获取读锁</span></span><br><span class="line">            <span class="keyword">if</span> (spins &lt; <span class="number">0</span>)</span><br><span class="line">                spins = HEAD_SPINS;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (spins &lt; MAX_HEAD_SPINS)</span><br><span class="line">                spins &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = spins; ; ) &#123; <span class="comment">// spin at head</span></span><br><span class="line">                <span class="keyword">long</span> m, s, ns;</span><br><span class="line">                <span class="keyword">if</span> ((m = (s = state) &amp;amp; ABITS) &lt; RFULL ?     <span class="comment">// 判断写锁是否被占用</span></span><br><span class="line">                    U.compareAndSwapLong(<span class="keyword">this</span>, STATE, s, ns = s + RUNIT) :  <span class="comment">//写锁未占用,且读锁数量未超限, 则更新同步状态</span></span><br><span class="line">                    (m &lt; WBIT &amp;amp;&amp;amp; (ns = tryIncReaderOverflow(s)) != <span class="number">0L</span>)) &#123;      <span class="comment">//写锁未占用,但读锁数量超限, 超出部分放到readerOverflow字段中</span></span><br><span class="line">                    <span class="comment">// 获取读锁成功, 释放cowait链中的所有读结点</span></span><br><span class="line">                    WNode c;</span><br><span class="line">                    Thread w;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 释放头结点, 当前队首结点成为新的头结点</span></span><br><span class="line">                    whead = node;</span><br><span class="line">                    node.prev = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 从栈顶开始(node.cowait指向的结点), 依次唤醒所有读结点, 最终node.cowait==null, node成为新的头结点</span></span><br><span class="line">                    <span class="keyword">while</span> ((c = node.cowait) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (U.compareAndSwapObject(node, WCOWAIT, c, c.cowait) &amp;amp;&amp;amp; (w = c.thread) != <span class="keyword">null</span>)</span><br><span class="line">                            U.unpark(w);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> ns;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (m &gt;= WBIT &amp;amp;&amp;amp;</span><br><span class="line">                    LockSupport.nextSecondarySeed() &gt;= <span class="number">0</span> &amp;amp;&amp;amp; --k &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (h != <span class="keyword">null</span>) &#123;     <span class="comment">// 如果头结点存在cowait链, 则唤醒链中所有读线程</span></span><br><span class="line">            WNode c;</span><br><span class="line">            Thread w;</span><br><span class="line">            <span class="keyword">while</span> ((c = h.cowait) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (U.compareAndSwapObject(h, WCOWAIT, c, c.cowait) &amp;amp;&amp;amp;</span><br><span class="line">                    (w = c.thread) != <span class="keyword">null</span>)</span><br><span class="line">                    U.unpark(w);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (whead == h) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((np = node.prev) != p) &#123;</span><br><span class="line">                <span class="keyword">if</span> (np != <span class="keyword">null</span>)</span><br><span class="line">                    (p = np).next = node;   <span class="comment">// stale</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((ps = p.status) == <span class="number">0</span>)        <span class="comment">// 将前驱结点的等待状态置为WAITING, 表示之后将唤醒当前结点</span></span><br><span class="line">                U.compareAndSwapInt(p, WSTATUS, <span class="number">0</span>, WAITING);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (ps == CANCELLED) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((pp = p.prev) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    node.prev = pp;</span><br><span class="line">                    pp.next = node;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;        <span class="comment">// 阻塞当前读线程</span></span><br><span class="line">                <span class="keyword">long</span> time;</span><br><span class="line">                <span class="keyword">if</span> (deadline == <span class="number">0L</span>)</span><br><span class="line">                    time = <span class="number">0L</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> ((time = deadline - System.nanoTime()) &lt;= <span class="number">0L</span>)   <span class="comment">//限时等待超时, 取消等待</span></span><br><span class="line">                    <span class="keyword">return</span> cancelWaiter(node, node, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">                Thread wt = Thread.currentThread();</span><br><span class="line">                U.putObject(wt, PARKBLOCKER, <span class="keyword">this</span>);</span><br><span class="line">                node.thread = wt;</span><br><span class="line">                <span class="keyword">if</span> (p.status &lt; <span class="number">0</span> &amp;amp;&amp;amp; (p != h || (state &amp;amp; ABITS) == WBIT) &amp;amp;&amp;amp; whead == h &amp;amp;&amp;amp; node.prev == p) &#123;</span><br><span class="line">                    <span class="comment">// 如果前驱的等待状态为WAITING, 且写锁被占用, 则阻塞当前调用线程</span></span><br><span class="line">                    U.park(<span class="keyword">false</span>, time);</span><br><span class="line">                &#125;</span><br><span class="line">                node.thread = <span class="keyword">null</span>;</span><br><span class="line">                U.putObject(wt, PARKBLOCKER, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">if</span> (interruptible &amp;amp;&amp;amp; Thread.interrupted())</span><br><span class="line">                    <span class="keyword">return</span> cancelWaiter(node, node, <span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来分析下这个方法。<br>该方法会首先自旋的尝试获取读锁，获取成功后，就直接返回；否则，会将当前线程包装成一个读结点，插入到等待队列。<br>由于，目前等待队列还是空，所以 ThreadB 会初始化队列，然后将自身包装成一个读结点，插入队尾，然后在下面这个地方跳出自旋：<br><img src="https://segmentfault.com/img/bVbeuBF?w=1233&h=315" alt=""></p>
+<p>此时，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuIU?w=621&h=332" alt=""></p>
+<p>跳出自旋后，ThreadB 会继续向下执行，进入下一个自旋，在下一个自旋中，依然会再次尝试获取读锁，如果这次再获取不到，就会将前驱的等待状态置为 WAITING, 表示我（当前线程）要去睡了（阻塞），到时记得叫醒我：<br><img src="https://segmentfault.com/img/bVbeuB3?w=1042&h=254" alt=""></p>
+<p><img src="https://segmentfault.com/img/bVbeuIT?w=685&h=352" alt=""></p>
+<p>最终, ThreadB 进入阻塞状态:<br><img src="https://segmentfault.com/img/bVbeuCj?w=1063&h=673" alt=""></p>
+<p>最终，等待队列的结构如下：</p>
+<p><img src="https://segmentfault.com/img/bVbeuII?w=643&h=350" alt=""></p>
+<h3 id="4-ThreadC-调用-readLock-获取读锁"><a href="#4-ThreadC-调用-readLock-获取读锁" class="headerlink" title="4. ThreadC 调用 readLock 获取读锁"></a>4. ThreadC 调用 readLock 获取读锁</h3><p>这个过程和 ThreadB 获取读锁一样，区别在于 ThreadC 被包装成结点加入等待队列后，是链接到 ThreadB 结点的栈指针中的。调用完下面这段代码后，ThreadC 会链接到以 Thread B 为栈顶指针的栈中：<br><img src="https://segmentfault.com/img/bVbeuHf?w=1304&h=69" alt=""></p>
+<p><img src="https://segmentfault.com/img/bVbeuIB?w=760&h=554" alt=""></p>
+<blockquote>
+<p>注意：读结点的 cowait 字段其实构成了一个栈，入栈的过程其实是个 “头插法” 插入单链表的过程。比如，再来个 ThreadX 读结点，则 cowait 链表结构为：<code>ThreadB - &gt; ThreadX -&gt; ThreadC</code>。最终唤醒读结点时，将从栈顶开始。</p>
+</blockquote>
+<p>然后会在下一次自旋中，阻塞当前读线程：<br><img src="https://segmentfault.com/img/bVbeuHn?w=888&h=489" alt=""></p>
+<p>最终，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuIv?w=696&h=550" alt=""></p>
+<p>可以看到，此时 ThreadC 结点并没有把它的前驱的等待状态置为 - 1，因为 ThreadC 是链接到栈中的，当写锁释放的时候，会从栈底元素开始，唤醒栈中所有读结点。</p>
+<h3 id="5-ThreadD-调用-writeLock-获取写锁"><a href="#5-ThreadD-调用-writeLock-获取写锁" class="headerlink" title="5. ThreadD 调用 writeLock 获取写锁"></a>5. ThreadD 调用 writeLock 获取写锁</h3><p>ThreadD 调用 <strong>writeLock</strong> 方法获取写锁失败后（ThreadA 依然占用着写锁），会调用 <strong>acquireWrite</strong> 方法，该方法整体逻辑和 <strong>acquireRead</strong> 差不多，首先自旋的尝试获取写锁，获取成功后，就直接返回；否则，会将当前线程包装成一个写结点，插入到等待队列。</p>
+<p><img src="https://segmentfault.com/img/bVbeuAz?w=1202&h=244" alt=""></p>
+<p><em>acquireWrite 源码：</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 尝试自旋的获取写锁, 获取不到则阻塞线程</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> interruptible true 表示检测中断, 如果线程被中断过, 则最终返回INTERRUPTED</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> deadline      如果非0, 则表示限时获取</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 非0表示获取成功, INTERRUPTED表示中途被中断过</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">acquireWrite</span><span class="params">(<span class="keyword">boolean</span> interruptible, <span class="keyword">long</span> deadline)</span> </span>&#123;</span><br><span class="line">    WNode node = <span class="keyword">null</span>, p;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自旋入队操作</span></span><br><span class="line"><span class="comment">     * 如果没有任何锁被占用, 则立即尝试获取写锁, 获取成功则返回.</span></span><br><span class="line"><span class="comment">     * 如果存在锁被使用, 则将当前线程包装成独占结点, 并插入等待队列尾部</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> spins = -<span class="number">1</span>; ; ) &#123;</span><br><span class="line">        <span class="keyword">long</span> m, s, ns;</span><br><span class="line">        <span class="keyword">if</span> ((m = (s = state) &amp;amp; ABITS) == <span class="number">0L</span>) &#123;      <span class="comment">// 没有任何锁被占用</span></span><br><span class="line">            <span class="keyword">if</span> (U.compareAndSwapLong(<span class="keyword">this</span>, STATE, s, ns = s + WBIT))    <span class="comment">// 尝试立即获取写锁</span></span><br><span class="line">                <span class="keyword">return</span> ns;                                                 <span class="comment">// 获取成功直接返回</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (spins &lt; <span class="number">0</span>)</span><br><span class="line">            spins = (m == WBIT &amp;amp;&amp;amp; wtail == whead) ? SPINS : <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (spins &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (LockSupport.nextSecondarySeed() &gt;= <span class="number">0</span>)</span><br><span class="line">                --spins;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((p = wtail) == <span class="keyword">null</span>) &#123;       <span class="comment">// 队列为空, 则初始化队列, 构造队列的头结点</span></span><br><span class="line">            WNode hd = <span class="keyword">new</span> WNode(WMODE, <span class="keyword">null</span>);</span><br><span class="line">            <span class="keyword">if</span> (U.compareAndSwapObject(<span class="keyword">this</span>, WHEAD, <span class="keyword">null</span>, hd))</span><br><span class="line">                wtail = hd;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (node == <span class="keyword">null</span>)               <span class="comment">// 将当前线程包装成写结点</span></span><br><span class="line">            node = <span class="keyword">new</span> WNode(WMODE, p);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (node.prev != p)</span><br><span class="line">            node.prev = p;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (U.compareAndSwapObject(<span class="keyword">this</span>, WTAIL, p, node)) &#123;    <span class="comment">// 链接结点至队尾</span></span><br><span class="line">            p.next = node;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> spins = -<span class="number">1</span>; ; ) &#123;</span><br><span class="line">        WNode h, np, pp;</span><br><span class="line">        <span class="keyword">int</span> ps;</span><br><span class="line">        <span class="keyword">if</span> ((h = whead) == p) &#123;     <span class="comment">// 如果当前结点是队首结点, 则立即尝试获取写锁</span></span><br><span class="line">            <span class="keyword">if</span> (spins &lt; <span class="number">0</span>)</span><br><span class="line">                spins = HEAD_SPINS;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (spins &lt; MAX_HEAD_SPINS)</span><br><span class="line">                spins &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = spins; ; ) &#123; <span class="comment">// spin at head</span></span><br><span class="line">                <span class="keyword">long</span> s, ns;</span><br><span class="line">                <span class="keyword">if</span> (((s = state) &amp;amp; ABITS) == <span class="number">0L</span>) &#123;      <span class="comment">// 写锁未被占用</span></span><br><span class="line">                    <span class="keyword">if</span> (U.compareAndSwapLong(<span class="keyword">this</span>, STATE, s,</span><br><span class="line">                        ns = s + WBIT)) &#123;               <span class="comment">// CAS修改State: 占用写锁</span></span><br><span class="line">                        <span class="comment">// 将队首结点从队列移除</span></span><br><span class="line">                        whead = node;</span><br><span class="line">                        node.prev = <span class="keyword">null</span>;</span><br><span class="line">                        <span class="keyword">return</span> ns;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (LockSupport.nextSecondarySeed() &gt;= <span class="number">0</span> &amp;amp;&amp;amp;</span><br><span class="line">                    --k &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (h != <span class="keyword">null</span>) &#123;  <span class="comment">// 唤醒头结点的栈中的所有读线程</span></span><br><span class="line">            WNode c;</span><br><span class="line">            Thread w;</span><br><span class="line">            <span class="keyword">while</span> ((c = h.cowait) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (U.compareAndSwapObject(h, WCOWAIT, c, c.cowait) &amp;amp;&amp;amp; (w = c.thread) != <span class="keyword">null</span>)</span><br><span class="line">                    U.unpark(w);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (whead == h) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((np = node.prev) != p) &#123;</span><br><span class="line">                <span class="keyword">if</span> (np != <span class="keyword">null</span>)</span><br><span class="line">                    (p = np).next = node;   <span class="comment">// stale</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((ps = p.status) == <span class="number">0</span>)        <span class="comment">// 将当前结点的前驱置为WAITING, 表示当前结点会进入阻塞, 前驱将来需要唤醒我</span></span><br><span class="line">                U.compareAndSwapInt(p, WSTATUS, <span class="number">0</span>, WAITING);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (ps == CANCELLED) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((pp = p.prev) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    node.prev = pp;</span><br><span class="line">                    pp.next = node;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;        <span class="comment">// 阻塞当前调用线程</span></span><br><span class="line">                <span class="keyword">long</span> time;  <span class="comment">// 0 argument to park means no timeout</span></span><br><span class="line">                <span class="keyword">if</span> (deadline == <span class="number">0L</span>)</span><br><span class="line">                    time = <span class="number">0L</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> ((time = deadline - System.nanoTime()) &lt;= <span class="number">0L</span>)</span><br><span class="line">                    <span class="keyword">return</span> cancelWaiter(node, node, <span class="keyword">false</span>);</span><br><span class="line">                Thread wt = Thread.currentThread();</span><br><span class="line">                U.putObject(wt, PARKBLOCKER, <span class="keyword">this</span>);</span><br><span class="line">                node.thread = wt;</span><br><span class="line">                <span class="keyword">if</span> (p.status &lt; <span class="number">0</span> &amp;amp;&amp;amp; (p != h || (state &amp;amp; ABITS) != <span class="number">0L</span>) &amp;amp;&amp;amp; whead == h &amp;amp;&amp;amp; node.prev == p)</span><br><span class="line">                    U.park(<span class="keyword">false</span>, time);    <span class="comment">// emulate LockSupport.park</span></span><br><span class="line">                node.thread = <span class="keyword">null</span>;</span><br><span class="line">                U.putObject(wt, PARKBLOCKER, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">if</span> (interruptible &amp;amp;&amp;amp; Thread.interrupted())</span><br><span class="line">                    <span class="keyword">return</span> cancelWaiter(node, node, <span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>acquireWrite</strong> 中的下面这个自旋操作，用于将线程包装成写结点，插入队尾：<br><img src="https://segmentfault.com/img/bVbeuH2?w=903&h=610" alt=""></p>
+<p>插入完成后，队列结构如下：<br><img src="https://segmentfault.com/img/bVbeuIg?w=931&h=549" alt=""></p>
+<p>然后，进入下一个自旋，并在下一个自旋中阻塞 ThreadD，最终队列结构如下：<br><img src="https://segmentfault.com/img/bVbeuI3?w=967&h=545" alt=""></p>
+<h3 id="6-ThreadE-调用-readLock-获取读锁"><a href="#6-ThreadE-调用-readLock-获取读锁" class="headerlink" title="6. ThreadE 调用 readLock 获取读锁"></a>6. ThreadE 调用 readLock 获取读锁</h3><p>同样，由于写锁被 ThreadA 占用着，所以最终会调用 <strong>acquireRead</strong> 方法，在该方法的第一个自旋中，会将 ThreadE 加入等待队列：<br><img src="https://segmentfault.com/img/bVbeuI8?w=946&h=430" alt=""></p>
+<blockquote>
+<p>注意，由于队尾结点是写结点，所以当前读结点会直接链接到队尾；如果队尾是读结点，则会链接到队尾读结点的 cowait 链中。</p>
+</blockquote>
+<p>然后进入第二个自旋，阻塞 ThreadE，最终队列结构如下：<br><img src="https://segmentfault.com/img/bVbeuJr?w=946&h=430" alt=""></p>
+<h3 id="7-ThreadA-调用-unlockWrite-释放写锁"><a href="#7-ThreadA-调用-unlockWrite-释放写锁" class="headerlink" title="7. ThreadA 调用 unlockWrite 释放写锁"></a>7. ThreadA 调用 unlockWrite 释放写锁</h3><p>通过 CAS 操作，修改 State 成功后，会调用 <strong>release</strong> 方法唤醒等待队列的队首结点：<br><img src="https://segmentfault.com/img/bVbeuJv?w=1230&h=248" alt=""></p>
+<p><strong>release</strong> 方法非常简单，先将头结点的等待状态置为 0，表示即将唤醒后继结点，然后立即唤醒队首结点：<br><img src="https://segmentfault.com/img/bVbeuJw?w=1129&h=417" alt=""></p>
+<p>此时，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuJA?w=946&h=430" alt=""></p>
+<h3 id="8-ThreadB-被唤醒后继续向下执行"><a href="#8-ThreadB-被唤醒后继续向下执行" class="headerlink" title="8. ThreadB 被唤醒后继续向下执行"></a>8. ThreadB 被唤醒后继续向下执行</h3><p>ThreadB 被唤醒后，会从原阻塞处继续向下执行，然后开始下一次自旋：<br><img src="https://segmentfault.com/img/bVbeuJB?w=1026&h=668" alt=""></p>
+<p>第二次自旋时，ThreadB 发现写锁未被占用，则成功获取到读锁，然后从栈顶（ThreadB 的 cowait 指针指向的结点）开始唤醒栈中所有线程，<br>最后返回：<br><img src="https://segmentfault.com/img/bVbeuJC?w=1220&h=493" alt=""></p>
+<p>最终，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuJK?w=777&h=459" alt=""></p>
+<h3 id="9-ThreadC-被唤醒后继续向下执行"><a href="#9-ThreadC-被唤醒后继续向下执行" class="headerlink" title="9. ThreadC 被唤醒后继续向下执行"></a>9. ThreadC 被唤醒后继续向下执行</h3><p>ThreadC 被唤醒后，继续执行，并进入下一次自旋，下一次自旋时，会成功获取到读锁。<br><img src="https://segmentfault.com/img/bVbeuJQ?w=815&h=886" alt=""></p>
+<p>注意，此时 ThreadB 和 ThreadC 已经拿到了读锁，ThreadD（写线程）和 ThreadE（读线程）依然阻塞中，原来 ThreadC 对应的结点是个孤立结点，会被 GC 回收。</p>
+<p>最终，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuJT?w=798&h=291" alt=""></p>
+<h3 id="10-ThreadB-和-ThreadC-释放读锁"><a href="#10-ThreadB-和-ThreadC-释放读锁" class="headerlink" title="10. ThreadB 和 ThreadC 释放读锁"></a>10. ThreadB 和 ThreadC 释放读锁</h3><p>ThreadB 和 ThreadC 调用 <strong>unlockRead</strong> 方法释放读锁，CAS 操作 State 将读锁数量减 1：<br><img src="https://segmentfault.com/img/bVbeuJY?w=1143&h=432" alt=""></p>
+<p>注意，当读锁的数量变为 0 时才会调用 <strong>release</strong> 方法，唤醒队首结点：<br><img src="https://segmentfault.com/img/bVbeuJw?w=1129&h=417" alt=""></p>
+<p>队首结点（ThreadD 写结点被唤醒），最终等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuJ2?w=791&h=308" alt=""></p>
+<h3 id="11-ThreadD-被唤醒后继续向下执行"><a href="#11-ThreadD-被唤醒后继续向下执行" class="headerlink" title="11. ThreadD 被唤醒后继续向下执行"></a>11. ThreadD 被唤醒后继续向下执行</h3><p>ThreadD 会从原阻塞处继续向下执行，并在下一次自旋中获取到写锁，然后返回:<br><img src="https://segmentfault.com/img/bVbeuKh?w=882&h=987" alt=""></p>
+<p>最终，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuKk?w=506&h=291" alt=""></p>
+<h3 id="12-ThreadD-调用-unlockWrite-释放写锁"><a href="#12-ThreadD-调用-unlockWrite-释放写锁" class="headerlink" title="12. ThreadD 调用 unlockWrite 释放写锁"></a>12. ThreadD 调用 unlockWrite 释放写锁</h3><p>ThreadD 释放写锁的过程和<a href="https://segmentfault.com/a/1190000015808032#articleHeader13" target="_blank" rel="noopener">步骤 7</a> 完全相同，会调用 <strong>unlockWrite</strong> 唤醒队首结点（ThreadE）。</p>
+<p><img src="https://segmentfault.com/img/bVbeuKu?w=487&h=288" alt=""></p>
+<p>ThreadE 被唤醒后会从原阻塞处继续向下执行，但由于 ThreadE 是个读结点，所以同时会唤醒 cowait 栈中的所有读结点，过程和<a href="https://segmentfault.com/a/1190000015808032#articleHeader14" target="_blank" rel="noopener">步骤 8</a> 完全一样。最终，等待队列的结构如下：<br><img src="https://segmentfault.com/img/bVbeuKP?w=215&h=258" alt=""></p>
+<p>至此，全部执行完成。</p>
+<h2 id="四、StampedLock-类-方法声明"><a href="#四、StampedLock-类-方法声明" class="headerlink" title="四、StampedLock 类 / 方法声明"></a>四、StampedLock 类 / 方法声明</h2><p>参考 Oracle 官方文档：<a href="https://docs.oracle.com/javase/8/docs/api/" target="_blank" rel="noopener">https://docs.oracle.com/javas…</a><br><strong><em>类声明：</em></strong><br><img src="https://segmentfault.com/img/bVbeuKZ?w=278&h=82" alt=""></p>
+<p><strong><em>方法声明：</em></strong><br><img src="https://segmentfault.com/img/bVbeuKX?w=1406&h=1828" alt=""></p>
+<h2 id="五、StampedLock-总结"><a href="#五、StampedLock-总结" class="headerlink" title="五、StampedLock 总结"></a>五、StampedLock 总结</h2><p>StampedLock 的等待队列与 RRW 的 CLH 队列相比，有以下特点：</p>
+<ol>
+<li>当入队一个线程时，如果队尾是读结点，不会直接链接到队尾，而是链接到该读结点的 cowait 链中，cowait 链本质是一个栈；</li>
+<li>当入队一个线程时，如果队尾是写结点，则直接链接到队尾；</li>
+<li>唤醒线程的规则和 AQS 类似，都是首先唤醒队首结点。区别是 StampedLock 中，当唤醒的结点是读结点时，会唤醒该读结点的 cowait 链中的所有读结点（顺序和入栈顺序相反，也就是后进先出）。</li>
+</ol>
+<p>另外，StampedLock 使用时要特别小心，避免锁重入的操作，在使用乐观读锁时也需要遵循相应的调用模板，防止出现数据不一致的问题。</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#StampedLock分析"><span class="nav-number">1.</span> <span class="nav-text">StampedLock分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、StampedLock-类简介"><span class="nav-number">1.1.</span> <span class="nav-text">一、StampedLock 类简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-StampedLock-的引入"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 StampedLock 的引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-StampedLock-的特点"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 StampedLock 的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、StampedLock-使用示例"><span class="nav-number">1.2.</span> <span class="nav-text">二、StampedLock 使用示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、StampedLock-原理"><span class="nav-number">1.3.</span> <span class="nav-text">三、StampedLock 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-StampedLock-的内部常量"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 StampedLock 的内部常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-示例分析"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 示例分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-StampedLock-对象的创建"><span class="nav-number">1.3.3.</span> <span class="nav-text">1. StampedLock 对象的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ThreadA-调用-writeLock-获取写锁"><span class="nav-number">1.3.4.</span> <span class="nav-text">2. ThreadA 调用 writeLock 获取写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ThreadB-调用-readLock-获取读锁"><span class="nav-number">1.3.5.</span> <span class="nav-text">3. ThreadB 调用 readLock 获取读锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ThreadC-调用-readLock-获取读锁"><span class="nav-number">1.3.6.</span> <span class="nav-text">4. ThreadC 调用 readLock 获取读锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-ThreadD-调用-writeLock-获取写锁"><span class="nav-number">1.3.7.</span> <span class="nav-text">5. ThreadD 调用 writeLock 获取写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-ThreadE-调用-readLock-获取读锁"><span class="nav-number">1.3.8.</span> <span class="nav-text">6. ThreadE 调用 readLock 获取读锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-ThreadA-调用-unlockWrite-释放写锁"><span class="nav-number">1.3.9.</span> <span class="nav-text">7. ThreadA 调用 unlockWrite 释放写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-ThreadB-被唤醒后继续向下执行"><span class="nav-number">1.3.10.</span> <span class="nav-text">8. ThreadB 被唤醒后继续向下执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-ThreadC-被唤醒后继续向下执行"><span class="nav-number">1.3.11.</span> <span class="nav-text">9. ThreadC 被唤醒后继续向下执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-ThreadB-和-ThreadC-释放读锁"><span class="nav-number">1.3.12.</span> <span class="nav-text">10. ThreadB 和 ThreadC 释放读锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-ThreadD-被唤醒后继续向下执行"><span class="nav-number">1.3.13.</span> <span class="nav-text">11. ThreadD 被唤醒后继续向下执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-ThreadD-调用-unlockWrite-释放写锁"><span class="nav-number">1.3.14.</span> <span class="nav-text">12. ThreadD 调用 unlockWrite 释放写锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、StampedLock-类-方法声明"><span class="nav-number">1.4.</span> <span class="nav-text">四、StampedLock 类 / 方法声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、StampedLock-总结"><span class="nav-number">1.5.</span> <span class="nav-text">五、StampedLock 总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

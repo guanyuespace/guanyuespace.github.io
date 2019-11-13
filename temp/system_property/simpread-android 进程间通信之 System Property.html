@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;4ec914c7e013  属性键值对 属性系统是 android 的一个重要特性。每个属性是一个键值对（key&#x2F;value pair），其类型都是字符串。但给它的缺点也很明显，只能传输简单的参数。可以通过命令 adb shell ：getprop 查看 android 设备上所有属性状态值。或">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;system_property&#x2F;simpread-android%20%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E4%B9%8B%20System%20Property.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;4ec914c7e013  属性键值对 属性系统是 android 的一个重要特性。每个属性是一个键值对（key&#x2F;value pair），其类型都是字符串。但给它的缺点也很明显，只能传输简单的参数。可以通过命令 adb shell ：getprop 查看 android 设备上所有属性状态值。或">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-215e3623aef62f73.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-235fa7c1d5501c50.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-f47acff2fd47c45d.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-1553c94fd766263b.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-a1a600200a7c6cdb.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-e34a3ac4eebe8072.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-da447b843a148236.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-96621048b3486636.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-ec9dd81d150191e6.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-573edefc71118d97.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-21b4b164340bd06f.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-e1821b476c131a4d.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-049786fb12f42313.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-7a18b3c2ac26a919.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-3b002abf74226a53.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-57917818bcbb34fb.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-93abf1fb06e7d739.png">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;7626001-215e3623aef62f73.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/system_property/simpread-android 进程间通信之 System Property.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://www.jianshu.com/p/4ec914c7e013" target="_blank" rel="noopener">https://www.jianshu.com/p/4ec914c7e013</a></p>
+</blockquote>
+<h2 id="属性键值对"><a href="#属性键值对" class="headerlink" title="属性键值对"></a>属性键值对</h2><blockquote>
+<p>属性系统是 android 的一个重要特性。每个属性是一个键值对（key/value pair），其类型都是字符串。但给它的缺点也很明显，只能传输简单的参数。<br><strong>可以通过命令 adb shell ：</strong><br>getprop 查看 android 设备上所有属性状态值。或者使用 setprop 设置某个属性的状态。</p>
+</blockquote>
+<h3 id="特别属性"><a href="#特别属性" class="headerlink" title="特别属性"></a>特别属性</h3><ul>
+<li>如果属性名称以 “ro.” 开头，那么这个属性被视为只读属性。一旦设置，属性值不能改变。</li>
+<li>如果属性名称以 “persist.” 开头，当设置这个属性时，其值也将写入 / data/property。</li>
+<li>如果属性名称以 “net.” 开头，当设置这个属性时，“net.change”属性将会自动设置，以加入到最后修改的属性名。<!-- （这是很巧妙的。 netresolve 模块的使用这个属性来追踪在 net.* 属性上的任何变化。） --></li>
+<li>属性 <strong>“ctrl.start”</strong> 和 <strong>“ctrl.stop”</strong> 是用来启动和停止服务。</li>
+</ul>
+<p>每一项服务必须在 <code>init.rc</code> 中定义. 系统启动时，与 <code>init</code> 守护进程将解析 <code>init.rc</code> 和启动属性服务。一旦收到设置 “ctrl.start” 属性的请求，属性服务将使用该属性值作为服务名找到该服务，启动该服务。这项服务的启动结果将会放入“ init.svc.&lt;服务名“属性中。客户端应用程序可以轮询那个属性值，以确定结果。<!--开机动画就是这么实现的。--></p>
+<h2 id="framework-访问系统属性"><a href="#framework-访问系统属性" class="headerlink" title="framework 访问系统属性"></a>framework 访问系统属性</h2><p>framework 通过 <code>SystemProperties</code> 接口操作系统属性，所以在 <code>java</code> 层大家都可以使用该类来获取或者设置系统属性。<code>SystemProperties</code> 通过 <code>JNI</code> 调用访问系统属性。</p>
+<p>代码路径 frameworks\base\core\java\android\os\ SystemProperties.java：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SystemProperties</span> </span>&#123;</span><br><span class="line"><span class="comment">//JNI</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> String <span class="title">native_get</span><span class="params">(String key, String def)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">native_set</span><span class="params">(String key, String def)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">get</span><span class="params">(String key, String def)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> native_get(key, def); </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(String key, String val)</span> </span>&#123;</span><br><span class="line">   native_set(key, val); </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Jni代码位置：</strong><br>\frameworks\base\core\jni\android_os_SystemProperties.cpp</p>
+<h3 id="读取系统属性"><a href="#读取系统属性" class="headerlink" title="读取系统属性"></a>读取系统属性</h3><p>实现是在 <strong>\bionic\libc\bionic\system_properties.c 中：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __system_property_get(<span class="keyword">const</span> <span class="keyword">char</span>* name,<span class="keyword">char</span>* value) &#123;</span><br><span class="line">  <span class="comment">// 数据已经存储在内存中__system_property_area__ 等待读取完返回</span></span><br><span class="line">  <span class="keyword">const</span> prop_info* pi = __system_property_find(name);</span><br><span class="line">  <span class="keyword">return</span> __system_property_read(pi,<span class="number">0</span>, value); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>进程启动后数据已经将系统属性数据读取到相应的共享内存中，保存在全局变量<code>__system_property_area__</code>;</p>
+<!-- 进程之间都是独立的，系统属性数据是如何读取到当前进程空间中的呢？后续介绍。 -->
+
+
+<h3 id="设置系统属性"><a href="#设置系统属性" class="headerlink" title="设置系统属性"></a>设置系统属性</h3><blockquote>
+<p>设置属性异步 <code>socket</code> 通信</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __system_property_set(<span class="keyword">const</span> <span class="keyword">char</span>* key,<span class="keyword">const</span> <span class="keyword">char</span>* value) &#123;</span><br><span class="line">    msg.cmd = PROP_MSG_SETPROP; </span><br><span class="line">    strlcpy(msg.name, key,sizeofmsg.name); </span><br><span class="line">    strlcpy(msg.value, value,sizeofmsg.value); </span><br><span class="line">    err = send_prop_msg(&amp;msg);<span class="comment">///</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">send_prop_msg</span><span class="params">(prop_msg *msg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//sokcet 通信 ---&gt;  对方:/dev/socket/property_service</span></span><br><span class="line">    s = socket(AF_LOCAL, SOCK_STREAM,<span class="number">0</span>); </span><br><span class="line">    connect(s, (structsockaddr *) &amp;addr, alen) </span><br><span class="line">    send(s, msg,<span class="keyword">sizeof</span>(prop_msg),<span class="number">0</span>)</span><br><span class="line">    close(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>通过 <code>socket</code> 向 <code>property_service</code> 发送消息</strong></p>
+<!-- property_service 运行在哪里呢？ -->
+
+<h1 id="通信对方property-service"><a href="#通信对方property-service" class="headerlink" title="通信对方property_service"></a>通信对方property_service</h1><h2 id="Property-Service-创建服务端-socket"><a href="#Property-Service-创建服务端-socket" class="headerlink" title="Property Service 创建服务端 socket"></a>Property Service 创建服务端 socket</h2><p>Property Service 在 init 进程中，init进程启动监听过程中：\system\core\init\Init.c</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-215e3623aef62f73.png" alt="init property code" title="init property code"></p>
+<p><strong>Property Service 是运行在 init 守护进程中。</strong> 先看看 Property Service 接收到消息后的处理。</p>
+<h2 id="Property-Service-监听-socket-处理"><a href="#Property-Service-监听-socket-处理" class="headerlink" title="Property Service 监听 socket 处理"></a>Property Service 监听 socket 处理</h2><p><img src="http://upload-images.jianshu.io/upload_images/7626001-235fa7c1d5501c50.png" alt="Property Service 监听 socket 消息的处理过程" title="Property Service 监听 socket 消息的处理过程"></p>
+<p>通过设置系统属性启动/关闭Service：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-f47acff2fd47c45d.png" alt="权限判断" title="权限判断"></p>
+<p>所以如果想要应用有权限启动/关闭某 Native Service：<br>需要具有 system/root 权限, 找到对应应用 uid gid，将应用名称加入到 control_perms 列表中</p>
+<p>处理消息可以通过设置系统属性 改变服务的执行状态 start/stop：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-1553c94fd766263b.png" alt="ctrl属性相关控制" title="ctrl属性相关控制"></p>
+<p>连着前面就是 ctr.start 和 ctr.stop 系统属性：用来启动和停止服务的。</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// start boot animation</span></span><br><span class="line">property_set(<span class="string">"ctl.start"</span>, <span class="string">"bootanim"</span>);</span><br></pre></td></tr></table></figure>
+<p>在 init.rc 中表明服务是否在开机时启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service adbd /sbin/adbd</span><br><span class="line">classcore</span><br><span class="line">disabled// 不自动启动</span><br></pre></td></tr></table></figure>
+
+<p>启动服务的时候会判断:<br><img src="http://upload-images.jianshu.io/upload_images/7626001-a1a600200a7c6cdb.png" alt=""></p>
+<p>修改系统属性值：<br><img src="http://upload-images.jianshu.io/upload_images/7626001-e34a3ac4eebe8072.png" alt=""></p>
+<p>看这个修改系统属性权限表，配置系统权限可以查看 system/core/include/private/android_filesystem_config.h：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-da447b843a148236.png" alt=""></p>
+<p>指定了特定的用户有用修改 带有某些前缀的系统属性值。</p>
+<p>到这里基本就是 Property 对外的基本工作流程，Property Service 内部具体如何实现，操作运行，</p>
+<p>跨进程空想内存等问题仍未清除是如何处理的。</p>
+<h1 id="属性系统设计"><a href="#属性系统设计" class="headerlink" title="属性系统设计"></a>属性系统设计</h1><p><img src="http://upload-images.jianshu.io/upload_images/7626001-96621048b3486636.png" alt=""></p>
+<p><strong>Property Service</strong> 运行在 init 进程中，开机从属性文件中加载到共享内存中；设置系统属性通过 socket 与 Property Service 通信。</p>
+<p><strong>Property Consumer</strong> 进程将存储系统属性值的共享内存，加载到当前进程虚拟空间中，实现对系统属性值的读取。</p>
+<p><strong>Property Setter</strong> 进程修改系统属性，通过 socket 向 Property Service 发送消息，更改系统属性值。</p>
+<h1 id="属性系统实现"><a href="#属性系统实现" class="headerlink" title="属性系统实现"></a>属性系统实现</h1><p>属性系统设计的关键就是：跨进程共享内存的实现。</p>
+<p><strong>下面将看看属性系统实现具体过程：</strong></p>
+<p><strong>Init进程执行：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-ec9dd81d150191e6.png" alt=""></p>
+<p><strong>初始化Property Service:\system\core\init\property_service.c</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-573edefc71118d97.png" alt=""></p>
+<p><strong>初始化共享内存空间：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-21b4b164340bd06f.png" alt=""></p>
+<p><strong><strong>system_property_area</strong></strong>：</p>
+<p>每个进程都会使用此变量，指向系统属性共享内存区域，访问系统属性，很重要。</p>
+<p>位于：\bionic\libc\bionic\system_properties.c 中，属于 bionic 库。后面将介绍各进程如何加载共享内存。</p>
+<p><strong>将文件作为共享内存映射到进程空间内存使用：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-e1821b476c131a4d.png" alt=""></p>
+<p><strong>加载系统属性默认数据文件：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-049786fb12f42313.png" alt=""></p>
+<p>加上上面所述：Property Service Socket 资源的创建，来监听 socket 通信连接设置系统属性，</p>
+<p>在 Init 进程中 Property Service 完成了初始化。</p>
+<p><strong>将得到该内存区域数据结构：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-7a18b3c2ac26a919.png" alt=""></p>
+<p><strong>进程共享系统属性内存空间实现</strong></p>
+<p>Property Service 运行于 init 进程中，将文件映射为创建一块共享内存空间，但在整个系统中，</p>
+<p>其他进程也能够读取这块内存映射到当前进程空间中，是如何实现的呢？</p>
+<p><strong>Service 进程启动：</strong>将共享内存空间 fd size 作为环境变量传递给新创建进程</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-3b002abf74226a53.png" alt=""></p>
+<p>共享内存空间 fd size 作为环境变量传递给新创建进程后，将在何处使用呢？</p>
+<p><strong>将系统属性内存空间映射到当前进程虚拟空间：进程在启动时，会加载动态库 bionic libc库：</strong><br>\bionic\libc\bionic\libc_init_dynamic.c 中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __attribute__((constructor)) __libc_preinit(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>根据GCC的constructor/destructor属性：</strong></p>
+<p>给一个函数赋予 constructor 或 destructor，其中 constructor 在 main 开始运行之前被调用，</p>
+<p>destructor 在 main 函数结束后被调用。如果有多个 constructor 或 destructor，可以给每个 constructor</p>
+<p>或 destructor 赋予优先级，对于 constructor，优先级数值越小，运行越早。destructor 则相反。</p>
+<p><strong>多个constructor需要加优先级：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-57917818bcbb34fb.png" alt=""></p>
+<p><strong>__libc_preinit在bionic libc库加载的时候会被调用：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7626001-93abf1fb06e7d739.png" alt="">   </p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#属性键值对"><span class="nav-number">1.</span> <span class="nav-text">属性键值对</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特别属性"><span class="nav-number">1.1.</span> <span class="nav-text">特别属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#framework-访问系统属性"><span class="nav-number">2.</span> <span class="nav-text">framework 访问系统属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读取系统属性"><span class="nav-number">2.1.</span> <span class="nav-text">读取系统属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置系统属性"><span class="nav-number">2.2.</span> <span class="nav-text">设置系统属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通信对方property-service"><span class="nav-number"></span> <span class="nav-text">通信对方property_service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Property-Service-创建服务端-socket"><span class="nav-number">1.</span> <span class="nav-text">Property Service 创建服务端 socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Property-Service-监听-socket-处理"><span class="nav-number">2.</span> <span class="nav-text">Property Service 监听 socket 处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#属性系统设计"><span class="nav-number"></span> <span class="nav-text">属性系统设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#属性系统实现"><span class="nav-number"></span> <span class="nav-text">属性系统实现</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

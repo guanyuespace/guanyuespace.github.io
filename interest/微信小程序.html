@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="SSL&amp;amp;自签名证书 微信小程序样式 iconfont 矢量图标的使用     网易云音乐 轮播图api Bugs setData   数据处理 数组相关 添加对象   滚动 urlencode Javascript   Java 正则表达式贪婪模式&amp;amp;非贪婪模式 Javascript正则表达式     GitHub 登陆 登出 stats请求： ???? 小程序请求Cookie">
+<meta property="og:type" content="website">
+<meta property="og:title" content="微信小程序">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="SSL&amp;amp;自签名证书 微信小程序样式 iconfont 矢量图标的使用     网易云音乐 轮播图api Bugs setData   数据处理 数组相关 添加对象   滚动 urlencode Javascript   Java 正则表达式贪婪模式&amp;amp;非贪婪模式 Javascript正则表达式     GitHub 登陆 登出 stats请求： ???? 小程序请求Cookie">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;js_regex.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;js_regex.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/interest/微信小程序.html"/>
+
+
+
+
+
+  <title>微信小程序 | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">微信小程序</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <!-- TOC -->
+
+<ul>
+<li><a href="#ssl%E8%87%AA%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6">SSL&amp;自签名证书</a></li>
+<li><a href="#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A0%B7%E5%BC%8F">微信小程序样式</a><ul>
+<li><a href="#iconfont">iconfont</a><ul>
+<li><a href="#%E7%9F%A2%E9%87%8F%E5%9B%BE%E6%A0%87%E7%9A%84%E4%BD%BF%E7%94%A8">矢量图标的使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90">网易云音乐</a><ul>
+<li><a href="#%E8%BD%AE%E6%92%AD%E5%9B%BEapi">轮播图api</a></li>
+<li><a href="#bugs">Bugs</a><ul>
+<li><a href="#setdata">setData</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a><ul>
+<li><a href="#%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3">数组相关</a><ul>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E5%AF%B9%E8%B1%A1">添加对象</a></li>
+</ul>
+</li>
+<li><a href="#%E6%BB%9A%E5%8A%A8">滚动</a></li>
+<li><a href="#urlencode">urlencode</a><ul>
+<li><a href="#javascript">Javascript</a></li>
+</ul>
+</li>
+<li><a href="#java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F">Java 正则表达式贪婪模式&amp;非贪婪模式</a></li>
+<li><a href="#javascript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">Javascript正则表达式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#github">GitHub</a><ul>
+<li><a href="#%E7%99%BB%E9%99%86">登陆</a></li>
+<li><a href="#%E7%99%BB%E5%87%BA">登出</a></li>
+<li><a href="#stats%E8%AF%B7%E6%B1%82-">stats请求： ????</a></li>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%AF%B7%E6%B1%82cookie">小程序请求Cookie</a><ul>
+<li><a href="#%E8%AF%B7%E6%B1%82%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE">请求后的数据</a></li>
+<li><a href="#cookie%E7%9B%B8%E5%85%B3">Cookie相关</a></li>
+<li><a href="#cookie%E8%AE%BE%E7%BD%AE">Cookie设置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#163mail">163Mail</a></li>
+<li><a href="#java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BB%8B%E7%BB%8D">Java 正则表达式介绍</a><ul>
+<li><a href="#%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F">贪婪模式表达式：</a></li>
+<li><a href="#%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F">非贪婪模式表达式：</a></li>
+</ul>
+</li>
+<li><a href="#problem">Problem</a></li>
+</ul>
+<!-- /TOC -->
+
+<h1 id="SSL-amp-自签名证书"><a href="#SSL-amp-自签名证书" class="headerlink" title="SSL&amp;自签名证书"></a>SSL&amp;自签名证书</h1><ul>
+<li>openssl</li>
+<li>keytool</li>
+</ul>
+<hr>
+<h1 id="微信小程序样式"><a href="#微信小程序样式" class="headerlink" title="微信小程序样式"></a>微信小程序样式</h1><h2 id="iconfont"><a href="#iconfont" class="headerlink" title="iconfont"></a>iconfont</h2><h3 id="矢量图标的使用"><a href="#矢量图标的使用" class="headerlink" title="矢量图标的使用"></a>矢量图标的使用</h3><p><a href="http://www.cnblogs.com/fashandian/p/6880892.html" target="_blank" rel="noopener">iconfont字体图标的使用</a>    </p>
+<ul>
+<li>选取图标</li>
+<li>添加到项目</li>
+<li>下载代码ok</li>
+<li>demo.html</li>
+</ul>
+<p>open-data</p>
+<p>radius</p>
+<hr>
+<h1 id="网易云音乐"><a href="#网易云音乐" class="headerlink" title="网易云音乐"></a>网易云音乐</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path: /discover</span><br></pre></td></tr></table></figure>
+
+<h2 id="轮播图api"><a href="#轮播图api" class="headerlink" title="轮播图api"></a>轮播图api</h2><blockquote>
+<p>pc端实现（user_agent设置,but 微信小程序无法进行user agent设置）</p>
+</blockquote>
+<p><strong>搭建HTTPS服务器实现</strong></p>
+<h2 id="Bugs"><a href="#Bugs" class="headerlink" title="Bugs"></a>Bugs</h2><h3 id="setData"><a href="#setData" class="headerlink" title="setData"></a>setData</h3><p>原因：组件实例刚刚被创建好时， created 生命周期被触发。此时，组件数据 this.data 就是在 Component 构造器中定义的数据 data 。 此时还不能调用 setData 。 通常情况下，这个生命周期只应该用于给组件 this 添加一些自定义属性字段。<!-- Lyric尚未进行onLoad,onShow...-->     </p>
+<p>操作从lyric.wxml  redictTo music.wxml<br>歌词页面跳转到详细歌单界面</p>
+<p>onShow —&gt; (跳过onHide)  —&gt;onUnload</p>
+<p>从首页跳转到详情页,点击左上方的返回按钮,详情页的onHide不触发微信小程序</p>
+<!--
+onHide：监听页面的隐藏
+当从当前 A 页跳转到其他页面，那么 A 页面处于隐藏状态。
+onUnload：监听页面的卸载
+当前处于 A 页面，点击返回按钮时，则将是 A 页面卸载。
+https://blog.csdn.net/hhf235678/article/details/78749952
+-->
+
+<ul>
+<li><p>log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lyricPage onLoad options=&#123;&quot;id&quot;:&quot;571463522&quot;,&quot;name&quot;:&quot;生如逆旅（Cover 米津玄师）&quot;,&quot;bg&quot;:&quot;http%3A%2F%2Fp1.music.126.net%2FhzlpZj9bzwyk1b0g7Deo0A%3D%3D%2F109951163335209234.jpg&quot;&#125;</span><br><span class="line">lyric.js? [sm]:149 lyricPage onShow</span><br><span class="line">playlists.js? [sm]:83 play ..... lyricPage=[object Object]</span><br><span class="line">lyric.js? [sm]:76 lyricPage lyric setDurations start</span><br><span class="line">lyric.js? [sm]:169 lyricPage onUnload</span><br><span class="line">playlists.js? [sm]:83 play ..... lyricPage=[object Object]</span><br><span class="line">lyric.js? [sm]:76 lyricPage lyric setDurations start</span><br></pre></td></tr></table></figure>
+<p>onShow —&gt; (跳过onHide)  —&gt;onUnload</p>
+</li>
+<li><p>JS   </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"lyricPage lyric setDurations start"</span>);</span><br><span class="line">  <span class="keyword">var</span> all;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.data.temp != <span class="number">0</span>)</span><br><span class="line">    clearInterval(<span class="keyword">this</span>.data.temp);</span><br><span class="line"><span class="keyword">this</span>.data.temp =</span><br><span class="line">  setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">     all = app.globalData.audioPlayer.duration;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"all= "</span> + all + <span class="string">"\t temp_timer="</span> + <span class="keyword">this</span>.data.temp);</span><br><span class="line">     <span class="keyword">var</span> mintues = <span class="built_in">Math</span>.floor(all / <span class="number">60</span>);</span><br><span class="line">     <span class="keyword">var</span> seconds = <span class="built_in">Math</span>.floor(all - mintues * <span class="number">60</span>);</span><br><span class="line">     <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">       durations: mintues &gt; <span class="number">9</span> ? mintues + <span class="string">":"</span> + (seconds &gt; <span class="number">9</span> ? seconds : <span class="string">"0"</span> + seconds) : <span class="string">"0"</span> + mintues + <span class="string">":"</span> + (seconds &gt; <span class="number">9</span> ? seconds : <span class="string">"0"</span> + seconds)</span><br><span class="line">     &#125;, () =&gt; &#123;</span><br><span class="line">       <span class="comment">//另外 尚未执行onLoad, onShow ....</span></span><br><span class="line">       <span class="comment">//逻辑？？？？</span></span><br><span class="line">       <span class="comment">//////此处不会执行</span></span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">"------------------&gt; "</span> + <span class="keyword">this</span>.data.durations + <span class="string">"\t"</span> + all);</span><br><span class="line">       <span class="keyword">if</span> (all &amp;&amp; all != <span class="number">0</span>)</span><br><span class="line">         clearInterval(<span class="keyword">this</span>.data.temp);</span><br><span class="line">     &#125;);</span><br><span class="line">  &#125;, <span class="number">50</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="监听蓝牙-amp-耳机连接"><a href="#监听蓝牙-amp-耳机连接" class="headerlink" title="监听蓝牙&amp;耳机连接"></a>监听蓝牙&amp;耳机连接</h2><p>控制音乐播放…</p>
+<!-- Android ok... -->
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><h3 id="数组相关"><a href="#数组相关" class="headerlink" title="数组相关"></a>数组相关</h3><ul>
+<li><p>splice</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">splice(index, length,data...)   </span><br><span class="line">从index开始操作,将length个元素替换成data</span><br><span class="line">并返回length个元素</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>shift/unshift<br>从数组头部删除/添加</p>
+</li>
+<li><p>pop/push<br>从数组尾部删除添加</p>
+</li>
+</ul>
+<h4 id="添加对象"><a href="#添加对象" class="headerlink" title="添加对象"></a>添加对象</h4><ol>
+<li>JSON.parse()<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">that.data.lyric_time.push(<span class="built_in">JSON</span>.parse(<span class="string">"&#123;\"secs\":\""</span> + secs + <span class="string">"\",\"str\":\""</span> + str + <span class="string">"\"&#125;"</span>));</span><br></pre></td></tr></table></figure></li>
+<li>ok<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">that.data.lyric_time.push(&#123;</span><br><span class="line">  secs: secs,</span><br><span class="line">  str: str</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+方法一<code>parse</code>注意特殊字符… 字符串构造巨坑!!!</li>
+</ol>
+<h3 id="滚动"><a href="#滚动" class="headerlink" title="滚动"></a>滚动</h3><ul>
+<li><p>transform<br>布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">"transform: translateY(&#123;&#123;(4-curIndex)*900/9&#125;&#125;rpx)"</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;lyric_time&#125;&#125;"</span> <span class="attr">wx:key</span>=<span class="string">"item"</span> <span class="attr">wx:for-item</span>=<span class="string">"item"</span> <span class="attr">wx:for-index</span>=<span class="string">"idx"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"&#123;&#123;lastTime==item.secs?'highlight':'common'&#125;&#125;"</span> <span class="attr">data-time</span>=<span class="string">"&#123;&#123;item.secs&#125;&#125;"</span>&gt;</span>&#123;&#123;item.str&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 屏幕铺满可以显示9行， (4-curIndex)*(900/9)间距，第5行与curIndex之间的间距，负数向上移动，整数向下移动 -->
+</li>
+<li><p>order<br>CSS层叠样式表</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.show</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: <span class="number">1</span>;</span><br><span class="line">  <span class="attribute">mix-blend-mode</span>: difference;</span><br><span class="line">  <span class="attribute">filter</span>: <span class="built_in">invert</span>(1);</span><br><span class="line">  <span class="attribute">-webkit-filter</span>: <span class="built_in">invert</span>(1);<span class="comment">/**-webkit:表示chrome与safari特有属性  */</span></span><br><span class="line">   <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>XML布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">hidden</span>=<span class="string">"&#123;&#123;lastTime==item.secs?false:true&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"show"</span> <span class="attr">wx:key</span>=<span class="string">"item"</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;lyric_time&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"item"</span> <span class="attr">wx:for-index</span>=<span class="string">"idx"</span>&gt;</span>&#123;&#123;item.str&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>scroll-view<br>可滚动视图区域。<strong>使用竖向滚动时，需要给&lt;scroll-view&gt;一个固定高度，通过 WXSS 设置 height。组件属性的长度单位默认为px，2.4.0起支持传入单位(rpx/px)。</strong></p>
+</li>
+</ul>
+<p>|属性    |类型    |默认值    |必填    |说明    |最低版本|<br>|—-|<br>|scroll-x    |boolean    |false    |否    |允许横向滚动|    1.0.0|<br>|scroll-y    |boolean    |false    |否    |允许纵向滚动|    1.0.0|<br>|upper-threshold    |number/string|    50    |否    |距顶部/左边多远时，触发 scrolltoupper 事件    |1.0.0|<br>|lower-threshold    | number/string |    50    |否|    距底部/右边多远时，触发 scrolltolower 事件    | 1.0.0 |<br>|scroll-top    | number/string ||        否 |    设置竖向滚动条位置    | 1.0.0 |<br>|scroll-left    | number/string |    |    否 |    设置横向滚动条位置    | 1.0.0 |<br>|scroll-into-view    |string    |    |否 |    值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素    | 1.0.0 |<br>|scroll-with-animation    | bollean |    false    | 否 |    在设置滚动条位置时使用动画过渡    | 1.0.0 |<br>|enable-back-to-top    | bollean |    false    | 否 |    iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向    | 1.0.0 |<br>|bindscrolltoupper    | eventhandle |        |否 |    滚动到顶部/左边时触发    | 1.0.0 |<br>|bindscrolltolower    | eventhandle |        |否 |    滚动到底部/右边时触发    | 1.0.0 |<br>|bindscroll    | eventhandle |        |否 |    滚动时触发，event.detail = {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}</p>
+<ul>
+<li>Tips    <ol>
+<li><strong>请勿在 scroll-view 中使用 textarea、map、canvas、video 组件</strong></li>
+<li>scroll-into-view 的优先级高于 scroll-top</li>
+<li>在滚动 scroll-view 时会阻止页面回弹，所以在 scroll-view 中滚动，是无法触发 onPullDownRefresh</li>
+<li>若要使用下拉刷新，请使用页面的滚动，而不是 scroll-view ，这样也能通过点击顶部状态栏回到页面顶部</li>
+</ol>
+</li>
+</ul>
+<h3 id="urlencode"><a href="#urlencode" class="headerlink" title="urlencode"></a>urlencode</h3><blockquote>
+<p><strong><em>problem： get url?param=value (value has character like ‘=’,’&amp;’etc)</em></strong></p>
+</blockquote>
+<h4 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h4><ul>
+<li><strong>escape()</strong><br>采用ISO Latin字符集对指定的字符串进行编码。所有的 <strong>空格符、标点符号、特殊字符以及其他非ASCII字符</strong> 都将被转化成%xx格式的字符编码（xx等于该字符在字符集表里面的编码的16进制数字）。比如，空格符对应的编码是%20。   </li>
+</ul>
+<p><strong><em>不会被此方法编码的字符： @ * / +</em></strong></p>
+<ul>
+<li><strong>encodeURI()</strong><br>把URI字符串采用UTF-8编码格式转化成escape格式的字符串。   </li>
+</ul>
+<p><strong><em>不会被此方法编码的字符：! @ # $&amp; * ( ) = : / ; ? + ‘</em></strong></p>
+<ul>
+<li><strong>encodeURIComponent()</strong><br>把URI字符串采用UTF-8编码格式转化成escape格式的字符串。与encodeURI()相比，这个方法将对更多的字符进行编码，比如 / 等字符。所以如果字符串里面包含了URI的几个部分的话，不能用这个方法来进行编码，否则 / 字符被编码之后URL将显示错误。   </li>
+</ul>
+<p><strong><em>不会被此方法编码的字符：! * ( ) ‘</em></strong>    </p>
+<p>因此，对于中文字符串来说，如果不希望把字符串编码格式转化成UTF-8格式的（比如原页面和目标页面的charset是一致的时候），只需要使用 escape。如果你的页面是GB2312或者其他的编码，而接受参数的页面是UTF-8编码的，就要采用encodeURI或者 encodeURIComponent。</p>
+<h3 id="Java-正则表达式贪婪模式-amp-非贪婪模式"><a href="#Java-正则表达式贪婪模式-amp-非贪婪模式" class="headerlink" title="Java 正则表达式贪婪模式&amp;非贪婪模式"></a>Java 正则表达式贪婪模式&amp;非贪婪模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Pattern pattern = Pattern.compile(<span class="string">"window.Gbanners =[\n|\r\n](\\[.*?]);"</span>, Pattern.DOTALL);   <span class="comment">//非贪婪模式匹配... 假如：数组元素也是数组?? so how can i do it</span></span><br><span class="line">Matcher matcher = pattern.matcher(str);</span><br><span class="line"><span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line">   <span class="keyword">return</span> matcher.group(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>如果数组元素中也含有数组？？？ how ??</em></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Pattern p = Pattern.compile(<span class="string">"window.Gbanners =\n(\\[.*?]);"</span>, Pattern.DOTALL);</span><br><span class="line">    String str = <span class="string">"window.Gbanners =\n[hello, what happened ? [bye];....];endherehello[yue];"</span>;</span><br><span class="line">    Matcher matcher = p.matcher(str);</span><br><span class="line">    <span class="keyword">if</span> (matcher.find())</span><br><span class="line">        System.out.println(matcher.group(<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        System.out.println(<span class="string">"???"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>如何提取”[hello, what happened ? [bye];….]”??</em></strong><br><strong><em>麻烦：</em></strong>    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"window.Gbanners =\n[hello, what happened ? [bye];[yue];....];hello[yue];"</span>;</span><br><span class="line">p=Pattern.compile(<span class="string">"window.Gbanners =\n(\\[[\\w\\d\\,\\?\\s]+(\\[\\w+\\];)+\\.+\\]);"</span>);</span><br><span class="line">Matcher matcher = p.matcher(str);</span><br><span class="line">matcher.find();</span><br><span class="line">System.out.println(matcher.group(<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+<p><strong>Result: [hello, what happened ? [bye];[yue];….]</strong></p>
+<h3 id="Javascript正则表达式"><a href="#Javascript正则表达式" class="headerlink" title="Javascript正则表达式"></a>Javascript正则表达式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1=<span class="regexp">/picUrl\s+:\s+\"([\w|\d|\\.|\\/|:|=]+)\"/g</span>;</span><br><span class="line"><span class="keyword">var</span> s=<span class="string">"[&#123;picUrl: \"http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\"&#125;......&#123;picUrl: \"http://p1.music.126.net/pyPxPCKnqDC_MgcAH2gqcA==/109951163988013828.jpg\",url: \"https://music.163.com/m/at/5cac89eda987b31a74b53324\",targetId: \"0\",backgroundUrl: \"http://p1.music.126.net/Wj7RwWtJHqZW1znWmZeUyA==/109951163988019180.jpg\",targetType: \"3000\",monitorType: \"\",monitorImpress: \"\",monitorClick: \"\"&#125;, &#123;picUrl: \"http://p1.music.126.net/9UHGYULLYF_ErmiGv_ilPA==/109951163987312687.jpg\",url: \"https://music.163.com/m/at/5cac4505a987b31a74b53247\",targetId: \"0\",backgroundUrl: \"http://p1.music.126.net/f6kKp_6tRoAfs8DcQ241CA==/109951163987307347.jpg\",targetType: \"3000\",monitorType: \"\",monitorImpress: \"\",monitorClick: \"\"&#125;, &#123;picUrl: \"http://p1.music.126.net/YxxZQkEa1Sf1fQdE7xmKQA==/109951163987278183.jpg\",url: \"/album?id=78399447\",targetId: \"78399447\",backgroundUrl: \"http://p1.music.126.net/0e8-38VasU3FF_dNQ1gezg==/109951163987283041.jpg\",targetType: \"10\",monitorType: \"\",monitorImpress: \"\",monitorClick: \"\"&#125;]"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> res=s.match(patt1);</span><br><span class="line">res[<span class="number">0</span>]<span class="comment">////picUrl: \"http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\"</span></span><br><span class="line"><span class="comment">// 继续正则表达式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> re;</span><br><span class="line"><span class="keyword">for</span>(re=patt1.exec(); re!=<span class="literal">null</span>; re=patt1.exec())&#123;</span><br><span class="line">  re[<span class="number">0</span>]<span class="comment">//picUrl: \"http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\"</span></span><br><span class="line">  re[<span class="number">1</span>]<span class="comment">//http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Javascript正则表达式不包含分组概念，使用regex.exec()—&gt;类比分组概念，but 一次获取一个ok…<br><img src="./js_regex.jpg" alt="">    </p>
+<hr>
+<h1 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h1><blockquote>
+<p>api：登陆…<br>由于github.com未在ICP备案因此微信小程序不可直接进行数据请求（自建服务器，不校验）</p>
+</blockquote>
+<h2 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /session HTTP/1.1</span><br><span class="line">Host: github.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">utf8=%E2%9C%93&amp;authenticity_token=3GKDT3%2BeaF8GThohy848CKypLgt%2FG3eZXFj%2BUorzX%2BVK07sS2%2BJLGTXfxux5W9ptA0epJVdMt%2B3Nl4kTdsy6mA%3D%3D&amp;login=guanyue003%40gmail.com&amp;password=hellogit123</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">  Location: https://github.com/</span><br><span class="line"></span><br><span class="line">Redict:</span><br><span class="line">  Request URL: https://github.com/</span><br><span class="line">  Request Method: GET</span><br><span class="line"></span><br><span class="line">// Html 页面</span><br></pre></td></tr></table></figure>
+
+<h2 id="登出"><a href="#登出" class="headerlink" title="登出"></a>登出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Request URL: https://github.com/logout</span><br><span class="line">Request Method: GET</span><br><span class="line">--&amp;gt; 登出界面</span><br><span class="line"></span><br><span class="line">登出数据</span><br><span class="line">Request URL: https://github.com/logout</span><br><span class="line">Request Method: POST</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">utf8: ✓</span><br><span class="line">authenticity_token://html hidden TEnKx7MjccfdIgtcDe2ibrAxezbhqz5ZotsXiQjNr2BGzljGMSxhHlt4KWlj5Hw5lvz/DIN+5JBzIM53pxVyqg==</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">Location: https://github.com/</span><br></pre></td></tr></table></figure>
+
+<h2 id="stats请求："><a href="#stats请求：" class="headerlink" title="stats请求： ????"></a>stats请求： ????</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Request URL: https://api.github.com/_private/browser/stats</span><br><span class="line">Request Method: POST</span><br><span class="line">Content-Type: application/json; charset=utf-8</span><br><span class="line"></span><br><span class="line">data ......</span><br><span class="line"></span><br><span class="line">when logout:</span><br><span class="line">&#123;&quot;stats&quot;:[&#123;&quot;resourceTimings&quot;:[&#123;&quot;initiatorType&quot;:&quot;link&quot;,&quot;nextHopProtocol&quot;:&quot;h2&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.6999999955297,&quot;domainLookupStart&quot;:0,&quot;domainLookupEnd&quot;:0,&quot;connectStart&quot;:0,&quot;connectEnd&quot;:0,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:0,&quot;responseStart&quot;:0,&quot;responseEnd&quot;:1006.6999999980908,&quot;transferSize&quot;:0,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://github.githubassets.com/assets/mobile-8e8e5b12902d5f04bad25bdd1b689f64.css&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.6999999955297,&quot;duration&quot;:209.00000000256114&#125;,&#123;&quot;initiatorType&quot;:&quot;img&quot;,&quot;nextHopProtocol&quot;:&quot;http/1.1&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.8999999759253,&quot;domainLookupStart&quot;:797.8999999759253,&quot;domainLookupEnd&quot;:797.8999999759253,&quot;connectStart&quot;:797.8999999759253,&quot;connectEnd&quot;:797.8999999759253,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:799.9999999883585,&quot;responseStart&quot;:989.3999999912921,&quot;responseEnd&quot;:989.899999985937,&quot;transferSize&quot;:481,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://avatars2.githubusercontent.com/u/31913612?s=40&amp;v=4&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.8999999759253,&quot;duration&quot;:192.00000001001172&#125;,&#123;&quot;initiatorType&quot;:&quot;script&quot;,&quot;nextHopProtocol&quot;:&quot;h2&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.999999980675,&quot;domainLookupStart&quot;:0,&quot;domainLookupEnd&quot;:0,&quot;connectStart&quot;:0,&quot;connectEnd&quot;:0,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:0,&quot;responseStart&quot;:0,&quot;responseEnd&quot;:803.2999999995809,&quot;transferSize&quot;:0,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://github.githubassets.com/assets/mobile-bootstrap-6ccc3aa0.js&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.999999980675,&quot;duration&quot;:5.300000018905848&#125;],&quot;timestamp&quot;:1555033117792&#125;,&#123;&quot;navigationTimings&quot;:[&#123;&quot;unloadEventStart&quot;:792.9999999760184,&quot;unloadEventEnd&quot;:792.9999999760184,&quot;domInteractive&quot;:800.199999997858,&quot;domContentLoadedEventStart&quot;:800.3000000026077,&quot;domContentLoadedEventEnd&quot;:800.3000000026077,&quot;domComplete&quot;:1013.0999999819323,&quot;loadEventStart&quot;:1013.0999999819323,&quot;loadEventEnd&quot;:1013.1999999866821,&quot;type&quot;:&quot;navigate&quot;,&quot;redirectCount&quot;:0,&quot;initiatorType&quot;:&quot;navigation&quot;,&quot;nextHopProtocol&quot;:&quot;http/1.1&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:4.499999980907887,&quot;domainLookupStart&quot;:6.599999993341044,&quot;domainLookupEnd&quot;:6.599999993341044,&quot;connectStart&quot;:6.599999993341044,&quot;connectEnd&quot;:318.7999999790918,&quot;secureConnectionStart&quot;:173.39999999967404,&quot;requestStart&quot;:322.09999999031425,&quot;responseStart&quot;:789.0999999945052,&quot;responseEnd&quot;:792.3999999766238,&quot;transferSize&quot;:6349,&quot;encodedBodySize&quot;:3863,&quot;decodedBodySize&quot;:11490,&quot;name&quot;:&quot;https://github.com/logout&quot;,&quot;entryType&quot;:&quot;navigation&quot;,&quot;startTime&quot;:0,&quot;duration&quot;:1013.1999999866821&#125;],&quot;timestamp&quot;:1555033117792&#125;]&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="小程序请求Cookie"><a href="#小程序请求Cookie" class="headerlink" title="小程序请求Cookie"></a>小程序请求Cookie</h2><h3 id="请求后的数据"><a href="#请求后的数据" class="headerlink" title="请求后的数据"></a>请求后的数据</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "data" : "",//response_body</span><br><span class="line">  "header" : &#123;&#125;,//response_header</span><br><span class="line">  "statusCode" : 200,//状态码</span><br><span class="line">  "cookies" : [],//set-Cookie格式化数据</span><br><span class="line">  "errMsg" : "request:ok"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg" alt="数据请求返回结果" title="数据请求返回结果">  </p>
+<h3 id="Cookie相关"><a href="#Cookie相关" class="headerlink" title="Cookie相关"></a>Cookie相关</h3><p><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg" alt=""><br><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg" alt="">    </p>
+<p>由图可知<br>cookies设置简化<br>不用从header中setcookie查找分析</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">res.cookies[&#123;</span><br><span class="line">  "name":"",//</span><br><span class="line">  "value":"",//</span><br><span class="line">  "path":"",//路径</span><br><span class="line">  "expires":"",//租期</span><br><span class="line">  .....</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Cookie设置"><a href="#Cookie设置" class="headerlink" title="Cookie设置"></a>Cookie设置</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wx.setStorageSync(<span class="string">"sessionid"</span>, res.header[<span class="string">"Set-Cookie"</span>])</span><br><span class="line">header = &#123;</span><br><span class="line">    <span class="string">'cookie'</span>:wx.getStorageSync(<span class="string">"sessionid"</span>)<span class="comment">//读取cookie</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h1 id="163Mail"><a href="#163Mail" class="headerlink" title="163Mail"></a>163Mail</h1><blockquote>
+<p>api: 登陆</p>
+</blockquote>
+<p>later<br>……</p>
+<hr>
+<h1 id="Java-正则表达式介绍"><a href="#Java-正则表达式介绍" class="headerlink" title="Java 正则表达式介绍"></a>Java 正则表达式介绍</h1><h2 id="贪婪模式表达式："><a href="#贪婪模式表达式：" class="headerlink" title="贪婪模式表达式："></a>贪婪模式表达式：</h2><p>贪婪模式  * + {n,} 默认情况是贪婪模式匹配    </p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X?</td>
+<td>X，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X*</td>
+<td>X，零次或多次</td>
+</tr>
+<tr>
+<td>X+</td>
+<td>X，一次或多次</td>
+</tr>
+<tr>
+<td>X{n}</td>
+<td>X，恰好 n 次</td>
+</tr>
+<tr>
+<td>X{n,}</td>
+<td>X，至少 n 次</td>
+</tr>
+<tr>
+<td>X{n,m}</td>
+<td>X，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<h2 id="非贪婪模式表达式："><a href="#非贪婪模式表达式：" class="headerlink" title="非贪婪模式表达式："></a>非贪婪模式表达式：</h2><p>非贪婪模式，?跟在 * + {n,} 等的后面时，表示非贪婪模式，注意和子表达式后面的?区分开，子表达式后的?表示匹配0次或1次  </p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X??</td>
+<td>X，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X*?</td>
+<td>X，零次或多次</td>
+</tr>
+<tr>
+<td>X+?</td>
+<td>X，一次或多次</td>
+</tr>
+<tr>
+<td>X{n}?</td>
+<td>X，恰好 n 次</td>
+</tr>
+<tr>
+<td>X{n,}?</td>
+<td>X，至少 n 次</td>
+</tr>
+<tr>
+<td>X{n,m}?</td>
+<td>X，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>in util/core.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app=getApp();</span><br></pre></td></tr></table></figure>
+<p>exception: app undefined … …</p>
+<p>App() 必须在 app.js 中注册，且不能注册多个。</p>
+<ul>
+<li>不要在定义于 App() 内的函数中调用 getApp() ，使用 this 就可以拿到 app 实例。</li>
+<li>不要在 onLaunch 的时候调用 getCurrentPages()，此时 page 还没有生成。</li>
+<li>通过 getApp() 获取实例之后，不要私自调用生命周期函数。</li>
+<li>直接修改 this.data 而不调用 this.setData是无法改变页面的状态的，还会造成数据不一致。</li>
+<li>单次设置的数据不能超过1024kB，请尽量避免一次设置过多的数据。</li>
+<li>请不要把 data 中任何一项的 value 设为 undefined，否则这一项将不被设置并可能遗留一些潜在问题。</li>
+</ul>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSL-amp-自签名证书"><span class="nav-number">1.</span> <span class="nav-text">SSL&amp;自签名证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#微信小程序样式"><span class="nav-number">2.</span> <span class="nav-text">微信小程序样式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iconfont"><span class="nav-number">2.1.</span> <span class="nav-text">iconfont</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#矢量图标的使用"><span class="nav-number">2.1.1.</span> <span class="nav-text">矢量图标的使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网易云音乐"><span class="nav-number">3.</span> <span class="nav-text">网易云音乐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#轮播图api"><span class="nav-number">3.1.</span> <span class="nav-text">轮播图api</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bugs"><span class="nav-number">3.2.</span> <span class="nav-text">Bugs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setData"><span class="nav-number">3.2.1.</span> <span class="nav-text">setData</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听蓝牙-amp-耳机连接"><span class="nav-number">3.3.</span> <span class="nav-text">监听蓝牙&amp;耳机连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据处理"><span class="nav-number">3.4.</span> <span class="nav-text">数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组相关"><span class="nav-number">3.4.1.</span> <span class="nav-text">数组相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加对象"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">添加对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滚动"><span class="nav-number">3.4.2.</span> <span class="nav-text">滚动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urlencode"><span class="nav-number">3.4.3.</span> <span class="nav-text">urlencode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Javascript"><span class="nav-number">3.4.3.1.</span> <span class="nav-text">Javascript</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-正则表达式贪婪模式-amp-非贪婪模式"><span class="nav-number">3.4.4.</span> <span class="nav-text">Java 正则表达式贪婪模式&amp;非贪婪模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Javascript正则表达式"><span class="nav-number">3.4.5.</span> <span class="nav-text">Javascript正则表达式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub"><span class="nav-number">4.</span> <span class="nav-text">GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登陆"><span class="nav-number">4.1.</span> <span class="nav-text">登陆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#登出"><span class="nav-number">4.2.</span> <span class="nav-text">登出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stats请求："><span class="nav-number">4.3.</span> <span class="nav-text">stats请求： ????</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序请求Cookie"><span class="nav-number">4.4.</span> <span class="nav-text">小程序请求Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求后的数据"><span class="nav-number">4.4.1.</span> <span class="nav-text">请求后的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie相关"><span class="nav-number">4.4.2.</span> <span class="nav-text">Cookie相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie设置"><span class="nav-number">4.4.3.</span> <span class="nav-text">Cookie设置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#163Mail"><span class="nav-number">5.</span> <span class="nav-text">163Mail</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-正则表达式介绍"><span class="nav-number">6.</span> <span class="nav-text">Java 正则表达式介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#贪婪模式表达式："><span class="nav-number">6.1.</span> <span class="nav-text">贪婪模式表达式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非贪婪模式表达式："><span class="nav-number">6.2.</span> <span class="nav-text">非贪婪模式表达式：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problem"><span class="nav-number">7.</span> <span class="nav-text">Problem</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

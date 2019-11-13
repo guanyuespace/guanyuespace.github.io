@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="数据库–事务操作 原文地址  什么是事务（Transaction）？事务是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。 事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。 一个逻辑工作单元要成为事务，必须满足所谓的 ACID（原子性、一">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;sql_data&#x2F;simpread-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%94%81%E8%AF%A6%E8%A7%A3.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="数据库–事务操作 原文地址  什么是事务（Transaction）？事务是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。 事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。 一个逻辑工作单元要成为事务，必须满足所谓的 ACID（原子性、一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-230bd9f3a38d46ae">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-839ce32fe192bd47">
+<meta property="og:image" content="https:&#x2F;&#x2F;static.oschina.net&#x2F;uploads&#x2F;img&#x2F;201609&#x2F;08182606_5JWd.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;static.oschina.net&#x2F;uploads&#x2F;img&#x2F;201609&#x2F;08182622_fbD9.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-1a6a6a3c1503b61a">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-6d15fab5100cba3d">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-e8d56d0445de0ef8">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-d9fe7d2e9d9bdb63">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-5578326685ef4833">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-10d920bf7e152fd9">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-cd2007efbd8bac52">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-0ad2dc34fc526fa3">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-a011a25c27325837">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-47aa90aa9d684d50">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2987956-230bd9f3a38d46ae">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/sql_data/simpread-数据库事务与锁详解.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="数据库–事务操作"><a href="#数据库–事务操作" class="headerlink" title="数据库–事务操作"></a>数据库–事务操作</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/eb41df600775" target="_blank" rel="noopener">原文地址</a></p>
+</blockquote>
+<h2 id="什么是事务（Transaction）？"><a href="#什么是事务（Transaction）？" class="headerlink" title="什么是事务（Transaction）？"></a>什么是事务（Transaction）？</h2><p><strong>事务</strong>是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。</p>
+<p>事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。</p>
+<p>一个逻辑工作单元要成为事务，必须满足所谓的 <code>ACID</code>（<strong>原子性</strong>、<strong>一致性</strong>、<strong>隔离性</strong> 和<strong>持久性</strong>）属性。事务是数据库运行中的一个逻辑工作单位，由 <code>DBMS</code>(Data Base Manager System) 中的事务管理子系统负责事务的处理。</p>
+<h2 id="事务的-4-个特性"><a href="#事务的-4-个特性" class="headerlink" title="事务的 4 个特性"></a>事务的 4 个特性</h2><ul>
+<li><p><strong>原子性(Atomic)</strong>：事务必须是原子工作单元；对于其数据修改，要么全都执行，要么全都不执行。通常，与某个事务关联的操作具有共同的目标，并且是相互依赖的。如果系统只执行这些操作的一个子集，则可能会破坏事务的总体目标。原子性消除了系统处理操作子集的可能性。</p>
+</li>
+<li><p><strong>一致性(Consistency)</strong>：事务的一致性指的是在<strong>一个事务执行之前和执行之后数据库都必须处于一致性状态</strong>。这种特性称为事务的一致性。假如数据库的状态满足所有的完整性约束，就说该数据库是一致的。<!-- 事务的一致性定义基本可以理解为是事务对数据完整性约束的遵循。这些约束可能包括主键约束、外键约束或是一些用户自定义约束。事务执行的前后都是合法的数据状态，不会违背任何的数据完整性，这就是 “一致” 的意思。 当然这个含义中也隐含着对开发者的要求，就是不能写出错误的事务逻辑，比如银行的转账不能只加钱不减钱，这是应用层面的一致性要求。 --></p>
+</li>
+<li><p><strong>隔离性 (Isolation)</strong>：由<strong>并发事务所作的修改必须与任何其它并发事务所作的修改隔离</strong>。事务查看数据时数据所处的状态，到底是另一个事务执行之前的状态还是中间某个状态，相互之间存在什么影响，是可以通过隔离级别的设置来控制的。<!-- 保证并行事务处理能够达到 “互不干扰” 的效果。 --></p>
+</li>
+<li><p><strong>持久性 (Durability)</strong>：<strong>事务结束后，事务处理的结果必须能够得到固化，即写入数据库文件中即使机器宕机数据也不会丢失</strong>，它对于系统的影响是永久性的。<!-- 持久性就是指，事务一旦被提交，那么数据一定会被写入到数据库中并持久储存起来。另外，当事务被提交后就无法再回滚，如果想要撤销一个已经提交的事务，那就只能执行一个效果与其相反的事务，这也是持久性的一种体现。 --></p>
+</li>
+</ul>
+<h2 id="事务并发控制"><a href="#事务并发控制" class="headerlink" title="事务并发控制"></a>事务并发控制</h2><p>我们从另外一个方向来说说，如果不对事务进行并发控制，我们看看数据库并发操作是会有那些异常情形，有些使我们可以接受的，有些是不能接受的，注意这里的异常就是特定语境下的，并不一定就是错误什么的。假设有一个 <code>order</code> 表，有个字段叫 <code>count</code>，作为计数用，当前值为 <code>100</code></p>
+<ul>
+<li><p><strong>第一类丢失更新（Update Lost）</strong>：此种更新丢失是<em>因为回滚的原因</em>，所以也叫<em>回滚丢失</em>。此时两个事务同时更新 <code>count</code>，两个事务都读取到 <code>100</code>，事务一更新成功并提交，<code>count=100+1=101</code>，事务二出于某种原因更新失败了，然后回滚，事务二就把 <code>count</code> 还原为它一开始读到的 <code>100</code>，此时事务一的更新就这样丢失了。</p>
+</li>
+<li><p><strong>脏读（Dirty Read）</strong>：此种异常时因为<em>一个事务读取了另一个事务修改了但是未提交的数据</em>。举个例子，事务一更新了 <code>count=101</code>，但是没有提交，事务二此时读取 <code>count</code>，值为 <code>101</code> 而不是 <code>100</code>，然后事务一出于某种原因回滚了，然后第二个事务读取的这个值就是噩梦的开始。</p>
+</li>
+<li><p><strong>不可重复读（Not Repeatable Read）</strong>：此种异常是<em>一个事务对同一行数据执行了两次或更多次查询，但是却得到了不同的结果</em>，也就是在一个事务里面你不能重复（即多次）读取一行数据，如果你这么做了，不能保证每次读取的结果是一样的，有可能一样有可能不一样。造成这个结果是<strong>在两次查询之间有别的事务对该行数据做了更新操作</strong>。举个例子，事务一先查询了 <code>count</code>，值为 <code>100</code>，此时事务二更新了 <code>count=101</code>，事务一再次读取 <code>count</code>, 值就会变成 <code>101</code>，两次读取结果不一样。</p>
+</li>
+<li><p><strong>第二类丢失更新（Second Update Lost）</strong>：此种更新丢失是因为<em>更新被其他事务给覆盖了</em>，也可以叫<em>覆盖丢失</em>。举个例子，两个事务同时更新 <code>count</code>，都读取 <code>100</code> 这个初始值，事务一先更新成功并提交，<code>count=100+1=101</code>，事务二后更新成功并提交，<code>count=100+1=101</code>, 由于事务二 <code>count</code> 还是从 <code>100</code> 开始增加，事务一的更新就这样丢失了。</p>
+</li>
+<li><p><strong>幻读（Phantom Read）</strong>：<em>幻读和不可重复读有点像，只是针对的不是数据的值而是数据的数量</em>。此种异常是一个事务在两次查询的过程中数据的数量不同，让人以为发生幻觉，幻读大概就是这么得来的吧。举个例子，事务一查询 <code>order</code> 表有多少条记录，事务二新增了一条记录，然后事务一查了一下 <code>order</code> 表有多少记录，发现和第一次不一样，这就是幻读。</p>
+<blockquote>
+<p>此处将幻读与不可重复读分离，学习教材《数据库与安全》未分离</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="数据库事务隔离级别"><a href="#数据库事务隔离级别" class="headerlink" title="数据库事务隔离级别"></a>数据库事务隔离级别</h2><p>上面几种情况并不是一定都要避免的，具体看你的业务要求，包括你数据库的负载都会影响你的决定。上面各种异常情况都是多个事务之间相互影响造成的，这说明<em>两个事务之间需要某种方式将他们从某种程度上分开，降低直至避免相互影响</em>。这时候数据库事务隔离级别就粉墨登场了，而数据库的隔离级别实现一般是通过数据库锁实现的。</p>
+<ul>
+<li><p><strong>读未提交（Read Uncommitted）</strong>：该隔离级别指即使一个事务的更新语句没有提交, 但是别的事务可以读到这个改变，几种异常情况都可能出现。极易出错，没有安全性可言，基本不会使用。</p>
+</li>
+<li><p><strong>读已提交（Read Committed）</strong>：该隔离级别指一个事务只能看到其他事务的已经提交的更新，看不到未提交的更新，<strong>消除了脏读和第一类丢失更新</strong>，这是大多数数据库的默认隔离级别，如 Oracle,Sqlserver。</p>
+</li>
+<li><p><strong>可重复读（Repeatable Read）</strong>：该隔离级别指一个事务中进行两次或多次同样的对于数据内容的查询，得到的结果是一样的，但不保证对于数据条数的查询是一样的，<strong>只要存在读改行数据就禁止写</strong>，<strong>消除了不可重复读和第二类更新丢失</strong>，这是 Mysql 数据库的默认隔离级别。<!-- 共享读，互斥写 --></p>
+</li>
+<li><p><strong>串行化（Serializable）</strong>：意思是说这个事务执行的时候不允许别的事务并发执行. 完全串行化的读，<strong>只要存在读就禁止写, 但可以同时读，消除了幻读</strong>。这是事务隔离的最高级别，虽然最安全最省心，但是效率太低，一般不会用。<!-- 共享读，互斥写 --></p>
+<blockquote>
+<p>此处串行化读与可重复度</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="下面是各种隔离级别对各异常的控制能力："><a href="#下面是各种隔离级别对各异常的控制能力：" class="headerlink" title="下面是各种隔离级别对各异常的控制能力："></a>下面是各种隔离级别对各异常的控制能力：</h3><table>
+<thead>
+<tr>
+<th>级别 \ 异常</th>
+<th>第一类更新丢失</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>第二类丢失更新</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读未提交</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>读已提交</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>串行化</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody></table>
+<h2 id="数据库锁分类"><a href="#数据库锁分类" class="headerlink" title="数据库锁分类"></a>数据库锁分类</h2><p>一般可以分为两类，一个是悲观锁，一个是乐观锁，悲观锁一般就是我们通常说的数据库锁机制，乐观锁一般是指用户自己实现的一种锁机制，比如 <code>hibernate</code> 实现的乐观锁甚至编程语言也有乐观锁的思想的应用。</p>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><p>它对于数据被外界修改持保守态度，认为数据随时会修改，所以整个数据处理中需要将数据加锁。<br>悲观锁一般都是依靠关系数据库提供的锁机制，事实上关系数据库中的行锁，表锁不论是读写锁都是悲观锁。</p>
+<!-- 联系Java读写锁ReentrantReadWriteLock -->
+
+
+<h4 id="悲观锁按照使用性质划分："><a href="#悲观锁按照使用性质划分：" class="headerlink" title="悲观锁按照使用性质划分："></a>悲观锁按照使用性质划分：</h4><ul>
+<li><p><strong>共享锁（Share locks 简记为 S 锁）</strong>：也称读锁，事务 A 对对象 T 加 s 锁，其他事务也只能对 T 加 S，多个事务可以同时读，但不能有写操作，直到 A 释放 S 锁。</p>
+</li>
+<li><p><strong>排它锁（Exclusivelocks 简记为 X 锁）</strong>：也称写锁，事务 A 对对象 T 加 X 锁以后，其他事务不能对 T 加任何锁，只有事务 A 可以读写对象 T 直到 A 释放 X 锁。</p>
+</li>
+<li><p><strong>更新锁（简记为 U 锁）</strong>：<strong>用来预定要对此对象施加 X 锁，它允许其他事务读，但不允许再施加 U 锁或 X 锁</strong>；当被读取的对象将要被更新时，则升级为 X 锁，主要是用来<strong>防止死锁的</strong>。因为使用共享锁时，修改数据的操作分为两步，首先获得一个共享锁，读取数据，然后将共享锁升级为排它锁，然后再执行修改操作。这样如果同时有两个或多个事务同时对一个对象申请了共享锁，在修改数据的时候，这些事务都要将共享锁升级为排它锁。这些事务都不会释放共享锁而是一直等待对方释放，这样就造成了死锁。如果一个数据在修改前直接申请更新锁，在数据修改的时候再升级为排它锁，就可以避免死锁。</p>
+</li>
+</ul>
+<h4 id="悲观锁按照作用范围划分："><a href="#悲观锁按照作用范围划分：" class="headerlink" title="悲观锁按照作用范围划分："></a>悲观锁按照作用范围划分：</h4><ul>
+<li><strong>行锁</strong>：锁的作用范围是行级别，数据库能够确定那些行需要锁的情况下使用行锁，如果不知道会影响哪些行的时候就会使用表锁。举个例子，一个用户表 <code>user</code>，有主键 <code>id</code> 和用户生日 <code>birthday</code> 当你使用 <code>update ... where id=?</code> 这样的语句数据库明确知道会影响哪一行，它就会使用行锁，当你使用 <code>update ... where birthday=?</code> 这样的的语句的时候因为事先不知道会影响哪些行就可能会使用表锁。</li>
+<li><strong>表锁</strong>：锁的作用范围是整张表。</li>
+</ul>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><p>每次自己操作数据的时候认为没有人回来修改它，所以不去加锁，但是<strong>在更新的时候会去判断在此期间数据有没有被修改</strong>，需要用户自己去实现。</p>
+<p>既然都有数据库提供的悲观锁可以方便使用为什么要使用乐观锁呢？_对于读操作远多于写操作的时候，大多数都是读取，这时候一个更新操作加锁会阻塞所有读取，降低了吞吐量_。最后还要释放锁，锁是需要一些开销的，我们 _只要想办法解决极少量的更新操作的同步问题_。</p>
+<p>换句话说，如果是读写比例差距不是非常大或者你的系统没有响应不及时，吞吐量瓶颈问题，那就不要去使用乐观锁，它增加了复杂度，也带来了额外的风险。</p>
+<!-- 乐观锁联系Java--StampedLock的实现stamp -->
+
+<h4 id="乐观锁实现方式："><a href="#乐观锁实现方式：" class="headerlink" title="乐观锁实现方式："></a>乐观锁实现方式：</h4><ul>
+<li><strong>版本号（记为 version）</strong>：就是给数据增加一个版本标识，在数据库上就是表中增加一个 <code>version</code> 字段，每次更新把这个字段加 <code>1</code>，读取数据的时候把 <code>version</code> 读出来，更新的时候比较 <code>version</code>，如果还是开始读取的 <code>version</code> 就可以更新了，如果现在的 <code>version</code> 比老的 <code>version</code> 大，说明有其他事务更新了该数据，并增加了版本号，这时候得到一个无法更新的通知，用户自行根据这个通知来决定怎么处理，比如重新开始一遍。这里的关键是判断 <code>version</code> 和更新两个动作需要作为一个原子单元执行，否则在你判断可以更新以后正式更新之前有别的事务修改了 <code>version</code>，这个时候你再去更新就可能会覆盖前一个事务做的更新，造成第二类丢失更新，所以你可以使用 <code>update ... where ... and version=&quot;old version&quot;</code> 这样的语句，根据返回结果是 <code>0</code> 还是非 <code>0</code> 来得到通知，如果是 <code>0</code> 说明更新没有成功，因为 <code>version</code> 被改了，如果返回非 <code>0</code> 说明更新成功。</li>
+<li><strong>时间戳（timestamp）</strong>：和版本号基本一样，只是通过时间戳来判断而已，<strong>注意时间戳要使用数据库服务器的时间戳不能是业务系统的时间</strong>。</li>
+<li><strong>待更新字段</strong>：和版本号方式相似，只是不增加额外字段，直接使用有效数据字段做版本控制信息，因为有时候我们可能无法改变旧系统的数据库表结构。假设有个待更新字段叫 <code>count</code>, 先去读取这个 <code>count</code>, 更新的时候去比较数据库中 <code>count</code> 的值是不是我期望的值（即开始读的值），如果是就把我修改的 <code>count</code> 的值更新到该字段，否则更新失败。<code>java</code> 的基本类型的原子类型对象如 <code>AtomicInteger</code> 就是这种思想。</li>
+<li><strong>所有字段</strong>：和待更新字段类似，只是使用所有字段做版本控制信息，只有所有字段都没变化才会执行更新。</li>
+</ul>
+<h4 id="乐观锁几种方式的区别："><a href="#乐观锁几种方式的区别：" class="headerlink" title="乐观锁几种方式的区别："></a>乐观锁几种方式的区别：</h4><p>新系统设计可以使用 <code>version</code> 方式和 <code>timestamp</code> 方式，需要增加字段，应用范围是整条数据，不论那个字段修改都会更新 <code>version</code>, 也就是说 <strong>两个事务更新同一条记录的两个不相关字段也是互斥的，不能同步进行</strong>。</p>
+<p>旧系统不能修改数据库表结构的时候 _使用数据字段作为版本控制信息_，不需要新增字段，<strong>待更新字段方式只要其他事务修改的字段和当前事务修改的字段没有重叠就可以同步进行，并发性更高</strong>。</p>
+<h2 id="mysql-事务隔离级别实战"><a href="#mysql-事务隔离级别实战" class="headerlink" title="mysql 事务隔离级别实战"></a>mysql 事务隔离级别实战</h2><p>实践是检验真理的唯一标准，掌握上面的理论之后，我们在数据库上实战一番家里更好地掌握也加深理解，同时有助于解决实际问题。不同数据库很多实现可能不同，这里以 <code>mysql</code> 为例讲解各种隔离级别下的情况，测试表为 <code>user（id,name,gender,passwd,email）</code>。</p>
+<h3 id="隔离级别：read-uncommitted"><a href="#隔离级别：read-uncommitted" class="headerlink" title="隔离级别：read-uncommitted"></a>隔离级别：read-uncommitted</h3><h4 id="脏读测试流程："><a href="#脏读测试流程：" class="headerlink" title="脏读测试流程："></a>脏读测试流程：</h4><ol>
+<li>A 设置隔离级别为 read-uncommitted（注意这里未声明都是 session 级别，而非全局的），开启事务，查询 id=1 的记录</li>
+<li>B 设置隔离级别为 read-uncommitted, 开启事务，修改 id=1 的记录，但不提交</li>
+<li>A 再次查询 id=1 的记录，和第一次查询的比较一下</li>
+<li>B 事务回滚，A 事务回滚。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2987956-230bd9f3a38d46ae" alt="脏读-事务A操作" title="脏读-事务A操作"><br><img src="http://upload-images.jianshu.io/upload_images/2987956-839ce32fe192bd47" alt="脏读-事务B操作" title="脏读-事务B操作"><br>结论：A 读到了 B 没有提交的内容，隔离级别为 read-uncommitted 的时候出现脏读。</p>
+<h4 id="第一类更新丢失测试流程："><a href="#第一类更新丢失测试流程：" class="headerlink" title="第一类更新丢失测试流程："></a>第一类更新丢失测试流程：</h4><ol>
+<li>A 设置隔离级别为 read-uncommitted，开启事务，查询 id=1 的记录</li>
+<li>B 设置隔离级别为 read-uncommitted，开启事务, 查询 id=1 的记录</li>
+<li>A 修改 id=1 的记录</li>
+<li>B 修改 id=1 的记录</li>
+<li>A 提交</li>
+<li>B 回滚</li>
+<li>A 在查询一次 id=1 的记录，看看自己的修改是否成功</li>
+</ol>
+<p>结论：结果不如我所想的，A 的更新成功了，为什么呢？<strong>A 执行 <code>update</code> 语句的时候对该条记录加锁了，B 这时候根本无法修改直至超时，也就是至少在 mysql 中在 read-uncommitted 隔离级别下验证第一类丢失更新</strong>，据了解有的数据库好像可以设置不加锁，如果能够不加锁的话则可以实现，也贴一下图吧。</p>
+<p><img src="https://static.oschina.net/uploads/img/201609/08182606_5JWd.png" alt="第一类更新丢失-事务A操作" title="第一类更新丢失-事务A操作"><br><img src="https://static.oschina.net/uploads/img/201609/08182622_fbD9.png" alt="第一类更新丢失-事务B操作" title="第一类更新丢失-事务B操作"></p>
+<h4 id="不可重复读测试流程（省略）："><a href="#不可重复读测试流程（省略）：" class="headerlink" title="不可重复读测试流程（省略）："></a>不可重复读测试流程（省略）：</h4><p>结论：流程和测试脏读一样，其实在第一次测试脏读的时候就可以发现会出现不可重复读，A 两次读取 id=1 的数据内容不同。</p>
+<h4 id="第二类丢失更新流程："><a href="#第二类丢失更新流程：" class="headerlink" title="第二类丢失更新流程："></a>第二类丢失更新流程：</h4><ol>
+<li>A 开启事务，查询 order_id=1 的记录</li>
+<li>B 开启事务，查询 order_id=1 的记录</li>
+<li>A 把查出来的 count 加 1 后更新</li>
+<li>B 把查出来的 count 加 1 更新</li>
+<li>A 提交，B 也提交</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2987956-1a6a6a3c1503b61a" alt="第二类丢失-事务A操作" title="第二类丢失-事务A操作"><br><img src="http://upload-images.jianshu.io/upload_images/2987956-6d15fab5100cba3d" alt="第二类丢失-事务B操作" title="第二类丢失-事务B操作"></p>
+<p>结论：A 的更新丢失，我们希望的结果是 3，而实际结果是 2，跟 java 的多线程很像对不对，read-uncommitted 隔离模式下会出现第二类丢失更新。</p>
+<h4 id="幻读测试流程："><a href="#幻读测试流程：" class="headerlink" title="幻读测试流程："></a>幻读测试流程：</h4><ol>
+<li>A 开启事务，查询 user 表所有数据</li>
+<li>B 开启事务，新增一条记录</li>
+<li>A 再次查询 user 表所有记录，和第一次作比对</li>
+<li>A 回滚，B 回滚</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2987956-e8d56d0445de0ef8" alt="幻读-事务A操作" title="幻读-事务A操作"><br><img src="http://upload-images.jianshu.io/upload_images/2987956-d9fe7d2e9d9bdb63" alt="幻读-事务B操作" title="幻读-事务B操作"></p>
+<p>结论：A 两次查询全表数据结果不同，read-uncommitted 隔离模式下会出现幻读。</p>
+<p>注：因为后面对这几种异常情况的测试流程基本和上面一样，个别有些差别读者自己注意，另外注意更改隔离级别即可，就能看到对应结果，后面的我只给出进一步能解决的异常测试截图, 结论可以参照前面的对照表。</p>
+<h3 id="隔离级别：read-committed"><a href="#隔离级别：read-committed" class="headerlink" title="隔离级别：read-committed"></a>隔离级别：read-committed</h3><h5 id="脏读测试截图"><a href="#脏读测试截图" class="headerlink" title="脏读测试截图"></a>脏读测试截图</h5><p>A:<br><img src="http://upload-images.jianshu.io/upload_images/2987956-5578326685ef4833" alt=""><br>B：<br><img src="http://upload-images.jianshu.io/upload_images/2987956-10d920bf7e152fd9" alt=""><br>结论：A 没有读到 B 没有提交的内容，隔离级别为 read-committed 的时候不会出现脏读。</p>
+<h3 id="隔离级别：repeatable-read"><a href="#隔离级别：repeatable-read" class="headerlink" title="隔离级别：repeatable-read"></a>隔离级别：repeatable-read</h3><h5 id="不可重复读测试截图"><a href="#不可重复读测试截图" class="headerlink" title="不可重复读测试截图"></a>不可重复读测试截图</h5><p>A:<br><img src="http://upload-images.jianshu.io/upload_images/2987956-cd2007efbd8bac52" alt=""><br>B：<br><img src="http://upload-images.jianshu.io/upload_images/2987956-0ad2dc34fc526fa3" alt=""><br>结论：A 两次读取 id=1 的数据内容相同，repeatable-read 隔离模式下不会出现不可重复读。</p>
+<h3 id="隔离级别：Serializable"><a href="#隔离级别：Serializable" class="headerlink" title="隔离级别：Serializable"></a>隔离级别：Serializable</h3><h5 id="幻读测试截图"><a href="#幻读测试截图" class="headerlink" title="幻读测试截图"></a>幻读测试截图</h5><p>A:<br><img src="http://upload-images.jianshu.io/upload_images/2987956-a011a25c27325837" alt=""><br>B：<br><img src="http://upload-images.jianshu.io/upload_images/2987956-47aa90aa9d684d50" alt=""><br>结论：因为 A 事务未提交之前，B 事务插入操作无法获得锁而超时，Serializable 隔离模式下不会出现幻读。</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库–事务操作"><span class="nav-number">1.</span> <span class="nav-text">数据库–事务操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是事务（Transaction）？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是事务（Transaction）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的-4-个特性"><span class="nav-number">1.2.</span> <span class="nav-text">事务的 4 个特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务并发控制"><span class="nav-number">1.3.</span> <span class="nav-text">事务并发控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务隔离级别"><span class="nav-number">1.4.</span> <span class="nav-text">数据库事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下面是各种隔离级别对各异常的控制能力："><span class="nav-number">1.4.1.</span> <span class="nav-text">下面是各种隔离级别对各异常的控制能力：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库锁分类"><span class="nav-number">1.5.</span> <span class="nav-text">数据库锁分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#悲观锁"><span class="nav-number">1.5.1.</span> <span class="nav-text">悲观锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁按照使用性质划分："><span class="nav-number">1.5.1.1.</span> <span class="nav-text">悲观锁按照使用性质划分：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁按照作用范围划分："><span class="nav-number">1.5.1.2.</span> <span class="nav-text">悲观锁按照作用范围划分：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乐观锁"><span class="nav-number">1.5.2.</span> <span class="nav-text">乐观锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#乐观锁实现方式："><span class="nav-number">1.5.2.1.</span> <span class="nav-text">乐观锁实现方式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乐观锁几种方式的区别："><span class="nav-number">1.5.2.2.</span> <span class="nav-text">乐观锁几种方式的区别：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql-事务隔离级别实战"><span class="nav-number">1.6.</span> <span class="nav-text">mysql 事务隔离级别实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离级别：read-uncommitted"><span class="nav-number">1.6.1.</span> <span class="nav-text">隔离级别：read-uncommitted</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#脏读测试流程："><span class="nav-number">1.6.1.1.</span> <span class="nav-text">脏读测试流程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类更新丢失测试流程："><span class="nav-number">1.6.1.2.</span> <span class="nav-text">第一类更新丢失测试流程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不可重复读测试流程（省略）："><span class="nav-number">1.6.1.3.</span> <span class="nav-text">不可重复读测试流程（省略）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类丢失更新流程："><span class="nav-number">1.6.1.4.</span> <span class="nav-text">第二类丢失更新流程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#幻读测试流程："><span class="nav-number">1.6.1.5.</span> <span class="nav-text">幻读测试流程：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离级别：read-committed"><span class="nav-number">1.6.2.</span> <span class="nav-text">隔离级别：read-committed</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#脏读测试截图"><span class="nav-number">1.6.2.0.1.</span> <span class="nav-text">脏读测试截图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离级别：repeatable-read"><span class="nav-number">1.6.3.</span> <span class="nav-text">隔离级别：repeatable-read</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#不可重复读测试截图"><span class="nav-number">1.6.3.0.1.</span> <span class="nav-text">不可重复读测试截图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离级别：Serializable"><span class="nav-number">1.6.4.</span> <span class="nav-text">隔离级别：Serializable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#幻读测试截图"><span class="nav-number">1.6.4.0.1.</span> <span class="nav-text">幻读测试截图</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

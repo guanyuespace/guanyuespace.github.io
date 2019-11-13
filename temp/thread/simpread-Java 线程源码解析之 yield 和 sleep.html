@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="yield与sleep源码解析 原文地址  概述由于 Thread 的 yield 和 sleep 有一定的相似性，因此放在一起进行分析。yield 会释放 CPU 资源，让优先级更高（至少是相同）的线程获得执行机会；sleep 当传入参数为 0 时，和 yield 相同；当传入参数大于 0 时，也是释放 CPU 资源，当可以让其它任何优先级的线程获得执行机会； 假设当前进程只有 main 线程，">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YUE">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;temp&#x2F;thread&#x2F;simpread-Java%20%E7%BA%BF%E7%A8%8B%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%20yield%20%E5%92%8C%20sleep.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="yield与sleep源码解析 原文地址  概述由于 Thread 的 yield 和 sleep 有一定的相似性，因此放在一起进行分析。yield 会释放 CPU 资源，让优先级更高（至少是相同）的线程获得执行机会；sleep 当传入参数为 0 时，和 yield 相同；当传入参数大于 0 时，也是释放 CPU 资源，当可以让其它任何优先级的线程获得执行机会； 假设当前进程只有 main 线程，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2592685-2a84bc0961dafbbe.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2592685-0ffa149115b2ab35.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2592685-5dbef871d6a7adb0.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2592685-613fc525333ad775.png">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;2592685-2a84bc0961dafbbe.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/temp/thread/simpread-Java 线程源码解析之 yield 和 sleep.html"/>
+
+
+
+
+
+  <title> | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body han-init-context">
+        
+        
+          <h1 id="yield与sleep源码解析"><a href="#yield与sleep源码解析" class="headerlink" title="yield与sleep源码解析"></a>yield与sleep源码解析</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/0964124ae822" target="_blank" rel="noopener">原文地址</a></p>
+</blockquote>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>由于 Thread 的 yield 和 sleep 有一定的相似性，因此放在一起进行分析。yield 会释放 CPU 资源，让优先级更高（至少是相同）的线程获得执行机会；sleep 当传入参数为 0 时，和 yield 相同；当传入参数大于 0 时，也是释放 CPU 资源，当可以让其它任何优先级的线程获得执行机会；</p>
+<p>假设当前进程只有 main 线程，当调用 yield 之后，main 线程会继续运行，因为没有比它优先级更高的线程；而调用 sleep 之后，mian 线程会进入 TIMED_WAITING 状态，不会继续运行；</p>
+<h1 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h1><p>Thread.sleep 底层是通过 JVM_Yield 方法实现的（见 jvm.cpp）:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">JVM_ENTRY(<span class="keyword">void</span>, JVM_Yield(JNIEnv *env, jclass threadClass))</span><br><span class="line">  JVMWrapper(<span class="string">"JVM_Yield"</span>);</span><br><span class="line">  <span class="comment">//检查是否设置了DontYieldALot参数,默认为fasle</span></span><br><span class="line">  <span class="comment">//如果设置为true,直接返回</span></span><br><span class="line">  <span class="keyword">if</span> (os::dont_yield()) <span class="keyword">return</span>;</span><br><span class="line"> <span class="comment">//如果ConvertYieldToSleep=true（默认为false）,调用os::sleep,否则调用os::yield</span></span><br><span class="line">  <span class="keyword">if</span> (ConvertYieldToSleep) &#123;</span><br><span class="line">    os::sleep(thread, MinSleepInterval, <span class="literal">false</span>);<span class="comment">//sleep 1ms</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    os::yield();</span><br><span class="line">  &#125;</span><br><span class="line">JVM_END</span><br></pre></td></tr></table></figure>
+
+<p>从上面知道，实际上调用的是 os::yield:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//sched_yield是linux kernel提供的API,它会使调用线程放弃CPU使用权，加入到同等优先级队列的末尾；</span></span><br><span class="line"><span class="comment">//如果调用线程是优先级最高的唯一线程，yield方法返回后，调用线程会继续运行；</span></span><br><span class="line"><span class="comment">//因此可以知道，对于和调用线程相同或更高优先级的线程来说，yield方法会给予了它们一次运行的机会；</span></span><br><span class="line"><span class="keyword">void</span> os::yield() &#123;</span><br><span class="line">  sched_yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h1><p>Thread.sleep 最终调用 JVM_Sleep 方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">JVM_ENTRY(<span class="keyword">void</span>, JVM_Sleep(JNIEnv* env, jclass threadClass, jlong millis))</span><br><span class="line">  JVMWrapper(<span class="string">"JVM_Sleep"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (millis &lt; <span class="number">0</span>) &#123;<span class="comment">//参数校验</span></span><br><span class="line">    THROW_MSG(vmSymbols::java_lang_IllegalArgumentException(), <span class="string">"timeout value is negative"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//如果线程已经中断，抛出中断异常,关于中断的实现，在另一篇文章中会讲解</span></span><br><span class="line">  <span class="keyword">if</span> (Thread::is_interrupted (THREAD, <span class="literal">true</span>) &amp;&amp; !HAS_PENDING_EXCEPTION) &#123;</span><br><span class="line">    THROW_MSG(vmSymbols::java_lang_InterruptedException(), <span class="string">"sleep interrupted"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//设置线程状态为SLEEPING</span></span><br><span class="line">  <span class="function">JavaThreadSleepState <span class="title">jtss</span><span class="params">(thread)</span></span>;</span><br><span class="line"></span><br><span class="line">  EventThreadSleep event;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (millis == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">//如果设置了ConvertSleepToYield(默认为true),和yield效果相同</span></span><br><span class="line">    <span class="keyword">if</span> (ConvertSleepToYield) &#123;</span><br><span class="line">      os::yield();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">//否则调用os::sleep方法</span></span><br><span class="line">      ThreadState old_state = thread-&gt;osthread()-&gt;get_state();</span><br><span class="line">      thread-&gt;osthread()-&gt;set_state(SLEEPING);</span><br><span class="line">      os::sleep(thread, MinSleepInterval, <span class="literal">false</span>);<span class="comment">//sleep 1ms</span></span><br><span class="line">      thread-&gt;osthread()-&gt;set_state(old_state);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;<span class="comment">//参数大于0</span></span><br><span class="line">   <span class="comment">//保存初始状态，返回时恢复原状态</span></span><br><span class="line">    ThreadState old_state = thread-&gt;osthread()-&gt;get_state();</span><br><span class="line">    <span class="comment">//osthread-&gt;thread status mapping:</span></span><br><span class="line">    <span class="comment">// NEW-&gt;NEW</span></span><br><span class="line">    <span class="comment">//RUNNABLE-&gt;RUNNABLE</span></span><br><span class="line">    <span class="comment">//BLOCKED_ON_MONITOR_ENTER-&gt;BLOCKED</span></span><br><span class="line">    <span class="comment">//IN_OBJECT_WAIT,PARKED-&gt;WAITING</span></span><br><span class="line">    <span class="comment">//SLEEPING,IN_OBJECT_WAIT_TIMED,PARKED_TIMED-&gt;TIMED_WAITING</span></span><br><span class="line">    <span class="comment">//TERMINATED-&gt;TERMINATED</span></span><br><span class="line">    thread-&gt;osthread()-&gt;set_state(SLEEPING);</span><br><span class="line">    <span class="comment">//调用os::sleep方法，如果发生中断，抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> (os::sleep(thread, millis, <span class="literal">true</span>) == OS_INTRPT) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!HAS_PENDING_EXCEPTION) &#123;</span><br><span class="line">        <span class="keyword">if</span> (event.should_commit()) &#123;</span><br><span class="line">          event.set_time(millis);</span><br><span class="line">          event.commit();</span><br><span class="line">        &#125;</span><br><span class="line">        THROW_MSG(vmSymbols::java_lang_InterruptedException(), <span class="string">"sleep interrupted"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    thread-&gt;osthread()-&gt;set_state(old_state);<span class="comment">//恢复osThread状态</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (event.should_commit()) &#123;</span><br><span class="line">    event.set_time(millis);</span><br><span class="line">    event.commit();</span><br><span class="line">  &#125;</span><br><span class="line">JVM_END</span><br></pre></td></tr></table></figure>
+
+<p>os::sleep 的源码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> os::sleep(Thread* thread, jlong millis, <span class="keyword">bool</span> interruptible) &#123;</span><br><span class="line">  assert(thread == Thread::current(),  <span class="string">"thread consistency check"</span>);</span><br><span class="line">  <span class="comment">//线程有如下几个成员变量:</span></span><br><span class="line">  <span class="comment">//ParkEvent * _ParkEvent ;          // for synchronized()</span></span><br><span class="line">  <span class="comment">//ParkEvent * _SleepEvent ;        // for Thread.sleep</span></span><br><span class="line">  <span class="comment">//ParkEvent * _MutexEvent ;      // for native internal Mutex/Monitor</span></span><br><span class="line">  <span class="comment">//ParkEvent * _MuxEvent ;         // for low-level muxAcquire-muxRelease</span></span><br><span class="line">  ParkEvent * <span class="keyword">const</span> slp = thread-&gt;_SleepEvent ;</span><br><span class="line">  slp-&gt;reset() ;</span><br><span class="line">  OrderAccess::fence() ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果millis&gt;0,传入interruptible＝true,否则为false</span></span><br><span class="line">  <span class="keyword">if</span> (interruptible) &#123;</span><br><span class="line">    jlong prevtime = javaTimeNanos();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      <span class="keyword">if</span> (os::is_interrupted(thread, <span class="literal">true</span>)) &#123;<span class="comment">//判断是否中断</span></span><br><span class="line">        <span class="keyword">return</span> OS_INTRPT;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      jlong newtime = javaTimeNanos();<span class="comment">//获取当前时间</span></span><br><span class="line">      <span class="comment">//如果linux不支持monotonic lock,有可能出现newtime&lt;prevtime</span></span><br><span class="line">      <span class="keyword">if</span> (newtime - prevtime &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        assert(!Linux::supports_monotonic_clock(), <span class="string">"time moving backwards"</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        millis -= (newtime - prevtime) / NANOSECS_PER_MILLISEC;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(millis &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> OS_OK;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      prevtime = newtime;</span><br><span class="line">      &#123;</span><br><span class="line">        assert(thread-&gt;is_Java_thread(), <span class="string">"sanity check"</span>);</span><br><span class="line">        JavaThread *jt = (JavaThread *) thread;</span><br><span class="line">        <span class="function">ThreadBlockInVM <span class="title">tbivm</span><span class="params">(jt)</span></span>;</span><br><span class="line">        <span class="function">OSThreadWaitState <span class="title">osts</span><span class="params">(jt-&gt;osthread(), <span class="literal">false</span> )</span></span>;</span><br><span class="line"></span><br><span class="line">        jt-&gt;set_suspend_equivalent();</span><br><span class="line">        slp-&gt;park(millis);</span><br><span class="line">        jt-&gt;check_and_wait_while_suspended();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;<span class="comment">//如果interruptible=false</span></span><br><span class="line">   <span class="comment">//设置osthread的状态为CONDVAR_WAIT</span></span><br><span class="line">    OSThreadWaitState osts(thread-&gt;osthread(), <span class="literal">false</span> );</span><br><span class="line">    jlong prevtime = javaTimeNanos();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      jlong newtime = javaTimeNanos();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (newtime - prevtime &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        assert(!Linux::supports_monotonic_clock(), <span class="string">"time moving backwards"</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        millis -= (newtime - prevtime) / NANOSECS_PER_MILLISEC;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(millis &lt;= <span class="number">0</span>) <span class="keyword">break</span> ;</span><br><span class="line"></span><br><span class="line">      prevtime = newtime;</span><br><span class="line">      slp-&gt;park(millis);<span class="comment">//底层调用pthread_cond_timedwait实现</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> OS_OK ;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过阅读源码知道，原来 sleep 是通过 pthread_cond_timedwait 实现的，那么为什么不通过 linux 的 sleep 实现呢？</p>
+<ul>
+<li>pthread_cond_timedwait 既可以堵塞在某个条件变量上，也可以设置超时时间；</li>
+<li>sleep 不能及时唤醒线程, 最小精度为秒；</li>
+</ul>
+<p>可以看出 pthread_cond_timedwait 使用灵活，而且时间精度更高；</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>通过 strace 可以查看代码的系统调用情况，建立两个类，一个调用 Thread.sleep(), 一个调用 Thread.yield(), 查看其系统调用情况:</p>
+<h3 id="Thread-sleep-0"><a href="#Thread-sleep-0" class="headerlink" title="Thread.sleep(0)"></a>Thread.sleep(0)</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread.sleep(<span class="number">0</span>);</span><br><span class="line">System.out.println(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2592685-2a84bc0961dafbbe.png" alt=""> sleep0.png</p>
+<p>可以看到 sched_yield 的系统调用</p>
+<h3 id="Thread-sleep-nonzero"><a href="#Thread-sleep-nonzero" class="headerlink" title="Thread.sleep(nonzero)"></a>Thread.sleep(nonzero)</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">System.out.println(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2592685-0ffa149115b2ab35.png" alt=""> sleep2.png</p>
+<p>在其中并没有看到 pthread_cond_timedwait 的调用，其实 Java 的线程有可两种实现方式：</p>
+<ol>
+<li>LinuxThreads</li>
+<li>NPTL(Native POSIX Thread Library)</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NPTL or LinuxThreads?</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">is_LinuxThreads</span><span class="params">()</span>               </span>&#123; <span class="keyword">return</span> !_is_NPTL; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">is_NPTL</span><span class="params">()</span>                       </span>&#123; <span class="keyword">return</span> _is_NPTL;  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以通过如下命令查看到底是使用哪种线程实现:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getconf GNU_LIBPTHREAD_VERSION</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2592685-5dbef871d6a7adb0.png" alt=""> nptl.png</p>
+<p>关于两者之间的区别，请查看 <a href="https://link.jianshu.com?t=https://zh.wikipedia.org/wiki/Native_POSIX_Thread_Library" target="_blank" rel="noopener">wiki</a>。由于我的机器上采用的是 2，因此无法看到 ppthread_cond_timedwait 的调用；<br>ppthread_cond_timedwait 采用 futex（Fast Userspace muTEXes）实现，因而可以看到对 futex 的调用；</p>
+<p>关于 JVM 是如何决定采用哪种实现方式，可以查看如下方法 (os_linux.cpp):</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// detecting pthread library</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> os::Linux::libpthread_init() &#123;</span><br><span class="line">  <span class="comment">// Save glibc and pthread version strings. Note that _CS_GNU_LIBC_VERSION</span></span><br><span class="line">  <span class="comment">// and _CS_GNU_LIBPTHREAD_VERSION are supported in glibc &gt;= 2.3.2\. Use a</span></span><br><span class="line">  <span class="comment">// generic name for earlier versions.</span></span><br><span class="line">  <span class="comment">// Define macros here so we can build HotSpot on old systems.</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">ifndef</span> _CS_GNU_LIBC_VERSION</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> _CS_GNU_LIBC_VERSION 2</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">ifndef</span> _CS_GNU_LIBPTHREAD_VERSION</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> _CS_GNU_LIBPTHREAD_VERSION 3</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">size_t</span> n = confstr(_CS_GNU_LIBC_VERSION, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="keyword">char</span> *str = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(n, mtInternal);</span><br><span class="line">     confstr(_CS_GNU_LIBC_VERSION, str, n);</span><br><span class="line">     os::Linux::set_glibc_version(str);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">// _CS_GNU_LIBC_VERSION is not supported, try gnu_get_libc_version()</span></span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">char</span> _gnu_libc_version[<span class="number">32</span>];</span><br><span class="line">     jio_snprintf(_gnu_libc_version, <span class="keyword">sizeof</span>(_gnu_libc_version),</span><br><span class="line">              <span class="string">"glibc %s %s"</span>, gnu_get_libc_version(), gnu_get_libc_release());</span><br><span class="line">     os::Linux::set_glibc_version(_gnu_libc_version);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//系统函数confstr获取C库信息</span></span><br><span class="line">  n = confstr(_CS_GNU_LIBPTHREAD_VERSION, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="keyword">char</span> *str = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(n, mtInternal);</span><br><span class="line">     confstr(_CS_GNU_LIBPTHREAD_VERSION, str, n);</span><br><span class="line">     <span class="comment">// Vanilla RH-9 (glibc 2.3.2) has a bug that confstr() always tells</span></span><br><span class="line">     <span class="comment">// us "NPTL-0.29" even we are running with LinuxThreads. Check if this</span></span><br><span class="line">     <span class="comment">// is the case. LinuxThreads has a hard limit on max number of threads.</span></span><br><span class="line">     <span class="comment">// So sysconf(_SC_THREAD_THREADS_MAX) will return a positive value.</span></span><br><span class="line">     <span class="comment">// On the other hand, NPTL does not have such a limit, sysconf()</span></span><br><span class="line">     <span class="comment">// will return -1 and errno is not changed. Check if it is really NPTL.</span></span><br><span class="line">     <span class="keyword">if</span> (<span class="built_in">strcmp</span>(os::Linux::glibc_version(), <span class="string">"glibc 2.3.2"</span>) == <span class="number">0</span> &amp;&amp;</span><br><span class="line">         <span class="built_in">strstr</span>(str, <span class="string">"NPTL"</span>) &amp;&amp;</span><br><span class="line">         sysconf(_SC_THREAD_THREADS_MAX) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">       <span class="built_in">free</span>(str);</span><br><span class="line">       os::Linux::set_libpthread_version(<span class="string">"linuxthreads"</span>);</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       os::Linux::set_libpthread_version(str);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// glibc before 2.3.2 only has LinuxThreads.</span></span><br><span class="line">    os::Linux::set_libpthread_version(<span class="string">"linuxthreads"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">strstr</span>(libpthread_version(), <span class="string">"NPTL"</span>)) &#123;</span><br><span class="line">     os::Linux::set_is_NPTL();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     os::Linux::set_is_LinuxThreads();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// LinuxThreads have two flavors: floating-stack mode, which allows variable</span></span><br><span class="line">  <span class="comment">// stack size; and fixed-stack mode. NPTL is always floating-stack.</span></span><br><span class="line">  <span class="keyword">if</span> (os::Linux::is_NPTL() || os::Linux::supports_variable_stack_size()) &#123;</span><br><span class="line">     os::Linux::set_is_floating_stack();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Thread-yield"><a href="#Thread-yield" class="headerlink" title="Thread.yield"></a>Thread.yield</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread.yield();</span><br><span class="line">System.out.println(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2592685-613fc525333ad775.png" alt=""> Paste_Image.png</p>
+<p>和 Thread.sleep(0) 相同；</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="https://link.jianshu.com?t=http://www.ibm.com/developerworks/cn/linux/l-threading.html" target="_blank" rel="noopener">Linux 线程模型的比较：LinuxThreads 和 NPTL</a></li>
+</ol>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#yield与sleep源码解析"><span class="nav-number">1.</span> <span class="nav-text">yield与sleep源码解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yield"><span class="nav-number">3.</span> <span class="nav-text">yield</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sleep"><span class="nav-number">4.</span> <span class="nav-text">sleep</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">4.1.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-sleep-0"><span class="nav-number">4.1.1.</span> <span class="nav-text">Thread.sleep(0)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-sleep-nonzero"><span class="nav-number">4.1.2.</span> <span class="nav-text">Thread.sleep(nonzero)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-yield"><span class="nav-number">4.1.3.</span> <span class="nav-text">Thread.yield</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>

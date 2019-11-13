@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android,anr_log," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YUE" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Android ANR分析 前言ANR即Application Not Responding，顾名思义就是应用程序无响应。在Android中，一般情况下，四大组件均是工作在主线程中的，Android中的Activity Manager和Window Manager会随时监控应用程序的响应情况，如果因为一些耗时操作（网络请求或者IO操作）造成主线程阻塞一定时间（例如造成5s内不能响应用户事件或者Br">
+<meta name="keywords" content="android,anr_log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Test">
+<meta property="og:url" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;2019&#x2F;02&#x2F;01&#x2F;Test&#x2F;index.html">
+<meta property="og:site_name" content="YUE">
+<meta property="og:description" content="Android ANR分析 前言ANR即Application Not Responding，顾名思义就是应用程序无响应。在Android中，一般情况下，四大组件均是工作在主线程中的，Android中的Activity Manager和Window Manager会随时监控应用程序的响应情况，如果因为一些耗时操作（网络请求或者IO操作）造成主线程阻塞一定时间（例如造成5s内不能响应用户事件或者Br">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-28T07:09:13.368Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://guanyuespace.github.io/2019/02/01/Test/"/>
+
+
+
+
+
+  <title>Test | YUE</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YUE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-interest">
+          <a href="/interest/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            interest
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-c">
+          <a href="/C/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            C
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/Python/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://guanyuespace.github.io/2019/02/01/Test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YUE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ic_hello.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YUE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Test</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T11:31:46+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/Log/" itemprop="url" rel="index">
+                    <span itemprop="name">Log</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/Log/ANR/" itemprop="url" rel="index">
+                    <span itemprop="name">ANR</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/01/Test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/02/01/Test/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Android-ANR分析"><a href="#Android-ANR分析" class="headerlink" title="Android ANR分析"></a>Android ANR分析</h1><blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>ANR即Application Not Responding，顾名思义就是应用程序无响应。在Android中，一般情况下，四大组件均是工作在主线程中的，Android中的Activity Manager和Window Manager会随时监控应用程序的响应情况，如果因为一些耗时操作（网络请求或者IO操作）造成主线程阻塞一定时间（例如造成5s内不能响应用户事件或者BroadcastReceiver的onReceive方法执行时间超过10s），那么系统就会显示ANR对话框提示用户对应的应用处于无响应状态。</p>
+<p>虽然每个程序员都不想ANR发生在自己的头上，因此，你需要严格遵守Google提供的一系列建议（看<a href="http://developer.android.com/training/articles/perf-anr.html" target="_blank" rel="noopener">这里</a>），简单总结就是以下两点：</p>
+<pre><code>1. 不要让主线程干耗时的工作
+2. 不要让其他线程阻塞主线程的执行</code></pre><p>因此，要尽量保证主线程执行工作干净利落，一个消息循环执行时间最好不超过100ms到200ms，对于一些脏活累活可以交给AsyncTask、HandlerThread、IntentService或者另外起的新线程来完成，这样应用程序就能够及时响应用户的操作而不会给用户带来卡顿的感觉。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="ANR分析"><a href="#ANR分析" class="headerlink" title="ANR分析"></a>ANR分析</h2><p>一般应用程序在发布之前最好对新增的功能通过Systrace+TraceView进行性能测试，这样能够及时发现程序当中的耗时操作，对于一些可能引起ANR的风险做到提前规避。如果你是一个完美主义者，你也可以使用StrictMode来发现并干掉在你主线程中存在的一些磁盘IO、网络操作或者数据库读写等耗时代码，但是我个人觉得要完全避免在主线程进行这些操作还是不太现实，即使做到了也可能会造成应用程序的代码结构比较糟糕。<br>即使程序员在自己的环境中对代码进过了一系列的性能测试，到用户手中还是有中招的风险，毕竟再高效率的代码还是要时间来执行，而且不同手机性能差距还是很明显。如果你不幸中招，那么可以采用以下的方法来进行简单的分析。  </p>
+<h2 id="导出trace文件"><a href="#导出trace文件" class="headerlink" title="导出trace文件"></a>导出trace文件</h2><p>如果ANR发生，对应的应用会收到SIGQUIT异常终止信号，dalvik虚拟机就会自动在/data/anr/目录下生成trace.txt文件，这个文件记录了在发生ANR时刻系统各个线程的执行状态，获取这个文件是不需要root权限的，因此首先需要做的就是通过adb pull命令将这个文件导出并等待分析。</p>
+<h2 id="trace文件格式解析"><a href="#trace文件格式解析" class="headerlink" title="trace文件格式解析"></a>trace文件格式解析</h2><p>导出trace文件后，可以看到类似于如下的文件内容：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">----- pid <span class="number">901</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">28</span> <span class="number">14</span>:<span class="number">38</span>:<span class="number">34</span> -----</span><br><span class="line">Cmd line: system_server</span><br><span class="line"></span><br><span class="line">JNI: CheckJNI is off; workarounds are off; pins=<span class="number">6</span>; globals=<span class="number">2154</span> (plus <span class="number">409</span> weak)</span><br><span class="line"></span><br><span class="line">DALVIK THREADS:</span><br><span class="line">(mutexes: tll=<span class="number">0</span> tsl=<span class="number">0</span> tscl=<span class="number">0</span> ghl=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> NATIVE</span><br><span class="line">  | group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x415a4e88</span> self=<span class="number">0x414c48d8</span></span><br><span class="line">  | sysTid=<span class="number">901</span> nice=-<span class="number">2</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1073926484</span></span><br><span class="line">  | state=S schedstat=( <span class="number">303590361913</span> <span class="number">618664734427</span> <span class="number">651535</span> ) utm=<span class="number">19466</span> stm=<span class="number">10893</span> core=<span class="number">0</span></span><br><span class="line">  #00  pc 00021914  /system/lib/libc.so (epoll_wait+12)</span><br><span class="line">  #01  pc 0001065f  /system/lib/libutils.so (android::Looper::pollInner(int)+98)</span><br><span class="line">  #02  pc 00010889  /system/lib/libutils.so (android::Looper::pollOnce(int, int*, int*, void**)+92)</span><br><span class="line">  #03  pc 0006b771  /system/lib/libandroid_runtime.so (android::NativeMessageQueue::pollOnce(_JNIEnv*, int)+22)</span><br><span class="line">  #04  pc 0002034c  /system/lib/libdvm.so (dvmPlatformInvoke+112)</span><br><span class="line">  #05  pc 00050fcf  /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+398)</span><br><span class="line">  #06  pc 00000214  /dev/ashmem/dalvik-jit-code-cache (deleted)</span><br><span class="line">  at android.os.MessageQueue.nativePollOnce(Native Method)</span><br><span class="line">  at android.os.MessageQueue.next(MessageQueue.java:<span class="number">138</span>)</span><br><span class="line">  at android.os.Looper.loop(Looper.java:<span class="number">196</span>)</span><br><span class="line">  at com.android.server.ServerThread.initAndLoop(SystemServer.java:<span class="number">1174</span>)</span><br><span class="line">  at com.android.server.SystemServer.main(SystemServer.java:<span class="number">1271</span>)</span><br><span class="line">  at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">878</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">694</span>)</span><br><span class="line">  at dalvik.system.NativeStart.main(Native Method)</span><br></pre></td></tr></table></figure>
+
+<p>首先需要了解这些参数表示的意义，我们挑其中关键的几个说明：  </p>
+<ul>
+<li>第一二行<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">----- pid <span class="number">901</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">28</span> <span class="number">14</span>:<span class="number">38</span>:<span class="number">34</span> -----</span><br><span class="line">Cmd line: system_server</span><br><span class="line">```       </span><br><span class="line">说明了发生ANR的进程id、时间和进程名称。</span><br><span class="line"></span><br><span class="line">- 后面三行是线程的基本信息</span><br></pre></td></tr></table></figure>
+JNI: CheckJNI is off; workarounds are off; pins=6; globals=2154 (plus 409 weak)<br>DALVIK THREADS:<br>(mutexes: tll=0 tsl=0 tscl=0 ghl=0)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">其中tll、tsl、tscl、ghl、hwl、hwll分别对应：thread list lock, thread suspend lock, thread suspend count lock, gc heap lock, heap worker lock和heap worker list lock。</span><br><span class="line">- later ...</span><br><span class="line">```java</span><br><span class="line">main prio=5 tid=1 NATIVE</span><br></pre></td></tr></table></figure>
+说明了线程名称、线程的优先级、线程锁id和线程状态。线程名称是启动线程的时候手动指明的，这里的main标识是主线程，是Android自动设定的一个线程名称，如果是自己手动创建的线程，一般会被命名成“Thread-xx”的格式，其中xx是线程id，它只增不减不会被复用；注意这其中的tid不是线程的id,它是一个在Java虚拟机中用来实现线程锁的变量，随着线程的增减，这个变量的值是可能被复用的；最后线程的状态还分为如下几种  <table>
+<thead>
+<tr>
+<th>状态</th>
+<th align="center">值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>THREAD_ZOMBIE</td>
+<td align="center">0</td>
+<td>TERMINATED</td>
+</tr>
+<tr>
+<td>THREAD_RUNNING</td>
+<td align="center">1</td>
+<td>RUNNABLE or running now</td>
+</tr>
+<tr>
+<td>THREAD_TIMED_WAIT</td>
+<td align="center">2</td>
+<td>TIMED_WAITING in Object.wait()</td>
+</tr>
+<tr>
+<td>THREAD_MONITOR</td>
+<td align="center">3</td>
+<td>BLOCKED on a monitor</td>
+</tr>
+<tr>
+<td>THREAD_INITIALIZING</td>
+<td align="center">5</td>
+<td>allocated not yet running</td>
+</tr>
+<tr>
+<td>THREAD_STARTING</td>
+<td align="center">6</td>
+<td>started not yet on thread list</td>
+</tr>
+<tr>
+<td>THREAD_NATIVE</td>
+<td align="center">7</td>
+<td>off in a JNI native method</td>
+</tr>
+<tr>
+<td>THREAD_VMWAIT</td>
+<td align="center">8</td>
+<td>waiting on a VM resource</td>
+</tr>
+<tr>
+<td>THREAD_SUSPENDED</td>
+<td align="center">9</td>
+<td>suspended usually by GC or debugger</td>
+</tr>
+</tbody>
+</table>
+
+
+</li>
+</ul>
+<p><font color="red" size="+1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明一下MONITOR状态和SUSPEND状态，MONITOR状态一般是类的同步块或者同步方法造成的，SUSPENDED状态在debugger的时候会出现，可以用来区别是不是真的是用户正常操作跑出了ANR。</font><br/></p>
+<ul>
+<li><p>后面一行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">| group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x415a4e88</span> self=<span class="number">0x414c48d8</span></span><br></pre></td></tr></table></figure>
+<p>group是线程组名称。sCount是此线程被挂起的次数，dsCount是线程被调试器挂起的次数，当一个进程被调试后，sCount会重置为0，调试完毕后sCount会根据是否被正常挂起增长，但是dsCount不会被重置为0，所以dsCount也可以用来判断这个线程是否被调试过。obj表示这个线程的Java对象的地址，self表示这个线程本身的地址。</p>
+</li>
+<li><p>此后是线程的调度信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysTid=<span class="number">901</span> nice=-<span class="number">2</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1073926484</span></span><br></pre></td></tr></table></figure>
+<p>sysTid是Linux下的内核线程id，nice是线程的调度优先级，sched分别标志了线程的调度策略和优先级，cgrp是调度属组，handle是线程的处理函数地址。</p>
+</li>
+<li><p>然后是线程当前上下文信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">state=S schedstat=( 303590361913 618664734427 651535 ) utm=19466 stm=10893 core=0</span><br></pre></td></tr></table></figure>
+<p>state是调度状态；schedstat从 /proc/[pid]/task/[tid]/schedstat读出，三个值分别表示线程在cpu上执行的时间、线程的等待时间和线程执行的时间片长度，有的android内核版本不支持这项信息，得到的三个值都是0；utm是线程用户态下使用的时间值(单位是jiffies）;stm是内核态下的调度时间值；core是最后执行这个线程的cpu核的序号。</p>
+</li>
+<li><p>最后就是这个线程的调用栈信息。</p>
+<p>通过分析trace文件得到ANR信息</p>
+</li>
+<li><p>-</p>
+</li>
+</ul>
+<hr>
+<p>通过上面分析，可以看到trace文件的头部就包含了很多与该线程相关的信息，但是并不是每个信息我们都必须弄懂，排查ANR的时候只需要找到其中关键的几个信息即可。一般可以通过以下几个简单的方法来判断。</p>
+<h2 id="trace文件顶部的线程一般是ANR的元凶"><a href="#trace文件顶部的线程一般是ANR的元凶" class="headerlink" title="trace文件顶部的线程一般是ANR的元凶"></a>trace文件顶部的线程一般是ANR的元凶</h2><p>这是一个简单的方法，但是大部分情况下都适用，可以通过这个方法来快速判断是否是自己的应用造成了本次ANR。说明以下，并不是trace文件包含的应用就一定是造成ANR的帮凶，应用出现在trace文件中，只能说明出现ANR的时候这个应用进程还活着，trace文件的顶部则是触发ANR的应用信息。因此，如果你的应用出现在了trace文件的顶部，那么很有可能是因为你的应用造成了ANR，否则是你的应用造成ANR的可能性不大，但是具体是不是还需要进一步分析。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">----- pid <span class="number">1182</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">26</span> <span class="number">01</span>:<span class="number">53</span>:<span class="number">34</span> -----</span><br><span class="line">Cmd line: system_server</span><br><span class="line"></span><br><span class="line">JNI: CheckJNI is off; workarounds are off; pins=<span class="number">5</span>; globals=<span class="number">2982</span> (plus <span class="number">135</span> weak)</span><br><span class="line"></span><br><span class="line">DALVIK THREADS:</span><br><span class="line">(mutexes: tll=<span class="number">0</span> tsl=<span class="number">0</span> tscl=<span class="number">0</span> ghl=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> NATIVE</span><br><span class="line">| group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x420a0e58</span> self=<span class="number">0x4208f918</span></span><br><span class="line">| sysTid=<span class="number">1182</span> nice=-<span class="number">2</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1074594132</span></span><br><span class="line">| state=S schedstat=( <span class="number">211672310629</span> <span class="number">149959255867</span> <span class="number">472114</span> ) utm=<span class="number">13047</span> stm=<span class="number">8120</span> core=<span class="number">1</span></span><br><span class="line">#00  pc 000218b8  /system/lib/libc.so (epoll_wait+12)</span><br><span class="line">...</span><br><span class="line">at android.os.MessageQueue.nativePollOnce(Native Method)</span><br><span class="line">at android.os.MessageQueue.next(MessageQueue.java:<span class="number">138</span>)</span><br><span class="line">at android.os.Looper.loop(Looper.java:<span class="number">123</span>)</span><br><span class="line">at com.android.server.ServerThread.initAndLoop(SystemServer.java:<span class="number">1213</span>)</span><br><span class="line">at com.android.server.SystemServer.main(SystemServer.java:<span class="number">1317</span>)</span><br><span class="line">at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">793</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">609</span>)</span><br><span class="line">at dalvik.system.NativeStart.main(Native Method)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">----- end <span class="number">1182</span> -----</span><br><span class="line"></span><br><span class="line">----- pid <span class="number">18927</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">26</span> <span class="number">01</span>:<span class="number">53</span>:<span class="number">34</span> -----</span><br><span class="line">Cmd line: com.android.example</span><br><span class="line"></span><br><span class="line">JNI: CheckJNI is off; workarounds are off; pins=<span class="number">0</span>; globals=<span class="number">465</span> (plus <span class="number">984</span> weak)</span><br><span class="line"></span><br><span class="line">DALVIK THREADS:</span><br><span class="line">(mutexes: tll=<span class="number">0</span> tsl=<span class="number">0</span> tscl=<span class="number">0</span> ghl=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> NATIVE</span><br><span class="line">| group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x420a0e58</span> self=<span class="number">0x4208f918</span></span><br><span class="line">| sysTid=<span class="number">18927</span> nice=-<span class="number">6</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1074594132</span></span><br><span class="line">| state=S schedstat=( <span class="number">7748840431407</span> <span class="number">1615931922290</span> <span class="number">9994018</span> ) utm=<span class="number">712375</span> stm=<span class="number">62509</span> core=<span class="number">1</span></span><br><span class="line">#00  pc 00020704  /system/lib/libc.so (__ioctl+8)</span><br><span class="line">#01  pc 0002cfa3  /system/lib/libc.so (ioctl+14)</span><br><span class="line">#02  pc 0001d3ed  /system/lib/libbinder.so (android::IPCThreadState::talkWithDriver(bool)+140)</span><br><span class="line">#03  pc 0001d8d7  /system/lib/libbinder.so (android::IPCThreadState::waitForResponse(android::Parcel*, int*)+42)</span><br><span class="line">#04  pc 0001dadf  /system/lib/libbinder.so (android::IPCThreadState::transact(int, unsigned int, android::Parcel const&amp;, android::Parcel*, unsigned int)+118)</span><br><span class="line">#05  pc 00019791  /system/lib/libbinder.so (android::BpBinder::transact(unsigned int, android::Parcel const&amp;, android::Parcel*, unsigned int)+30)</span><br><span class="line">...</span><br><span class="line">#23  pc 00000d80  /system/bin/app_process</span><br><span class="line">at android.os.BinderProxy.transact(Native Method)</span><br><span class="line">at android.app.IAlarmManager$Stub$Proxy.set(IAlarmManager.java:<span class="number">154</span>)</span><br><span class="line">at android.app.AlarmManager.setImpl(AlarmManager.java:<span class="number">369</span>)</span><br><span class="line">at android.app.AlarmManager.setRepeating(AlarmManager.java:<span class="number">258</span>)</span><br><span class="line">at android.os.Handler.handleCallback(Handler.java:<span class="number">733</span>)</span><br><span class="line">at android.os.Handler.dispatchMessage(Handler.java:<span class="number">95</span>)</span><br><span class="line">at android.os.Looper.loop(Looper.java:<span class="number">136</span>)</span><br><span class="line">at android.app.ActivityThread.main(ActivityThread.java:<span class="number">5072</span>)</span><br><span class="line">at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">793</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">609</span>)</span><br><span class="line">at dalvik.system.NativeStart.main(Native Method)</span><br></pre></td></tr></table></figure>
+<p>虽然应用com.android.example出现在了trace文件中，但是在ANR的时候它在通过IPCThread在进行进程间通信，而此次ANR发生于system_server获取用户事件的native方法里面，并不是我们的应用造成了ANR。又例如下面的trace文件顶部内容为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">----- pid <span class="number">13406</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">11</span>:<span class="number">46</span>:<span class="number">14</span> -----</span><br><span class="line">Cmd line: com.android.example</span><br><span class="line"></span><br><span class="line">JNI: CheckJNI is off; workarounds are off; pins=<span class="number">0</span>; globals=<span class="number">536</span> (plus <span class="number">102</span> weak)</span><br><span class="line"></span><br><span class="line">DALVIK THREADS:</span><br><span class="line">(mutexes: tll=<span class="number">0</span> tsl=<span class="number">0</span> tscl=<span class="number">0</span> ghl=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> SUSPENDED</span><br><span class="line">  | group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x41795e58</span> self=<span class="number">0x416b58b0</span></span><br><span class="line">  | sysTid=<span class="number">13406</span> nice=-<span class="number">6</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1074557268</span></span><br><span class="line">  | state=S schedstat=( <span class="number">2352435524847</span> <span class="number">736727917292</span> <span class="number">2633566</span> ) utm=<span class="number">213075</span> stm=<span class="number">22168</span> core=<span class="number">1</span></span><br><span class="line">  at java.lang.String.&lt;init&gt;(String.java:~<span class="number">261</span>)</span><br><span class="line">  at java.util.zip.ZipEntry.&lt;init&gt;(ZipEntry.java:<span class="number">392</span>)</span><br><span class="line">  at java.util.zip.ZipFile.readCentralDir(ZipFile.java:<span class="number">414</span>)</span><br><span class="line">  at java.util.zip.ZipFile.&lt;init&gt;(ZipFile.java:<span class="number">151</span>)</span><br><span class="line">  at java.util.zip.ZipFile.&lt;init&gt;(ZipFile.java:<span class="number">123</span>)</span><br><span class="line">  at com.android.example.Utility.isValideFile(Utility.java:<span class="number">2700</span>)</span><br><span class="line">  at com.android.example.Test.getPath(Test.java:<span class="number">243</span>)</span><br><span class="line">  at com.android.example.Test$<span class="number">1</span>.run(Test.java:<span class="number">531</span>)</span><br><span class="line">  at android.os.Handler.handleCallback(Handler.java:<span class="number">733</span>)</span><br><span class="line">  at android.os.Handler.dispatchMessage(Handler.java:<span class="number">95</span>)</span><br><span class="line">  at android.os.Looper.loop(Looper.java:<span class="number">136</span>)</span><br><span class="line">  at android.app.ActivityThread.main(ActivityThread.java:<span class="number">5050</span>)</span><br><span class="line">  at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">807</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">623</span>)</span><br><span class="line">  at dalvik.system.NativeStart.main(Native Method)</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>这种情况说明ANR发生于com.android.example应用中，而且指明了ANR发生时代码的执行位置，这种情况十有八九就是我们应用程序的问题，之后就需要通过这个trace文件指明的路径来对代码进行排查。</p>
+<h3 id="注意死锁和等待"><a href="#注意死锁和等待" class="headerlink" title="注意死锁和等待"></a>注意死锁和等待</h3><p>虽然说ANR一般情况是由于让主线程做了很多耗时的操作，但是死锁或者主线程等待也是ANR高发的原因，例如如下的trace:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">----- pid <span class="number">9436</span> at <span class="number">2015</span>-<span class="number">11</span>-<span class="number">28</span> <span class="number">21</span>:<span class="number">30</span>:<span class="number">41</span> -----</span><br><span class="line">Cmd line: com.example.yxz.myapplication</span><br><span class="line"></span><br><span class="line">JNI: CheckJNI is off; workarounds are off; pins=<span class="number">0</span>; globals=<span class="number">277</span></span><br><span class="line"></span><br><span class="line">DALVIK THREADS:</span><br><span class="line">(mutexes: tll=<span class="number">0</span> tsl=<span class="number">0</span> tscl=<span class="number">0</span> ghl=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> MONITOR</span><br><span class="line">  | group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x415a4e88</span> self=<span class="number">0x414c48d8</span></span><br><span class="line">  | sysTid=<span class="number">9436</span> nice=<span class="number">0</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1073926484</span></span><br><span class="line">  | state=S schedstat=( <span class="number">671264662</span> <span class="number">337280259</span> <span class="number">1005</span> ) utm=<span class="number">53</span> stm=<span class="number">14</span> core=<span class="number">0</span></span><br><span class="line">  at com.example.yxz.myapplication.performancetest.WaitANR$InnerMonitorClass.TimeConsumeFunc(WaitANR.java:~<span class="number">48</span>)</span><br><span class="line">  - waiting to lock &lt;<span class="number">0x447a5670</span>&gt;  held by tid=<span class="number">11</span> (Thread-<span class="number">14208</span>)</span><br><span class="line">  at com.example.yxz.myapplication.performancetest.WaitANR$<span class="number">2</span>.run(WaitANR.java:<span class="number">32</span>)</span><br><span class="line">  at android.os.Handler.handleCallback(Handler.java:<span class="number">733</span>)</span><br><span class="line">  at android.os.Handler.dispatchMessage(Handler.java:<span class="number">95</span>)</span><br><span class="line">  at android.os.Looper.loop(Looper.java:<span class="number">212</span>)</span><br><span class="line">  at android.app.ActivityThread.main(ActivityThread.java:<span class="number">5135</span>)</span><br><span class="line">  at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">878</span>)</span><br><span class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">694</span>)</span><br><span class="line">  at dalvik.system.NativeStart.main(Native Method)</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line"></span><br><span class="line"><span class="string">"Thread-14208"</span> prio=<span class="number">10</span> tid=<span class="number">11</span> TIMED_WAIT</span><br><span class="line">  | group=<span class="string">"main"</span> sCount=<span class="number">1</span> dsCount=<span class="number">0</span> obj=<span class="number">0x447a4b98</span> self=<span class="number">0x78296bb8</span></span><br><span class="line">  | sysTid=<span class="number">9955</span> nice=-<span class="number">8</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">2015978016</span></span><br><span class="line">  | state=S schedstat=( <span class="number">946045</span> <span class="number">640869</span> <span class="number">1</span> ) utm=<span class="number">0</span> stm=<span class="number">0</span> core=<span class="number">2</span></span><br><span class="line">  at java.lang.VMThread.sleep(Native Method)</span><br><span class="line">  at java.lang.Thread.sleep(Thread.java:<span class="number">1013</span>)</span><br><span class="line">  at java.util.concurrent.TimeUnit.sleep(TimeUnit.java:<span class="number">331</span>)</span><br><span class="line">  at com.example.yxz.myapplication.performancetest.WaitANR$InnerMonitorClass.TimeConsumeFunc(WaitANR.java:<span class="number">48</span>)</span><br><span class="line">  at com.example.yxz.myapplication.performancetest.WaitANR$<span class="number">1</span>.run(WaitANR.java:<span class="number">20</span>)</span><br><span class="line">  at java.lang.Thread.run(Thread.java:<span class="number">841</span>)</span><br></pre></td></tr></table></figure>
+<p>从trace文件可以看出，发生ANR的主线程正处于monitor状态，也就是它在等待一个synchronized块或者方法，但是目前这个monitor正在被tid=11的线程持有，所以造成了主线程被阻塞，从而发生了ANR。死锁的分析也是类似，发生死锁的线程一般处于MONITOR状态或者WAIT状态，等待其他进程的锁或者monitor，而其他进程又在等待另外线程的锁或者monitor，一直这样依赖下去，直到形成一个环。  </p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p><a href="https://blog.csdn.net/yxz329130952/article/details/50087731" target="_blank" rel="noopener">原文：Android ANR分析</a><br>参考：<br>===</p>
+<p><a href="http://blog.csdn.net/rambo2188/article/details/7017241" target="_blank" rel="noopener">Android 信号处理面面观 之 trace 文件含义</a><br><a href="http://elliotth.blogspot.sg/2012/08/how-to-read-dalvik-sigquit-output.html" target="_blank" rel="noopener">How to read Dalvik SIGNQUIT output</a></p>
+
+      
+    </div>	
+    
+    
+    
+	
+	<div>  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:20px;">-------------再接再厉<i class="fa fa-heart"></i>更进一步-------------</div>
+    
+</div> </div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    YUE
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guanyuespace.github.io/2019/02/01/Test/" title="Test">https://guanyuespace.github.io/2019/02/01/Test/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/anr-log/" rel="tag"># anr_log</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/01/Utils/" rel="next" title="Utils">
+                <i class="fa fa-chevron-left"></i> Utils
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/11/Relax/" rel="prev" title="Relax.md">
+                Relax.md <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ic_hello.png"
+                alt="YUE" />
+            
+              <p class="site-author-name" itemprop="name">YUE</p>
+              <p class="site-description motion-element" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/guanyuespace" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1853376164@qq.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guanyue003@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=506583974&auto=0&height=32"></iframe>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-ANR分析"><span class="nav-number">1.</span> <span class="nav-text">Android ANR分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ANR分析"><span class="nav-number">2.1.</span> <span class="nav-text">ANR分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出trace文件"><span class="nav-number">2.2.</span> <span class="nav-text">导出trace文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trace文件格式解析"><span class="nav-number">2.3.</span> <span class="nav-text">trace文件格式解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trace文件顶部的线程一般是ANR的元凶"><span class="nav-number">2.4.</span> <span class="nav-text">trace文件顶部的线程一般是ANR的元凶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意死锁和等待"><span class="nav-number">2.4.1.</span> <span class="nav-text">注意死锁和等待</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束"><span class="nav-number">3.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+
+
+
+
+
+  <div class="footer-custom">Keep Fighting !</div>
+
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YUE</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">65.9k</span>
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'guanyuespace',
+            repo: 'Comments',
+            
+            lang: "zh_Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7c3d740d02e6787b625c3fed8edcc019462f6b31',
+            
+                client_id: 'c5da20a9649b38056149'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <!-- 背景动画 'src/particle.js',--><!-- 页面点击小红心 --><!--崩溃欺骗-->
+  
+    <script type="text/javascript" src="/js/src/click-love.js?v=5.1.4"></script>
+  
+    <script type="text/javascript" src="/js/src/catch.js?v=5.1.4"></script>
+  
+</body>
+</html>
