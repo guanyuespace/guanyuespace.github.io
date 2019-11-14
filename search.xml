@@ -2704,7 +2704,7 @@ just be ready
     <content><![CDATA[<h1 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h1><!-- config.yml  post_asset_folder: true  -->
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&#123;% asset<span class="emphasis">_img bd_</span>logo.png just for fun ! %&#125;  </span><br><span class="line">![<span class="string">just for fun</span>](<span class="link">bd_logo.png "just for fun !"</span>)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-  
+<img src="/2019/02/11/Relax/bd_logo.png" class="" title="just for fun !">  
 <p><img src="bd_logo.png" alt="just for fun" title="just for fun !">  </p>
 ]]></content>
       <categories>
