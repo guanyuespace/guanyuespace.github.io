@@ -100,8 +100,9 @@
 <meta property="og:description" content="开放数据校验与加解密 小程序登录（wx.login） 登录流程时序 说明： 注意：     数据签名校验 加密数据解密算法 Node.js进行解密数据   会话密钥 session_key 有效性   auth.code2Session HTTPS 调用   UnionID UnionID获取途径   授权 获取用户授权设置 打开设置界面 提前发起授权请求   获取手机号 使用方法 注意">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;developers.weixin.qq.com&#x2F;miniprogram&#x2F;dev&#x2F;framework&#x2F;open-ability&#x2F;image&#x2F;signature.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;developers.weixin.qq.com&#x2F;miniprogram&#x2F;dev&#x2F;framework&#x2F;open-ability&#x2F;image&#x2F;api-login.jpg">
-<meta property="og:updated_time" content="2019-10-28T07:09:13.498Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;res.wx.qq.com&#x2F;wxdoc&#x2F;dist&#x2F;assets&#x2F;img&#x2F;signature.8a30a825.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;res.wx.qq.com&#x2F;wxdoc&#x2F;dist&#x2F;assets&#x2F;img&#x2F;api-login.2fcc9f35.jpg">
+<meta property="og:updated_time" content="2019-12-14T02:53:51.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;developers.weixin.qq.com&#x2F;miniprogram&#x2F;dev&#x2F;framework&#x2F;open-ability&#x2F;image&#x2F;signature.jpg">
 
@@ -404,9 +405,10 @@
 <blockquote>
 <p>小程序，开发者服务器，微信接口服务</p>
 </blockquote>
-<p><img src="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/signature.jpg" alt="数据的传递流程" title="数据的传递流程"><br>签名校验以及数据加解密涉及用户的会话密钥 <strong>session_key</strong> 。 开发者应该事先通过 <strong><em>wx.login</em></strong> 登录流程获取会话密钥 session_key 并保存在服务器。<strong>为了数据不被篡改，开发者不应该把 session_key 传到小程序客户端等服务器外的环境。</strong></p>
+<p><img src="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/signature.jpg" alt="数据的传递流程" title="数据的传递流程">   </p>
+<p><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/signature.8a30a825.jpg" alt=""><br>签名校验以及数据加解密涉及用户的会话密钥 <strong>session_key</strong> 。 开发者应该事先通过 <strong><em>wx.login</em></strong> 登录流程获取会话密钥 session_key 并保存在服务器。<strong>为了数据不被篡改，开发者不应该把 session_key 传到小程序客户端等服务器外的环境。</strong></p>
 <h2 id="小程序登录（wx-login）"><a href="#小程序登录（wx-login）" class="headerlink" title="小程序登录（wx.login）"></a>小程序登录（wx.login）</h2><p>小程序可以通过微信官方提供的登录能力方便地获取微信提供的用户身份标识，快速建立小程序内的用户体系。    </p>
-<h3 id="登录流程时序"><a href="#登录流程时序" class="headerlink" title="登录流程时序"></a>登录流程时序</h3><p><img src="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/api-login.jpg" alt=""></p>
+<h3 id="登录流程时序"><a href="#登录流程时序" class="headerlink" title="登录流程时序"></a>登录流程时序</h3><p><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/api-login.2fcc9f35.jpg" alt=""></p>
 <h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><ol>
 <li>调用 wx.login() 获取 临时登录凭证code ，并回传到开发者服务器。</li>
 <li>调用 auth.code2Session 接口，换取 用户唯一标识 OpenID 和 会话密钥 session_key。<br>之后开发者服务器可以根据用户标识来生成自定义登录态，用于后续业务逻辑中前后端交互时识别用户身份。</li>

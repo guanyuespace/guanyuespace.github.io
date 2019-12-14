@@ -101,9 +101,10 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;js_regex.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg">
-<meta property="og:updated_time" content="2019-10-28T07:09:13.498Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;%22%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg%22">
+<meta property="og:updated_time" content="2019-12-14T02:56:26.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;guanyuespace.github.io&#x2F;interest&#x2F;js_regex.jpg">
 
@@ -530,7 +531,8 @@ https://blog.csdn.net/hhf235678/article/details/78749952
 
 <h2 id="小程序请求Cookie"><a href="#小程序请求Cookie" class="headerlink" title="小程序请求Cookie"></a>小程序请求Cookie</h2><h3 id="请求后的数据"><a href="#请求后的数据" class="headerlink" title="请求后的数据"></a>请求后的数据</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "data" : "",//response_body</span><br><span class="line">  "header" : &#123;&#125;,//response_header</span><br><span class="line">  "statusCode" : 200,//状态码</span><br><span class="line">  "cookies" : [],//set-Cookie格式化数据</span><br><span class="line">  "errMsg" : "request:ok"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg" alt="数据请求返回结果" title="数据请求返回结果">  </p>
-<h3 id="Cookie相关"><a href="#Cookie相关" class="headerlink" title="Cookie相关"></a>Cookie相关</h3><p><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg" alt=""><br><img src="%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg" alt="">    </p>
+<h3 id="Cookie相关"><a href="#Cookie相关" class="headerlink" title="Cookie相关"></a>Cookie相关</h3><p><img src="./%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg" alt=""></p>
+<p><img src="./%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg" alt=""><br><img src="%22%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg%22" alt="">    </p>
 <p>由图可知<br>cookies设置简化<br>不用从header中setcookie查找分析</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">res.cookies[&#123;</span><br><span class="line">  "name":"",//</span><br><span class="line">  "value":"",//</span><br><span class="line">  "path":"",//路径</span><br><span class="line">  "expires":"",//租期</span><br><span class="line">  .....</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
 

@@ -1471,8 +1471,8 @@
         <category>Thread</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Thread</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -2706,6 +2706,17 @@ just be ready
 <a id="more"></a>
 <img src="/2019/02/11/Relax/bd_logo.png" class="" title="just for fun !">  
 <p><img src="bd_logo.png" alt="just for fun" title="just for fun !">  </p>
+<!--
+## CSDN注脚
+一个具有注脚的文本。[^2]
+
+[^2]: 注脚的解释
+
+## CSDN注释
+Markdown将文本转换为 HTML。
+
+*[HTML]:   超文本标记语言
+-->
 ]]></content>
       <categories>
         <category>resource</category>
