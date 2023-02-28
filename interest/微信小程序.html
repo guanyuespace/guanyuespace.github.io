@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SSL&amp;自签名证书 微信小程序样式 iconfont 矢量图标的使用     网易云音乐 轮播图api Bugs setData   数据处理 数组相关 添加对象   滚动 urlencode Javascript   Java 正则表达式贪婪模式&amp;非贪婪模式 Javascript正则表达式     GitHub 登陆 登出 stats请求： ???? 小程序请求Cookie">
+<meta property="og:type" content="website">
+<meta property="og:title" content="微信小程序">
+<meta property="og:url" content="https://xuewenm.github.io/interest/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="SSL&amp;自签名证书 微信小程序样式 iconfont 矢量图标的使用     网易云音乐 轮播图api Bugs setData   数据处理 数组相关 添加对象   滚动 urlencode Javascript   Java 正则表达式贪婪模式&amp;非贪婪模式 Javascript正则表达式     GitHub 登陆 登出 stats请求： ???? 小程序请求Cookie">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xuewenm.github.io/interest/js_regex.jpg">
+<meta property="og:image" content="https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg">
+<meta property="og:image" content="https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg">
+<meta property="og:image" content="https://xuewenm.github.io/interest/%22%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg%22">
+<meta property="article:published_time" content="2019-04-09T05:36:30.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.530Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xuewenm.github.io/interest/js_regex.jpg">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/interest/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/interest/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html","path":"interest/微信小程序.html","title":"微信小程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微信小程序 | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSL-amp-%E8%87%AA%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6"><span class="nav-number">1.</span> <span class="nav-text">SSL&amp;自签名证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">微信小程序样式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iconfont"><span class="nav-number">2.1.</span> <span class="nav-text">iconfont</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A2%E9%87%8F%E5%9B%BE%E6%A0%87%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.1.</span> <span class="nav-text">矢量图标的使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90"><span class="nav-number">3.</span> <span class="nav-text">网易云音乐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AE%E6%92%AD%E5%9B%BEapi"><span class="nav-number">3.1.</span> <span class="nav-text">轮播图api</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bugs"><span class="nav-number">3.2.</span> <span class="nav-text">Bugs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setData"><span class="nav-number">3.2.1.</span> <span class="nav-text">setData</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E8%93%9D%E7%89%99-amp-%E8%80%B3%E6%9C%BA%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.3.</span> <span class="nav-text">监听蓝牙&amp;耳机连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3"><span class="nav-number">3.4.1.</span> <span class="nav-text">数组相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">添加对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%9A%E5%8A%A8"><span class="nav-number">3.4.2.</span> <span class="nav-text">滚动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urlencode"><span class="nav-number">3.4.3.</span> <span class="nav-text">urlencode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Javascript"><span class="nav-number">3.4.3.1.</span> <span class="nav-text">Javascript</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F-amp-%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.4.</span> <span class="nav-text">Java 正则表达式贪婪模式&amp;非贪婪模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Javascript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.4.5.</span> <span class="nav-text">Javascript正则表达式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub"><span class="nav-number">4.</span> <span class="nav-text">GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E9%99%86"><span class="nav-number">4.1.</span> <span class="nav-text">登陆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%87%BA"><span class="nav-number">4.2.</span> <span class="nav-text">登出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stats%E8%AF%B7%E6%B1%82%EF%BC%9A"><span class="nav-number">4.3.</span> <span class="nav-text">stats请求： ????</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%AF%B7%E6%B1%82Cookie"><span class="nav-number">4.4.</span> <span class="nav-text">小程序请求Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">4.4.1.</span> <span class="nav-text">请求后的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E7%9B%B8%E5%85%B3"><span class="nav-number">4.4.2.</span> <span class="nav-text">Cookie相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.4.3.</span> <span class="nav-text">Cookie设置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#163Mail"><span class="nav-number">5.</span> <span class="nav-text">163Mail</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BB%8B%E7%BB%8D"><span class="nav-number">6.</span> <span class="nav-text">Java 正则表达式介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9A"><span class="nav-number">6.1.</span> <span class="nav-text">贪婪模式表达式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9A"><span class="nav-number">6.2.</span> <span class="nav-text">非贪婪模式表达式：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problem"><span class="nav-number">7.</span> <span class="nav-text">Problem</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">微信小程序
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <!-- TOC -->
+
+<ul>
+<li><a href="#ssl%E8%87%AA%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6">SSL&amp;自签名证书</a></li>
+<li><a href="#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A0%B7%E5%BC%8F">微信小程序样式</a><ul>
+<li><a href="#iconfont">iconfont</a><ul>
+<li><a href="#%E7%9F%A2%E9%87%8F%E5%9B%BE%E6%A0%87%E7%9A%84%E4%BD%BF%E7%94%A8">矢量图标的使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90">网易云音乐</a><ul>
+<li><a href="#%E8%BD%AE%E6%92%AD%E5%9B%BEapi">轮播图api</a></li>
+<li><a href="#bugs">Bugs</a><ul>
+<li><a href="#setdata">setData</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a><ul>
+<li><a href="#%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3">数组相关</a><ul>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E5%AF%B9%E8%B1%A1">添加对象</a></li>
+</ul>
+</li>
+<li><a href="#%E6%BB%9A%E5%8A%A8">滚动</a></li>
+<li><a href="#urlencode">urlencode</a><ul>
+<li><a href="#javascript">Javascript</a></li>
+</ul>
+</li>
+<li><a href="#java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F">Java 正则表达式贪婪模式&amp;非贪婪模式</a></li>
+<li><a href="#javascript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">Javascript正则表达式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#github">GitHub</a><ul>
+<li><a href="#%E7%99%BB%E9%99%86">登陆</a></li>
+<li><a href="#%E7%99%BB%E5%87%BA">登出</a></li>
+<li><a href="#stats%E8%AF%B7%E6%B1%82-">stats请求： ????</a></li>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%AF%B7%E6%B1%82cookie">小程序请求Cookie</a><ul>
+<li><a href="#%E8%AF%B7%E6%B1%82%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE">请求后的数据</a></li>
+<li><a href="#cookie%E7%9B%B8%E5%85%B3">Cookie相关</a></li>
+<li><a href="#cookie%E8%AE%BE%E7%BD%AE">Cookie设置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#163mail">163Mail</a></li>
+<li><a href="#java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BB%8B%E7%BB%8D">Java 正则表达式介绍</a><ul>
+<li><a href="#%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F">贪婪模式表达式：</a></li>
+<li><a href="#%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F">非贪婪模式表达式：</a></li>
+</ul>
+</li>
+<li><a href="#problem">Problem</a></li>
+</ul>
+<!-- /TOC -->
+
+<h1 id="SSL-amp-自签名证书"><a href="#SSL-amp-自签名证书" class="headerlink" title="SSL&amp;自签名证书"></a>SSL&amp;自签名证书</h1><ul>
+<li>openssl</li>
+<li>keytool</li>
+</ul>
+<hr>
+<h1 id="微信小程序样式"><a href="#微信小程序样式" class="headerlink" title="微信小程序样式"></a>微信小程序样式</h1><h2 id="iconfont"><a href="#iconfont" class="headerlink" title="iconfont"></a>iconfont</h2><h3 id="矢量图标的使用"><a href="#矢量图标的使用" class="headerlink" title="矢量图标的使用"></a>矢量图标的使用</h3><p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/fashandian/p/6880892.html">iconfont字体图标的使用</a>    </p>
+<ul>
+<li>选取图标</li>
+<li>添加到项目</li>
+<li>下载代码ok</li>
+<li>demo.html</li>
+</ul>
+<p>open-data</p>
+<p>radius</p>
+<hr>
+<h1 id="网易云音乐"><a href="#网易云音乐" class="headerlink" title="网易云音乐"></a>网易云音乐</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path: /discover</span><br></pre></td></tr></table></figure>
+
+<h2 id="轮播图api"><a href="#轮播图api" class="headerlink" title="轮播图api"></a>轮播图api</h2><blockquote>
+<p>pc端实现（user_agent设置,but 微信小程序无法进行user agent设置）</p>
+</blockquote>
+<p><strong>搭建HTTPS服务器实现</strong></p>
+<h2 id="Bugs"><a href="#Bugs" class="headerlink" title="Bugs"></a>Bugs</h2><h3 id="setData"><a href="#setData" class="headerlink" title="setData"></a>setData</h3><p>原因：组件实例刚刚被创建好时， created 生命周期被触发。此时，组件数据 this.data 就是在 Component 构造器中定义的数据 data 。 此时还不能调用 setData 。 通常情况下，这个生命周期只应该用于给组件 this 添加一些自定义属性字段。<!-- Lyric尚未进行onLoad,onShow...-->     </p>
+<p>操作从lyric.wxml  redictTo music.wxml<br>歌词页面跳转到详细歌单界面</p>
+<p>onShow —&gt; (跳过onHide)  —&gt;onUnload</p>
+<p>从首页跳转到详情页,点击左上方的返回按钮,详情页的onHide不触发微信小程序</p>
+<!--
+onHide：监听页面的隐藏
+当从当前 A 页跳转到其他页面，那么 A 页面处于隐藏状态。
+onUnload：监听页面的卸载
+当前处于 A 页面，点击返回按钮时，则将是 A 页面卸载。
+https://blog.csdn.net/hhf235678/article/details/78749952
+-->
+
+<ul>
+<li><p>log</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lyricPage onLoad options=&#123;&quot;id&quot;:&quot;571463522&quot;,&quot;name&quot;:&quot;生如逆旅（Cover 米津玄师）&quot;,&quot;bg&quot;:&quot;http%3A%2F%2Fp1.music.126.net%2FhzlpZj9bzwyk1b0g7Deo0A%3D%3D%2F109951163335209234.jpg&quot;&#125;</span><br><span class="line">lyric.js? [sm]:149 lyricPage onShow</span><br><span class="line">playlists.js? [sm]:83 play ..... lyricPage=[object Object]</span><br><span class="line">lyric.js? [sm]:76 lyricPage lyric setDurations start</span><br><span class="line">lyric.js? [sm]:169 lyricPage onUnload</span><br><span class="line">playlists.js? [sm]:83 play ..... lyricPage=[object Object]</span><br><span class="line">lyric.js? [sm]:76 lyricPage lyric setDurations start</span><br></pre></td></tr></table></figure>
+<p>onShow —&gt; (跳过onHide)  —&gt;onUnload</p>
+</li>
+<li><p>JS   </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;lyricPage lyric setDurations start&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> all;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">temp</span> != <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">temp</span>);</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">temp</span> =</span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">     all = app.<span class="property">globalData</span>.<span class="property">audioPlayer</span>.<span class="property">duration</span>;</span><br><span class="line">     <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;all= &quot;</span> + all + <span class="string">&quot;\t temp_timer=&quot;</span> + <span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">temp</span>);</span><br><span class="line">     <span class="keyword">var</span> mintues = <span class="title class_">Math</span>.<span class="title function_">floor</span>(all / <span class="number">60</span>);</span><br><span class="line">     <span class="keyword">var</span> seconds = <span class="title class_">Math</span>.<span class="title function_">floor</span>(all - mintues * <span class="number">60</span>);</span><br><span class="line">     <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123;</span><br><span class="line">       <span class="attr">durations</span>: mintues &gt; <span class="number">9</span> ? mintues + <span class="string">&quot;:&quot;</span> + (seconds &gt; <span class="number">9</span> ? seconds : <span class="string">&quot;0&quot;</span> + seconds) : <span class="string">&quot;0&quot;</span> + mintues + <span class="string">&quot;:&quot;</span> + (seconds &gt; <span class="number">9</span> ? seconds : <span class="string">&quot;0&quot;</span> + seconds)</span><br><span class="line">     &#125;, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">       <span class="comment">//另外 尚未执行onLoad, onShow ....</span></span><br><span class="line">       <span class="comment">//逻辑？？？？</span></span><br><span class="line">       <span class="comment">//////此处不会执行</span></span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;------------------&gt; &quot;</span> + <span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">durations</span> + <span class="string">&quot;\t&quot;</span> + all);</span><br><span class="line">       <span class="keyword">if</span> (all &amp;&amp; all != <span class="number">0</span>)</span><br><span class="line">         <span class="built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">temp</span>);</span><br><span class="line">     &#125;);</span><br><span class="line">  &#125;, <span class="number">50</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="监听蓝牙-amp-耳机连接"><a href="#监听蓝牙-amp-耳机连接" class="headerlink" title="监听蓝牙&amp;耳机连接"></a>监听蓝牙&amp;耳机连接</h2><p>控制音乐播放…</p>
+<!-- Android ok... -->
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><h3 id="数组相关"><a href="#数组相关" class="headerlink" title="数组相关"></a>数组相关</h3><ul>
+<li><p>splice</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">splice</span>(index, length,data...)   </span><br><span class="line">从index开始操作,将length个元素替换成data</span><br><span class="line">并返回length个元素</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>shift&#x2F;unshift<br>从数组头部删除&#x2F;添加</p>
+</li>
+<li><p>pop&#x2F;push<br>从数组尾部删除添加</p>
+</li>
+</ul>
+<h4 id="添加对象"><a href="#添加对象" class="headerlink" title="添加对象"></a>添加对象</h4><ol>
+<li>JSON.parse()<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">that.<span class="property">data</span>.<span class="property">lyric_time</span>.<span class="title function_">push</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&quot;&#123;\&quot;secs\&quot;:\&quot;&quot;</span> + secs + <span class="string">&quot;\&quot;,\&quot;str\&quot;:\&quot;&quot;</span> + str + <span class="string">&quot;\&quot;&#125;&quot;</span>));</span><br></pre></td></tr></table></figure></li>
+<li>ok<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">that.data.lyric_time.push(&#123;</span><br><span class="line">  secs: secs,</span><br><span class="line">  str: str</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+方法一<code>parse</code>注意特殊字符… 字符串构造巨坑!!!</li>
+</ol>
+<h3 id="滚动"><a href="#滚动" class="headerlink" title="滚动"></a>滚动</h3><ul>
+<li><p>transform<br>布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">&quot;transform: translateY(&#123;&#123;(4-curIndex)*900/9&#125;&#125;rpx)&quot;</span> <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;lyric_time&#125;&#125;&quot;</span> <span class="attr">wx:key</span>=<span class="string">&quot;item&quot;</span> <span class="attr">wx:for-item</span>=<span class="string">&quot;item&quot;</span> <span class="attr">wx:for-index</span>=<span class="string">&quot;idx&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">&quot;&#123;&#123;lastTime==item.secs?&#x27;highlight&#x27;:&#x27;common&#x27;&#125;&#125;&quot;</span> <span class="attr">data-time</span>=<span class="string">&quot;&#123;&#123;item.secs&#125;&#125;&quot;</span>&gt;</span>&#123;&#123;item.str&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 屏幕铺满可以显示9行， (4-curIndex)*(900/9)间距，第5行与curIndex之间的间距，负数向上移动，整数向下移动 -->
+</li>
+<li><p>order<br>CSS层叠样式表</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.show</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: <span class="number">1</span>;</span><br><span class="line">  <span class="attribute">mix-blend-mode</span>: difference;</span><br><span class="line">  <span class="attribute">filter</span>: <span class="built_in">invert</span>(<span class="number">1</span>);</span><br><span class="line">  -webkit-<span class="attribute">filter</span>: <span class="built_in">invert</span>(<span class="number">1</span>);<span class="comment">/**-webkit:表示chrome与safari特有属性  */</span></span><br><span class="line">   <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>XML布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">hidden</span>=<span class="string">&quot;&#123;&#123;lastTime==item.secs?false:true&#125;&#125;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;show&quot;</span> <span class="attr">wx:key</span>=<span class="string">&quot;item&quot;</span> <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;lyric_time&#125;&#125;&quot;</span> <span class="attr">wx:for-item</span>=<span class="string">&quot;item&quot;</span> <span class="attr">wx:for-index</span>=<span class="string">&quot;idx&quot;</span>&gt;</span>&#123;&#123;item.str&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>scroll-view<br>可滚动视图区域。<strong>使用竖向滚动时，需要给&lt;scroll-view&gt;一个固定高度，通过 WXSS 设置 height。组件属性的长度单位默认为px，2.4.0起支持传入单位(rpx&#x2F;px)。</strong></p>
+</li>
+</ul>
+<p>|属性	|类型	|默认值	|必填	|说明	|最低版本|<br>|—-|<br>|scroll-x	|boolean	|false	|否	|允许横向滚动|	1.0.0|<br>|scroll-y	|boolean	|false	|否	|允许纵向滚动|	1.0.0|<br>|upper-threshold	|number&#x2F;string|	50	|否	|距顶部&#x2F;左边多远时，触发 scrolltoupper 事件	|1.0.0|<br>|lower-threshold	| number&#x2F;string |	50	|否|	距底部&#x2F;右边多远时，触发 scrolltolower 事件	| 1.0.0 |<br>|scroll-top	| number&#x2F;string ||		否 |	设置竖向滚动条位置	| 1.0.0 |<br>|scroll-left	| number&#x2F;string |	|	否 |	设置横向滚动条位置	| 1.0.0 |<br>|scroll-into-view	|string	|	|否 |	值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素	| 1.0.0 |<br>|scroll-with-animation	| bollean |	false	| 否 |	在设置滚动条位置时使用动画过渡	| 1.0.0 |<br>|enable-back-to-top	| bollean |	false	| 否 |	iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向	| 1.0.0 |<br>|bindscrolltoupper	| eventhandle |		|否 |	滚动到顶部&#x2F;左边时触发	| 1.0.0 |<br>|bindscrolltolower	| eventhandle |		|否 |	滚动到底部&#x2F;右边时触发	| 1.0.0 |<br>|bindscroll	| eventhandle |		|否 |	滚动时触发，event.detail &#x3D; {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}</p>
+<ul>
+<li>Tips    <ol>
+<li><strong>请勿在 scroll-view 中使用 textarea、map、canvas、video 组件</strong></li>
+<li>scroll-into-view 的优先级高于 scroll-top</li>
+<li>在滚动 scroll-view 时会阻止页面回弹，所以在 scroll-view 中滚动，是无法触发 onPullDownRefresh</li>
+<li>若要使用下拉刷新，请使用页面的滚动，而不是 scroll-view ，这样也能通过点击顶部状态栏回到页面顶部</li>
+</ol>
+</li>
+</ul>
+<h3 id="urlencode"><a href="#urlencode" class="headerlink" title="urlencode"></a>urlencode</h3><blockquote>
+<p><em><strong>problem： get url?param&#x3D;value (value has character like ‘&#x3D;’,’&amp;’etc)</strong></em></p>
+</blockquote>
+<h4 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h4><ul>
+<li><p><strong>escape()</strong><br>采用ISO Latin字符集对指定的字符串进行编码。所有的 <strong>空格符、标点符号、特殊字符以及其他非ASCII字符</strong> 都将被转化成%xx格式的字符编码（xx等于该字符在字符集表里面的编码的16进制数字）。比如，空格符对应的编码是%20。<br><em><strong>不会被此方法编码的字符： @ * &#x2F; +</strong></em></p>
+</li>
+<li><p><strong>encodeURI()</strong><br>把URI字符串采用UTF-8编码格式转化成escape格式的字符串。<br><em><strong>不会被此方法编码的字符：! @ # $&amp; * ( ) &#x3D; : &#x2F; ; ? + ‘</strong></em></p>
+</li>
+<li><p><strong>encodeURIComponent()</strong><br>把URI字符串采用UTF-8编码格式转化成escape格式的字符串。与encodeURI()相比，这个方法将对更多的字符进行编码，比如 &#x2F; 等字符。所以如果字符串里面包含了URI的几个部分的话，不能用这个方法来进行编码，否则 &#x2F; 字符被编码之后URL将显示错误。<br><em><strong>不会被此方法编码的字符：! * ( ) ‘</strong></em></p>
+</li>
+</ul>
+<p>因此，对于中文字符串来说，如果不希望把字符串编码格式转化成UTF-8格式的（比如原页面和目标页面的charset是一致的时候），只需要使用 escape。如果你的页面是GB2312或者其他的编码，而接受参数的页面是UTF-8编码的，就要采用encodeURI或者 encodeURIComponent。</p>
+<h3 id="Java-正则表达式贪婪模式-amp-非贪婪模式"><a href="#Java-正则表达式贪婪模式-amp-非贪婪模式" class="headerlink" title="Java 正则表达式贪婪模式&amp;非贪婪模式"></a>Java 正则表达式贪婪模式&amp;非贪婪模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Pattern</span> <span class="variable">pattern</span> <span class="operator">=</span> Pattern.compile(<span class="string">&quot;window.Gbanners =[\n|\r\n](\\[.*?]);&quot;</span>, Pattern.DOTALL);   <span class="comment">//非贪婪模式匹配... 假如：数组元素也是数组?? so how can i do it</span></span><br><span class="line"><span class="type">Matcher</span> <span class="variable">matcher</span> <span class="operator">=</span> pattern.matcher(str);</span><br><span class="line"><span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line">   <span class="keyword">return</span> matcher.group(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em><strong>如果数组元素中也含有数组？？？ how ??</strong></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Pattern</span> <span class="variable">p</span> <span class="operator">=</span> Pattern.compile(<span class="string">&quot;window.Gbanners =\n(\\[.*?]);&quot;</span>, Pattern.DOTALL);</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;window.Gbanners =\n[hello, what happened ? [bye];....];endherehello[yue];&quot;</span>;</span><br><span class="line">    <span class="type">Matcher</span> <span class="variable">matcher</span> <span class="operator">=</span> p.matcher(str);</span><br><span class="line">    <span class="keyword">if</span> (matcher.find())</span><br><span class="line">        System.out.println(matcher.group(<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        System.out.println(<span class="string">&quot;???&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em><strong>如何提取”[hello, what happened ? [bye];….]”??</strong></em><br><em><strong>麻烦：</strong></em>    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;window.Gbanners =\n[hello, what happened ? [bye];[yue];....];hello[yue];&quot;</span>;</span><br><span class="line">p=Pattern.compile(<span class="string">&quot;window.Gbanners =\n(\\[[\\w\\d\\,\\?\\s]+(\\[\\w+\\];)+\\.+\\]);&quot;</span>);</span><br><span class="line"><span class="type">Matcher</span> <span class="variable">matcher</span> <span class="operator">=</span> p.matcher(str);</span><br><span class="line">matcher.find();</span><br><span class="line">System.out.println(matcher.group(<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+<p><strong>Result: [hello, what happened ? [bye];[yue];….]</strong></p>
+<h3 id="Javascript正则表达式"><a href="#Javascript正则表达式" class="headerlink" title="Javascript正则表达式"></a>Javascript正则表达式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1=<span class="regexp">/picUrl\s+:\s+\&quot;([\w|\d|\\.|\\/|:|=]+)\&quot;/g</span>;</span><br><span class="line"><span class="keyword">var</span> s=<span class="string">&quot;[&#123;picUrl: \&quot;http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\&quot;&#125;......&#123;picUrl: \&quot;http://p1.music.126.net/pyPxPCKnqDC_MgcAH2gqcA==/109951163988013828.jpg\&quot;,url: \&quot;https://music.163.com/m/at/5cac89eda987b31a74b53324\&quot;,targetId: \&quot;0\&quot;,backgroundUrl: \&quot;http://p1.music.126.net/Wj7RwWtJHqZW1znWmZeUyA==/109951163988019180.jpg\&quot;,targetType: \&quot;3000\&quot;,monitorType: \&quot;\&quot;,monitorImpress: \&quot;\&quot;,monitorClick: \&quot;\&quot;&#125;, &#123;picUrl: \&quot;http://p1.music.126.net/9UHGYULLYF_ErmiGv_ilPA==/109951163987312687.jpg\&quot;,url: \&quot;https://music.163.com/m/at/5cac4505a987b31a74b53247\&quot;,targetId: \&quot;0\&quot;,backgroundUrl: \&quot;http://p1.music.126.net/f6kKp_6tRoAfs8DcQ241CA==/109951163987307347.jpg\&quot;,targetType: \&quot;3000\&quot;,monitorType: \&quot;\&quot;,monitorImpress: \&quot;\&quot;,monitorClick: \&quot;\&quot;&#125;, &#123;picUrl: \&quot;http://p1.music.126.net/YxxZQkEa1Sf1fQdE7xmKQA==/109951163987278183.jpg\&quot;,url: \&quot;/album?id=78399447\&quot;,targetId: \&quot;78399447\&quot;,backgroundUrl: \&quot;http://p1.music.126.net/0e8-38VasU3FF_dNQ1gezg==/109951163987283041.jpg\&quot;,targetType: \&quot;10\&quot;,monitorType: \&quot;\&quot;,monitorImpress: \&quot;\&quot;,monitorClick: \&quot;\&quot;&#125;]&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> res=s.<span class="title function_">match</span>(patt1);</span><br><span class="line">res[<span class="number">0</span>]<span class="comment">////picUrl: \&quot;http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\&quot;</span></span><br><span class="line"><span class="comment">// 继续正则表达式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> re;</span><br><span class="line"><span class="keyword">for</span>(re=patt1.<span class="title function_">exec</span>(); re!=<span class="literal">null</span>; re=patt1.<span class="title function_">exec</span>())&#123;</span><br><span class="line">  re[<span class="number">0</span>]<span class="comment">//picUrl: \&quot;http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg\&quot;</span></span><br><span class="line">  re[<span class="number">1</span>]<span class="comment">//http://p1.music.126.net/7FGoymx2D3EhcXHdRvEY6g==/109951163988241908.jpg</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Javascript正则表达式不包含分组概念，使用regex.exec()—&gt;类比分组概念，but 一次获取一个ok…<br><img src="/interest/js_regex.jpg">    </p>
+<hr>
+<h1 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h1><blockquote>
+<p>api：登陆…<br>由于github.com未在ICP备案因此微信小程序不可直接进行数据请求（自建服务器，不校验）</p>
+</blockquote>
+<h2 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /session HTTP/1.1</span><br><span class="line">Host: github.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">utf8=%E2%9C%93&amp;authenticity_token=3GKDT3%2BeaF8GThohy848CKypLgt%2FG3eZXFj%2BUorzX%2BVK07sS2%2BJLGTXfxux5W9ptA0epJVdMt%2B3Nl4kTdsy6mA%3D%3D&amp;login=guanyue003%40gmail.com&amp;password=hellogit123</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">  Location: https://github.com/</span><br><span class="line"></span><br><span class="line">Redict:</span><br><span class="line">  Request URL: https://github.com/</span><br><span class="line">  Request Method: GET</span><br><span class="line"></span><br><span class="line">// Html 页面</span><br></pre></td></tr></table></figure>
+
+<h2 id="登出"><a href="#登出" class="headerlink" title="登出"></a>登出</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Request URL: https://github.com/logout</span><br><span class="line">Request Method: GET</span><br><span class="line">--&amp;gt; 登出界面</span><br><span class="line"></span><br><span class="line">登出数据</span><br><span class="line">Request URL: https://github.com/logout</span><br><span class="line">Request Method: POST</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">utf8: ✓</span><br><span class="line">authenticity_token://html hidden TEnKx7MjccfdIgtcDe2ibrAxezbhqz5ZotsXiQjNr2BGzljGMSxhHlt4KWlj5Hw5lvz/DIN+5JBzIM53pxVyqg==</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">Location: https://github.com/</span><br></pre></td></tr></table></figure>
+
+<h2 id="stats请求："><a href="#stats请求：" class="headerlink" title="stats请求： ????"></a>stats请求： ????</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Request URL: https://api.github.com/_private/browser/stats</span><br><span class="line">Request Method: POST</span><br><span class="line">Content-Type: application/json; charset=utf-8</span><br><span class="line"></span><br><span class="line">data ......</span><br><span class="line"></span><br><span class="line">when logout:</span><br><span class="line">&#123;&quot;stats&quot;:[&#123;&quot;resourceTimings&quot;:[&#123;&quot;initiatorType&quot;:&quot;link&quot;,&quot;nextHopProtocol&quot;:&quot;h2&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.6999999955297,&quot;domainLookupStart&quot;:0,&quot;domainLookupEnd&quot;:0,&quot;connectStart&quot;:0,&quot;connectEnd&quot;:0,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:0,&quot;responseStart&quot;:0,&quot;responseEnd&quot;:1006.6999999980908,&quot;transferSize&quot;:0,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://github.githubassets.com/assets/mobile-8e8e5b12902d5f04bad25bdd1b689f64.css&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.6999999955297,&quot;duration&quot;:209.00000000256114&#125;,&#123;&quot;initiatorType&quot;:&quot;img&quot;,&quot;nextHopProtocol&quot;:&quot;http/1.1&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.8999999759253,&quot;domainLookupStart&quot;:797.8999999759253,&quot;domainLookupEnd&quot;:797.8999999759253,&quot;connectStart&quot;:797.8999999759253,&quot;connectEnd&quot;:797.8999999759253,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:799.9999999883585,&quot;responseStart&quot;:989.3999999912921,&quot;responseEnd&quot;:989.899999985937,&quot;transferSize&quot;:481,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://avatars2.githubusercontent.com/u/31913612?s=40&amp;v=4&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.8999999759253,&quot;duration&quot;:192.00000001001172&#125;,&#123;&quot;initiatorType&quot;:&quot;script&quot;,&quot;nextHopProtocol&quot;:&quot;h2&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:797.999999980675,&quot;domainLookupStart&quot;:0,&quot;domainLookupEnd&quot;:0,&quot;connectStart&quot;:0,&quot;connectEnd&quot;:0,&quot;secureConnectionStart&quot;:0,&quot;requestStart&quot;:0,&quot;responseStart&quot;:0,&quot;responseEnd&quot;:803.2999999995809,&quot;transferSize&quot;:0,&quot;encodedBodySize&quot;:0,&quot;decodedBodySize&quot;:0,&quot;name&quot;:&quot;https://github.githubassets.com/assets/mobile-bootstrap-6ccc3aa0.js&quot;,&quot;entryType&quot;:&quot;resource&quot;,&quot;startTime&quot;:797.999999980675,&quot;duration&quot;:5.300000018905848&#125;],&quot;timestamp&quot;:1555033117792&#125;,&#123;&quot;navigationTimings&quot;:[&#123;&quot;unloadEventStart&quot;:792.9999999760184,&quot;unloadEventEnd&quot;:792.9999999760184,&quot;domInteractive&quot;:800.199999997858,&quot;domContentLoadedEventStart&quot;:800.3000000026077,&quot;domContentLoadedEventEnd&quot;:800.3000000026077,&quot;domComplete&quot;:1013.0999999819323,&quot;loadEventStart&quot;:1013.0999999819323,&quot;loadEventEnd&quot;:1013.1999999866821,&quot;type&quot;:&quot;navigate&quot;,&quot;redirectCount&quot;:0,&quot;initiatorType&quot;:&quot;navigation&quot;,&quot;nextHopProtocol&quot;:&quot;http/1.1&quot;,&quot;workerStart&quot;:0,&quot;redirectStart&quot;:0,&quot;redirectEnd&quot;:0,&quot;fetchStart&quot;:4.499999980907887,&quot;domainLookupStart&quot;:6.599999993341044,&quot;domainLookupEnd&quot;:6.599999993341044,&quot;connectStart&quot;:6.599999993341044,&quot;connectEnd&quot;:318.7999999790918,&quot;secureConnectionStart&quot;:173.39999999967404,&quot;requestStart&quot;:322.09999999031425,&quot;responseStart&quot;:789.0999999945052,&quot;responseEnd&quot;:792.3999999766238,&quot;transferSize&quot;:6349,&quot;encodedBodySize&quot;:3863,&quot;decodedBodySize&quot;:11490,&quot;name&quot;:&quot;https://github.com/logout&quot;,&quot;entryType&quot;:&quot;navigation&quot;,&quot;startTime&quot;:0,&quot;duration&quot;:1013.1999999866821&#125;],&quot;timestamp&quot;:1555033117792&#125;]&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="小程序请求Cookie"><a href="#小程序请求Cookie" class="headerlink" title="小程序请求Cookie"></a>小程序请求Cookie</h2><h3 id="请求后的数据"><a href="#请求后的数据" class="headerlink" title="请求后的数据"></a>请求后的数据</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="comment">//response_body</span></span><br><span class="line">  <span class="attr">&quot;header&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="comment">//response_header</span></span><br><span class="line">  <span class="attr">&quot;statusCode&quot;</span> <span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span><span class="comment">//状态码</span></span><br><span class="line">  <span class="attr">&quot;cookies&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="comment">//set-Cookie格式化数据</span></span><br><span class="line">  <span class="attr">&quot;errMsg&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;request:ok&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span>       </span><br></pre></td></tr></table></figure>
+<p><img src="/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C.jpg" alt="数据请求返回结果" title="数据请求返回结果">  </p>
+<h3 id="Cookie相关"><a href="#Cookie相关" class="headerlink" title="Cookie相关"></a>Cookie相关</h3><p><img src="/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg"></p>
+<p><img src="/interest/%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_header.jpg"><br><img src="/interest/%22%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C_cookies.jpg%22">    </p>
+<p>由图可知<br>cookies设置简化<br>不用从header中setcookie查找分析</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">res.cookies<span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="comment">//</span></span><br><span class="line">  <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="comment">//</span></span><br><span class="line">  <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="comment">//路径</span></span><br><span class="line">  <span class="attr">&quot;expires&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="comment">//租期</span></span><br><span class="line">  .....</span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Cookie设置"><a href="#Cookie设置" class="headerlink" title="Cookie设置"></a>Cookie设置</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wx.<span class="title function_">setStorageSync</span>(<span class="string">&quot;sessionid&quot;</span>, res.<span class="property">header</span>[<span class="string">&quot;Set-Cookie&quot;</span>])</span><br><span class="line">header = &#123;</span><br><span class="line">    <span class="string">&#x27;cookie&#x27;</span>:wx.<span class="title function_">getStorageSync</span>(<span class="string">&quot;sessionid&quot;</span>)<span class="comment">//读取cookie</span></span><br><span class="line">&#125;;    </span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h1 id="163Mail"><a href="#163Mail" class="headerlink" title="163Mail"></a>163Mail</h1><blockquote>
+<p>api: 登陆</p>
+</blockquote>
+<p>later<br>……</p>
+<hr>
+<h1 id="Java-正则表达式介绍"><a href="#Java-正则表达式介绍" class="headerlink" title="Java 正则表达式介绍"></a>Java 正则表达式介绍</h1><h2 id="贪婪模式表达式："><a href="#贪婪模式表达式：" class="headerlink" title="贪婪模式表达式："></a>贪婪模式表达式：</h2><p>贪婪模式  * + {n,} 默认情况是贪婪模式匹配    </p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X?</td>
+<td>X，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X*</td>
+<td>X，零次或多次</td>
+</tr>
+<tr>
+<td>X+</td>
+<td>X，一次或多次</td>
+</tr>
+<tr>
+<td>X{n}</td>
+<td>X，恰好 n 次</td>
+</tr>
+<tr>
+<td>X{n,}</td>
+<td>X，至少 n 次</td>
+</tr>
+<tr>
+<td>X{n,m}</td>
+<td>X，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<h2 id="非贪婪模式表达式："><a href="#非贪婪模式表达式：" class="headerlink" title="非贪婪模式表达式："></a>非贪婪模式表达式：</h2><p>非贪婪模式，?跟在 * + {n,} 等的后面时，表示非贪婪模式，注意和子表达式后面的?区分开，子表达式后的?表示匹配0次或1次  </p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X??</td>
+<td>X，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X*?</td>
+<td>X，零次或多次</td>
+</tr>
+<tr>
+<td>X+?</td>
+<td>X，一次或多次</td>
+</tr>
+<tr>
+<td>X{n}?</td>
+<td>X，恰好 n 次</td>
+</tr>
+<tr>
+<td>X{n,}?</td>
+<td>X，至少 n 次</td>
+</tr>
+<tr>
+<td>X{n,m}?</td>
+<td>X，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>in util&#x2F;core.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app=<span class="title function_">getApp</span>();</span><br></pre></td></tr></table></figure>
+<p>exception: app undefined … …</p>
+<p>App() 必须在 app.js 中注册，且不能注册多个。</p>
+<ul>
+<li>不要在定义于 App() 内的函数中调用 getApp() ，使用 this 就可以拿到 app 实例。</li>
+<li>不要在 onLaunch 的时候调用 getCurrentPages()，此时 page 还没有生成。</li>
+<li>通过 getApp() 获取实例之后，不要私自调用生命周期函数。</li>
+<li>直接修改 this.data 而不调用 this.setData是无法改变页面的状态的，还会造成数据不一致。</li>
+<li>单次设置的数据不能超过1024kB，请尽量避免一次设置过多的数据。</li>
+<li>请不要把 data 中任何一项的 value 设为 undefined，否则这一项将不被设置并可能遗留一些潜在问题。</li>
+</ul>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/interest/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ae834e428cabf68616f2061a3b85d2aa"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

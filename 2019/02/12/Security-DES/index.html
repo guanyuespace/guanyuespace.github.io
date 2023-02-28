@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="DES 输入 使用javax.crypto 密钥生成 分组加密-加密模式       DES分组加密算法，对称加密算法 输入   param desp    key 8个字节共64位的工作密钥(56位密钥+8位奇偶校验位)   data 8个字节共64位的需要被加密或被解密的数据   mode DES工作方式，加密或者解密   初始向量(8个字节)：IV填充方式or自行填充">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Security-DES">
+<meta property="og:url" content="https://xuewenm.github.io/2019/02/12/Security-DES/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="DES 输入 使用javax.crypto 密钥生成 分组加密-加密模式       DES分组加密算法，对称加密算法 输入   param desp    key 8个字节共64位的工作密钥(56位密钥+8位奇偶校验位)   data 8个字节共64位的需要被加密或被解密的数据   mode DES工作方式，加密或者解密   初始向量(8个字节)：IV填充方式or自行填充">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405180712271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405180727459?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405180943506">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405180951038">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405181228492">
+<meta property="og:image" content="https://xuewenm.github.io/2019/02/12/Security-DES/%22CFB-%E8%A7%A3%E5%AF%86%22">
+<meta property="og:image" content="https://img-blog.csdn.net/20160405181324195">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2018110314132228.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103140304845.png">
+<meta property="article:published_time" content="2019-02-12T08:29:17.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.414Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="Encryption">
+<meta property="article:tag" content="Decryption">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20160405180712271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2019/02/12/Security-DES/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2019/02/12/Security-DES/","path":"2019/02/12/Security-DES/","title":"Security-DES"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Security-DES | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DES"><span class="nav-number">1.</span> <span class="nav-text">DES</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8javax-crypto"><span class="nav-number">1.2.</span> <span class="nav-text">使用javax.crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86-%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">分组加密-加密模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A1%AB%E5%85%85"><span class="nav-number">1.2.3.</span> <span class="nav-text">数据填充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Java 示例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2019/02/12/Security-DES/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Security-DES | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Security-DES
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-12 16:29:17" itemprop="dateCreated datePublished" datetime="2019-02-12T16:29:17+08:00">2019-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-07 20:16:42" itemprop="dateModified" datetime="2023-02-07T20:16:42+08:00">2023-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/Security/Encryption/" itemprop="url" rel="index"><span itemprop="name">Encryption</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- TOC -->
+
+<ul>
+<li><a href="#des">DES</a><ul>
+<li><a href="#%E8%BE%93%E5%85%A5">输入</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8javaxcrypto">使用<code>javax.crypto</code></a><ul>
+<li><a href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90">密钥生成</a></li>
+<li><a href="#%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86-%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F">分组加密-加密模式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h1 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h1><p>分组加密算法，对称加密算法</p>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><table>
+<thead>
+<tr>
+<th>param</th>
+<th>desp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td>8个字节共64位的工作密钥(56位密钥+8位奇偶校验位)</td>
+</tr>
+<tr>
+<td>data</td>
+<td>8个字节共64位的需要被加密或被解密的数据</td>
+</tr>
+<tr>
+<td>mode</td>
+<td>DES工作方式，加密或者解密</td>
+</tr>
+</tbody></table>
+<p>初始向量(8个字节)：IV<br>填充方式or自行填充</p>
+<span id="more"></span>
+<h2 id="使用javax-crypto"><a href="#使用javax-crypto" class="headerlink" title="使用javax.crypto"></a>使用<code>javax.crypto</code></h2><h3 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h3><p>四种密钥生成类： <strong>KeyGenerator，KeyPairGenerator，KeyFactory，SecretKeyFactory</strong><br>对密钥进行加工处理  </p>
+<ul>
+<li>区别：<br> 根据 Oracle 的 Standard Algorithm Name Documentation 提供的说明：<br> <strong>KeyGenerator</strong>和<strong>SecretKeyFactory，</strong>都是javax.crypto包的，<br>生成的key主要是提供给AES，DES，3DES，MD5，SHA1等<strong>对称</strong>和<strong>单向</strong>加密算法。</li>
+</ul>
+<p> <strong>KeyPairGenerator</strong>和<strong>KeyFactory</strong>，都是java.security包的， 生成的key主要是提供给DSA，RSA， EC等<strong>非对称</strong>加密算法。</p>
+<h3 id="分组加密-加密模式"><a href="#分组加密-加密模式" class="headerlink" title="分组加密-加密模式"></a>分组加密-加密模式</h3><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42940826/article/details/83687007">对称加密算法常用的五种分组模式</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/includeiostream123/article/details/51066799">分组加密的四种模式</a></p>
+</blockquote>
+<p>分组加密的四种模式：ECB、CBC、CFB、OFB  </p>
+<ol>
+<li><p>ECB(Electronic Code Book)&#x2F;电码本模式<br><img src="https://img-blog.csdn.net/20160405180712271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="电码本模式-加密" title="电码本模式-加密"><br><img src="https://img-blog.csdn.net/20160405180727459?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="电码本模式-解密" title="电码本模式-解密"><br>DES ECB（电子密本方式）其实非常简单，就是将数据按照8个字节一段进行DES加密或解密得到一段8个字节的密文或者明文，最后一段不足8个字节，按照需求补足8个字节进行计算，之后按照顺序将计算所得的数据连在一起即可，各段数据之间互不影响。<br>特点：    </p>
+</li>
+<li><p>简单，有利于并行计算，误差不会被传送；  </p>
+</li>
+<li><p><strong>不能隐藏明文的模式；</strong><br> repetitions in message may show in cipher text&#x2F;在密文中出现明文消息的重复 </p>
+</li>
+<li><p><strong>可能对明文进行主动攻击；</strong><br> 加密消息块相互独立成为被攻击的弱点&#x2F;weakness due to encrypted message blocks being independent</p>
+</li>
+<li><p>CBC(Cipher Block Chaining)&#x2F;密文分组链接方式(<strong>双方约定初始向量：IV</strong>)<br><img src="https://img-blog.csdn.net/20160405180943506" alt="CBC-加密" title="CBC-加密"><br><img src="https://img-blog.csdn.net/20160405180951038" alt="CBC-解密" title="CBC-解密"><br>特点：  </p>
+</li>
+<li><p>不容易主动攻击,安全性好于ECB,适合传输长度长的报文,是SSL、IPSec的标准。<br> each ciphertext block depends on all message blocks&#x2F;每个密文块依赖于所有的信息块<br> thus a change in the message affects all ciphertext blocks&#x2F;明文消息中一个改变会影响所有密文块  </p>
+</li>
+<li><p>need Initial Vector (IV) known to sender &amp; receiver&#x2F;发送方和接收方都需要知道初始化向量     </p>
+</li>
+<li><p>加密过程是串行的，无法被并行化(在解密时，从两个邻接的密文块中即可得到一个明文块。因此，解密过程可以被并行化)。</p>
+</li>
+</ol>
+<hr>
+<p>CFB模式与OFB模式不需要填充</p>
+<hr>
+<ol start="3">
+<li><p>Cipher Feedback (CFB)&#x2F;密文反馈模式(<strong>双方约定初始向量：IV—Shift register移位寄存器，每次加密位数：移位寄存器位数</strong>)<br><img src="https://img-blog.csdn.net/20160405181228492" alt="CFB-加密" title="CFB-加密"><br><img src="/2019/02/12/Security-DES/%22CFB-%E8%A7%A3%E5%AF%86%22" alt="CFB-解密"><br>密文反馈（CFB，Cipher feedback）模式类似于CBC，可以将块密码变为自同步的流密码；工作过程亦非常相似，CFB的解密过程几乎就是颠倒的CBC的加密过程。<br>加密过程：<strong>需要使用一个与块的大小相同的移位寄存器，并用IV将寄存器初始化。</strong>然后，将寄存器内容使用块密码加密，然后将结果的最高x位与明文的x进行异或，以产生密文的x位。下一步将生成的x位密文移入寄存器中，并对下面的x位明文重复这一过程。解密过程与加密过程相似，以IV开始，对寄存器加密，将结果的高x与密文异或，产生x位明文，再将密文的下面x位移入寄存器。<br>与CBC相似，<strong>明文的改变会影响接下来所有的密文</strong>，因此<strong>加密过程不能并行化；</strong>而同样的，与CBC类似<strong>，解密过程是可以并行化的。</strong></p>
+</li>
+<li><p>Output Feedback (OFB)&#x2F;输出反馈模式<br><img src="https://img-blog.csdn.net/20160405181324195" alt="OFB-加密" title="OFB-加密"><br>输出反馈模式（Output feedback, OFB）可以将块密码变成同步的流密码。它产生密钥流的块，然后将其与明文块进行异或，得到密文。与其它流密码一样，密文中一个位的翻转会使明文中同样位置的位也产生翻转。这种特性使得许多错误校正码，例如奇偶校验位，即使在加密前计算而在加密后进行校验也可以得出正确结果。<br>每个使用OFB的输出块与其前面所有的输出块相关，因此**不能并行化处理(加密&amp;解密)**。然而，由于明文和密文只在最终的异或过程中使用，因此可以事先对IV进行加密，最后并行的将明文或密文进行并行的异或处理。<br>可以利用输入全0的CBC模式产生OFB模式的密钥流。这种方法十分实用，因为可以利用快速的CBC硬件实现来加速OFB模式的加密过程。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>第5种加密方式  <strong>CTR - CounTeR, 计数器模式（重点，推荐使用）</strong><br>特点: 密文没有规律, 明文分组是和一个数据流进行的按位异或操作, 最终生成了密文<br>**不需要初始化向量 **<br>**不需要填充 **<br>这里我们有必要给出CTR模式的加密流程，因为CTR模式的解密和加密是一模一样的过程，在程序实现中也是可逆的<br><img src="https://img-blog.csdnimg.cn/2018110314132228.png" alt="CTR加密" title="CTR加密"><br>CTR加密即解密，解密即加密，且各分组之间是独立的，可以并发完成，效率高。  </p>
+</blockquote>
+<p>小节：<br><img src="https://img-blog.csdnimg.cn/20181103140304845.png" alt="加密模式比较" title="加密模式比较"></p>
+<h3 id="数据填充"><a href="#数据填充" class="headerlink" title="数据填充"></a>数据填充</h3><ul>
+<li><p>NoPadding<br>明文数据必须为8字节的整数倍</p>
+</li>
+<li><p>PKCS7Padding（PKCS5Padding）<br>为.NET和JAVA的默认填充方式，对加密数据字节长度对8取余为r，如r大于0，则补8-r个字节，字节为8-r的值；如果r等于0，则补8个字节8。比如：<br>加密字符串为为AA，则补位为AA666666;加密字符串为BBBBB，则补位为BBBBB333；加密字符串为CCCCCCCC，则补位为CCCCCCCC88888888。</p>
+</li>
+<li><p>jdk中AES算法中不支持PKCS7Padding，只支持PKCS5Padding 但是PKCS7Padding 和 PKCS5Padding 没有什么区别要实现在java端用PKCS7Padding填充，需要用到bouncycastle组件来实现</p>
+</li>
+</ul>
+<hr>
+<h2 id="Java-示例"><a href="#Java-示例" class="headerlink" title="Java 示例"></a>Java 示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">密钥生成：</span><br><span class="line"><span class="comment">// 第一种，Factory</span></span><br><span class="line"><span class="type">DESKeySpec</span> <span class="variable">keySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DESKeySpec</span>(keyBytes);</span><br><span class="line"><span class="type">SecretKeyFactory</span> <span class="variable">keyFactory</span> <span class="operator">=</span> SecretKeyFactory.getInstance(<span class="string">&quot;DES&quot;</span>);</span><br><span class="line"><span class="type">SecretKey</span> <span class="variable">key1</span> <span class="operator">=</span> keyFactory.generateSecret(keySpec);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种, Generator</span></span><br><span class="line"><span class="type">KeyGenerator</span> <span class="variable">keyGenerator</span> <span class="operator">=</span> KeyGenerator.getInstance(<span class="string">&quot;DES&quot;</span>);</span><br><span class="line">keyGenerator.init(<span class="number">56</span>, <span class="keyword">new</span> <span class="title class_">SecureRandom</span>(keyBytes));<span class="comment">// key为8个字节，实际用了56位； 后面随机数用key作为种子seed生成</span></span><br><span class="line"><span class="type">SecretKey</span> <span class="variable">key2</span> <span class="operator">=</span> keyGenerator.generateKey();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第三种， SecretKeySpec</span></span><br><span class="line"><span class="comment">//// 输入必须为8字节，原始密码未作替换！！！</span></span><br><span class="line"><span class="type">SecretKey</span> <span class="variable">key3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SecretKeySpec</span>(keyBytes, <span class="string">&quot;DES&quot;</span>);<span class="comment">// SecretKeySpec类同时实现了Key和KeySpec接口</span></span><br><span class="line"></span><br><span class="line">加密：</span><br><span class="line"><span class="type">DESKeySpec</span> <span class="variable">keySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DESKeySpec</span>(keyBytes);</span><br><span class="line"><span class="type">SecretKeyFactory</span> <span class="variable">keyFactory</span> <span class="operator">=</span> SecretKeyFactory.getInstance(<span class="string">&quot;DES&quot;</span>);</span><br><span class="line"><span class="type">SecretKey</span> <span class="variable">key</span> <span class="operator">=</span> keyFactory.generateSecret(keySpec);<span class="comment">//生成密钥</span></span><br><span class="line"><span class="comment">//DES CBC（密文分组连接）模式   PKCS5Padding</span></span><br><span class="line"><span class="type">Cipher</span> <span class="variable">cipher</span> <span class="operator">=</span> Cipher.getInstance(<span class="string">&quot;DES/CBC/PKCS5Padding&quot;</span>);</span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, key, <span class="keyword">new</span> <span class="title class_">IvParameterSpec</span>(<span class="string">&quot;01234567&quot;</span>));</span><br><span class="line"><span class="type">byte</span>[] result = cipher.doFinal(content);</span><br><span class="line"></span><br><span class="line">解密：</span><br><span class="line"><span class="type">DESedeKeySpec</span> <span class="variable">keySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DESedeKeySpec</span>(key.getBytes());</span><br><span class="line"><span class="type">SecretKeyFactory</span> <span class="variable">keyFactory</span> <span class="operator">=</span> SecretKeyFactory.getInstance(<span class="string">&quot;DES&quot;</span>);</span><br><span class="line"><span class="type">SecretKey</span> <span class="variable">secretKey</span> <span class="operator">=</span> keyFactory.generateSecret(keySpec);</span><br><span class="line"></span><br><span class="line"><span class="type">Cipher</span> <span class="variable">cipher</span> <span class="operator">=</span> Cipher.getInstance(<span class="string">&quot;DES/CBC/PKCS5Padding&quot;</span>);</span><br><span class="line">cipher.init(Cipher.DECRYPT_MODE, secretKey, <span class="keyword">new</span> <span class="title class_">IvParameterSpec</span>(<span class="string">&quot;01234567&quot;</span>));</span><br><span class="line"><span class="type">byte</span>[] result = cipher.doFinal(res.getBytes());</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>later:<br>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27570955/article/details/52442092">DES算法原理完整版</a></p>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2019/02/12/Security-DES/" title="Security-DES">https://xuewenm.github.io/2019/02/12/Security-DES/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Encryption/" rel="tag"># Encryption</a>
+              <a href="/tags/Decryption/" rel="tag"># Decryption</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/11/Relax/" rel="prev" title="Relax.md">
+                  <i class="fa fa-chevron-left"></i> Relax.md
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/13/Security-AES/" rel="next" title="Security-AES">
+                  Security-AES <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2019/02/12/Security-DES/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"7388dff60a932d9c00aee6ac0e3e3c16"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="AsyncTaskAbstract1public abstract class AsyncTask&lt;Params, Progress, Result&gt; &amp;#123;...&amp;#125; AsyncTask is designed to be a helper class around {@link Thread} and {@link Handler} and does not cons">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AsyncTask">
+<meta property="og:url" content="https://xuewenm.github.io/2019/02/19/AsyncTask/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="AsyncTaskAbstract1public abstract class AsyncTask&lt;Params, Progress, Result&gt; &amp;#123;...&amp;#125; AsyncTask is designed to be a helper class around {@link Thread} and {@link Handler} and does not cons">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-19T06:16:00.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.372Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Thread">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2019/02/19/AsyncTask/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2019/02/19/AsyncTask/","path":"2019/02/19/AsyncTask/","title":"AsyncTask"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AsyncTask | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AsyncTask"><span class="nav-number">1.</span> <span class="nav-text">AsyncTask</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncTask%E2%80%93Looper"><span class="nav-number">1.2.</span> <span class="nav-text">AsyncTask–Looper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Constuctors"><span class="nav-number">1.2.1.</span> <span class="nav-text">Constuctors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BA%BF%E7%A8%8B%E8%BF%94%E5%9B%9E%E4%B8%BB%E7%BA%BF%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">子线程返回主线程：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncTask%E2%80%93FutureTask"><span class="nav-number">1.3.</span> <span class="nav-text">AsyncTask–FutureTask</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Constructor"><span class="nav-number">1.3.1.</span> <span class="nav-text">Constructor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C"><span class="nav-number">1.4.</span> <span class="nav-text">运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exec-execute-mFuture-amp-sDefaultExecutor-execute-runnable"><span class="nav-number">1.4.1.</span> <span class="nav-text">exec.execute(mFuture)&amp;sDefaultExecutor.execute(runnable)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FutureTask%E2%80%94%E8%BF%90%E8%A1%8C"><span class="nav-number">1.4.2.</span> <span class="nav-text">FutureTask—运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FutureTask%E2%80%93%E5%8F%96%E6%B6%88%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.5.</span> <span class="nav-text">FutureTask–取消任务</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2019/02/19/AsyncTask/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AsyncTask | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AsyncTask
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-19 14:16:00" itemprop="dateCreated datePublished" datetime="2019-02-19T14:16:00+08:00">2019-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-07 20:16:42" itemprop="dateModified" datetime="2023-02-07T20:16:42+08:00">2023-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android/Thread/" itemprop="url" rel="index"><span itemprop="name">Thread</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="AsyncTask"><a href="#AsyncTask" class="headerlink" title="AsyncTask"></a>AsyncTask</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public abstract class AsyncTask&lt;Params, Progress, Result&gt; &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>AsyncTask is designed to be a helper class around {@link Thread} and {@link Handler} and does not constitute a generic threading framework.<br>AsyncTasks should ideally be used for short operations (a few seconds at the most.)<br>If you need to keep threads running for long periods of time, it is highly recommended you use the various APIs provided by the <code>java.util.concurrent</code> package such as {@link Executor}, {@link ThreadPoolExecutor} and {@link FutureTask}.</p><p></p>
+<span id="more"></span>
+
+<h2 id="AsyncTask–Looper"><a href="#AsyncTask–Looper" class="headerlink" title="AsyncTask–Looper"></a>AsyncTask–Looper</h2><p>UI线程：onPreExecute, publishProgress, onPostExecute的实现</p>
+<h3 id="Constuctors"><a href="#Constuctors" class="headerlink" title="Constuctors"></a>Constuctors</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">AsyncTask</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>((Looper) <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Handler <span class="title function_">getMainHandler</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (AsyncTask.class) &#123;</span><br><span class="line">        <span class="keyword">if</span> (sHandler == <span class="literal">null</span>) &#123;</span><br><span class="line">            sHandler = <span class="keyword">new</span> <span class="title class_">InternalHandler</span>(Looper.getMainLooper());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sHandler;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment">// @hide</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">AsyncTask</span><span class="params">(<span class="meta">@Nullable</span> Looper callbackLooper)</span> &#123;</span><br><span class="line">   mHandler = callbackLooper == <span class="literal">null</span> || callbackLooper == Looper.getMainLooper()</span><br><span class="line">       ? getMainHandler()</span><br><span class="line">       : <span class="keyword">new</span> <span class="title class_">Handler</span>(callbackLooper);<span class="comment">//默认获取主线程Handler,亦可自定义HandlerThread.Looper</span></span><br><span class="line">  .....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="子线程返回主线程："><a href="#子线程返回主线程：" class="headerlink" title="子线程返回主线程："></a>子线程返回主线程：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Msg.what:</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MESSAGE_POST_RESULT</span> <span class="operator">=</span> <span class="number">0x1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MESSAGE_POST_PROGRESS</span> <span class="operator">=</span> <span class="number">0x2</span>;</span><br><span class="line">Msg.object:</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">AsyncTaskResult</span>&lt;Data&gt; &#123;</span><br><span class="line">   <span class="keyword">final</span> AsyncTask mTask;</span><br><span class="line">   <span class="keyword">final</span> Data[] mData;</span><br><span class="line"></span><br><span class="line">   AsyncTaskResult(AsyncTask task, Data... data) &#123;</span><br><span class="line">       mTask = task;</span><br><span class="line">       mData = data;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line"><span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> getHandler().obtainMessage(MESSAGE_POST_RESULT,</span><br><span class="line">                   <span class="keyword">new</span> <span class="title class_">AsyncTaskResult</span>&lt;Result&gt;(<span class="built_in">this</span>, result));<span class="comment">// result = doInBackground(mParams);</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="AsyncTask–FutureTask"><a href="#AsyncTask–FutureTask" class="headerlink" title="AsyncTask–FutureTask"></a>AsyncTask–FutureTask</h2><p>子线程：doInBackground</p>
+<h3 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">WorkerRunnable</span>&lt;Params, Result&gt; <span class="keyword">implements</span> <span class="title class_">Callable</span>&lt;Result&gt; &#123;</span><br><span class="line">    Params[] mParams;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">AsyncTask</span><span class="params">(<span class="meta">@Nullable</span> Looper callbackLooper)</span> &#123;</span><br><span class="line">  mWorker = <span class="keyword">new</span> <span class="title class_">WorkerRunnable</span>&lt;Params, Result&gt;() &#123;</span><br><span class="line">        <span class="keyword">public</span> Result <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">            mTaskInvoked.set(<span class="literal">true</span>);</span><br><span class="line">            <span class="type">Result</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">                <span class="comment">//noinspection unchecked</span></span><br><span class="line">                result = doInBackground(mParams);<span class="comment">///////.....</span></span><br><span class="line">                Binder.flushPendingCommands();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable tr) &#123;</span><br><span class="line">                mCancelled.set(<span class="literal">true</span>);<span class="comment">//AtomicBoolean: 取消任务标识</span></span><br><span class="line">                <span class="keyword">throw</span> tr;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                postResult(result);<span class="comment">//////返回结果   sendMessage() --&gt; UI线程</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">///Callable封装</span></span><br><span class="line">    mFuture = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">done</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postResultIfNotInvoked(get());<span class="comment">////返回结果get()</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;An error occurred while executing doInBackground()&quot;</span>,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(<span class="literal">null</span>);<span class="comment">////任务中途取消</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Executor</span> <span class="variable">SERIAL_EXECUTOR</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SerialExecutor</span>();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="type">Executor</span> <span class="variable">sDefaultExecutor</span> <span class="operator">=</span> SERIAL_EXECUTOR;</span><br><span class="line"></span><br><span class="line">SerialExecutor: sDefaultExecutor</span><br><span class="line">方式一：</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; <span class="title function_">execute</span><span class="params">(Params... params)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">Status</span> <span class="variable">mStatus</span> <span class="operator">=</span> Status.PENDING;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; <span class="title function_">executeOnExecutor</span><span class="params">(Executor exec,</span></span><br><span class="line"><span class="params">        Params... params)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (mStatus != Status.PENDING) &#123;<span class="comment">//保证只能运行一次</span></span><br><span class="line">        <span class="keyword">switch</span> (mStatus) &#123;</span><br><span class="line">            <span class="keyword">case</span> RUNNING:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Cannot execute task:&quot;</span></span><br><span class="line">                        + <span class="string">&quot; the task is already running.&quot;</span>);</span><br><span class="line">            <span class="keyword">case</span> FINISHED:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Cannot execute task:&quot;</span></span><br><span class="line">                        + <span class="string">&quot; the task has already been executed &quot;</span></span><br><span class="line">                        + <span class="string">&quot;(a task can be executed only once)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mStatus = Status.RUNNING;</span><br><span class="line"></span><br><span class="line">    onPreExecute();</span><br><span class="line"></span><br><span class="line">    mWorker.mParams = params;</span><br><span class="line">    exec.execute(mFuture);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br><span class="line">方式二：</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Runnable runnable)</span> &#123;</span><br><span class="line">   sDefaultExecutor.execute(runnable); <span class="comment">///</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="exec-execute-mFuture-amp-sDefaultExecutor-execute-runnable"><a href="#exec-execute-mFuture-amp-sDefaultExecutor-execute-runnable" class="headerlink" title="exec.execute(mFuture)&amp;sDefaultExecutor.execute(runnable)"></a>exec.execute(mFuture)&amp;sDefaultExecutor.execute(runnable)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">private static class SerialExecutor implements Executor &#123;</span><br><span class="line">   final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();//任务队列（双端队列）</span><br><span class="line">   Runnable mActive;</span><br><span class="line"></span><br><span class="line">   public synchronized void execute(final Runnable r) &#123;</span><br><span class="line">       mTasks.offer(new Runnable() &#123;//insert into the tail</span><br><span class="line">           public void run() &#123;</span><br><span class="line">               try &#123;</span><br><span class="line">                   r.run();</span><br><span class="line">               &#125; finally &#123;</span><br><span class="line">                   scheduleNext();//取出执行下一任务</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">       if (mActive == null) &#123;</span><br><span class="line">           scheduleNext();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   protected synchronized void scheduleNext() &#123;</span><br><span class="line">       if ((mActive = mTasks.poll()) != null) &#123;//任务队列中存在 head</span><br><span class="line">           THREAD_POOL_EXECUTOR.execute(mActive);</span><br><span class="line">           /*THREAD_POOL_EXECUTOR  -- ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(</span><br><span class="line">            *    CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</span><br><span class="line">            *    sPoolWorkQueue, sThreadFactory);</span><br><span class="line">            */</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="FutureTask—运行"><a href="#FutureTask—运行" class="headerlink" title="FutureTask—运行"></a>FutureTask—运行</h3><p>public class FutureTask<V> implements RunnableFuture<V><br>public interface RunnableFuture<V> extends Runnable, Future<V></V></V></V></V></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">//long RUNNER--&gt;FutureTask中field:runner的地址偏移</span><br><span class="line">public void run() &#123;</span><br><span class="line">   if (state != NEW ||</span><br><span class="line">       !U.compareAndSwapObject(this, RUNNER, null, Thread.currentThread()))//Unsafe--CAS--内存比较</span><br><span class="line">       //private volatile Thread runner;</span><br><span class="line">       //判断runner是否为空若为空则赋值为当前线程并返回true    -- runner指向当前线程</span><br><span class="line">       return;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   //新任务尚未执行，runner为空(赋值成功)---&gt;</span><br><span class="line">   try &#123;</span><br><span class="line">       Callable&lt;V&gt; c = callable;</span><br><span class="line">       if (c != null &amp;&amp; state == NEW) &#123;</span><br><span class="line">           V result;</span><br><span class="line">           boolean ran;</span><br><span class="line">           try &#123;</span><br><span class="line">               result = c.call();//执行Callale#call</span><br><span class="line">               ran = true;</span><br><span class="line">           &#125; catch (Throwable ex) &#123;</span><br><span class="line">               result = null;</span><br><span class="line">               ran = false;</span><br><span class="line">               setException(ex);</span><br><span class="line">           &#125;</span><br><span class="line">           if (ran)</span><br><span class="line">               set(result);//</span><br><span class="line">       &#125;</span><br><span class="line">   &#125; finally &#123;</span><br><span class="line">       // runner must be non-null until state is settled to</span><br><span class="line">       // prevent concurrent calls to run()</span><br><span class="line">       runner = null;</span><br><span class="line">       // state must be re-read after nulling runner to prevent</span><br><span class="line">       // leaked interrupts</span><br><span class="line">       int s = state;</span><br><span class="line">       if (s &gt;= INTERRUPTING)//中断，取消</span><br><span class="line">           handlePossibleCancellationInterrupt(s);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//正常结束任务</span><br><span class="line">protected void set(V v) &#123;</span><br><span class="line">   if (U.compareAndSwapInt(this, STATE, NEW, COMPLETING)) &#123;//新任务</span><br><span class="line">       outcome = v;</span><br><span class="line">       U.putOrderedInt(this, STATE, NORMAL); // final state ---&gt;状态设为NORMAL  正常结束</span><br><span class="line">       finishCompletion();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//Removes and signals all waiting threads, invokes done(), and nulls out callable</span><br><span class="line">private void finishCompletion() &#123;</span><br><span class="line">    // assert state &gt; COMPLETING;</span><br><span class="line">    for (WaitNode q; (q = waiters) != null;) &#123;</span><br><span class="line">        if (U.compareAndSwapObject(this, WAITERS, q, null)) &#123;</span><br><span class="line">            for (;;) &#123;</span><br><span class="line">                Thread t = q.thread;</span><br><span class="line">                if (t != null) &#123;</span><br><span class="line">                    q.thread = null;</span><br><span class="line">                    LockSupport.unpark(t);</span><br><span class="line">                &#125;</span><br><span class="line">                WaitNode next = q.next;</span><br><span class="line">                if (next == null)</span><br><span class="line">                    break;</span><br><span class="line">                q.next = null; // unlink to help gc</span><br><span class="line">                q = next;</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    done();//调用重写方法done</span><br><span class="line"></span><br><span class="line">    callable = null;        // to reduce footprint</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<hr>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">interface Future:提供cancel（任务取消）,    </span><br><span class="line"></span><br><span class="line">A &#123;@code Future&#125; represents the result of an asynchronous  computation.  </span><br><span class="line">Methods are provided to check if the computation is complete, to wait for its completion, and to retrieve the result of the computation.  </span><br><span class="line"></span><br><span class="line">The result can only be retrieved using method &#123;@code get&#125; when the computation has completed, blocking if necessary until it is ready.  </span><br><span class="line"></span><br><span class="line">Cancellation is performed by the &#123;@code cancel&#125; method.  </span><br><span class="line">Additional methods are provided to determine if the task completed normally or was cancelled.</span><br><span class="line"></span><br><span class="line">Once a computation has completed, the computation cannot be cancelled.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">If you would like to use a &#123;@code Future&#125; for the sake of cancellability but not provide a usable result, you can declare types of the form &#123;@code Future&lt;?&gt;&#125; and return &#123;@code null&#125; as a result of the underlying task.</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="FutureTask–取消任务"><a href="#FutureTask–取消任务" class="headerlink" title="FutureTask–取消任务"></a>FutureTask–取消任务</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">cancel</span><span class="params">(<span class="type">boolean</span> mayInterruptIfRunning)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(state == NEW &amp;&amp;</span><br><span class="line">          U.compareAndSwapInt(<span class="built_in">this</span>, STATE, NEW,</span><br><span class="line">              mayInterruptIfRunning ? INTERRUPTING : CANCELLED)))<span class="comment">//不允许取消的任务：刚刚创建，尚未执行；     --将状态设置为INTERRUPTING or CANCELLED失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;    <span class="comment">// in case call to interrupt throws exception</span></span><br><span class="line">        <span class="keyword">if</span> (mayInterruptIfRunning) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> runner;<span class="comment">//runner指向当前线程</span></span><br><span class="line">                <span class="keyword">if</span> (t != <span class="literal">null</span>)</span><br><span class="line">                    t.interrupt();<span class="comment">//。。。</span></span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123; <span class="comment">// final state</span></span><br><span class="line">                U.putOrderedInt(<span class="built_in">this</span>, STATE, INTERRUPTED);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        finishCompletion();<span class="comment">//结束</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2019/02/19/AsyncTask/" title="AsyncTask">https://xuewenm.github.io/2019/02/19/AsyncTask/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Thread/" rel="tag"># Thread</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/15/ClassLoader/" rel="prev" title="ClassLoader">
+                  <i class="fa fa-chevron-left"></i> ClassLoader
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/20/Unsafe/" rel="next" title="Unsafe">
+                  Unsafe <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2019/02/19/AsyncTask/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"40b095673565f96a008de942b3972e63"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

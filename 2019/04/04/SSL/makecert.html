@@ -1,0 +1,22 @@
+<hr>
+<h2 id="title-makecert的使用date-2019-04-08-15-21-38"><a href="#title-makecert的使用date-2019-04-08-15-21-38" class="headerlink" title="title: makecert的使用date: 2019-04-08 15:21:38"></a>title: makecert的使用<br>date: 2019-04-08 15:21:38</h2><h1 id="makecert的使用"><a href="#makecert的使用" class="headerlink" title="makecert的使用"></a>makecert的使用</h1><blockquote>
+<p>makecert.exe test.cer</p>
+</blockquote>
+<!-- more -->
+<p>下面我们看下其它的参数，比如我们要给网站 <a href="http://www.jefferysun.com/">www.jefferysun.com</a> 生成一个证书MyCA.cer，假设我们把makecert.exe放在C：盘下，命令行如下：</p>
+<pre><code>makecert -r -pe -n &quot;CN=10.30.146.206&quot; -b 01/01/2000 -e 01/01/2036 -eku 1.3.6.1.5.5.7.3.1 -ss my -sr localMachine -sky exchange -sp &quot;Microsoft RSA SChannel Cryptographic Provider&quot; -sy 12
+C:\&gt; makecert.exe –pe -r  –n  &quot;CN=www.jefferysun.com&quot; -ss my -sr LocalMachine -a sha1 -len 2048  MyCA.cer
+</code></pre>
+<p>解释一下makecert的常用参数的意思：    </p>
+<pre><code>-n 指定主题的名字，这个是有固定的格式的， CN=主题名字 ，CN应该是Certificate Name的缩写。我这里的主题的名字就是我们的IIS所在机器的IP。这里可以指定一些主题的其它附加信息，例如 O= *** 表示组织信息等等。
+-r 创建自签署证书，意思就是说在生成证书时，将证书的发布机构设置为自己。
+-pe 将所生成的私钥标记为可导出。注意，服务器发送证书给客户端的时候，客户端只能从证书里面获取公钥，私钥是无法获取的。如果我们指定了这个参数，证书在安装在机器上后，我们还可以从证书中导出私钥，默认情况下是不能导出私钥的。正规的途径发布的证书，是不可能让你导出私钥的。
+-b –e 证书的有效期
+-ss 证书的存储名称，就是windows证书存储区的目录名，如果不存在在的话就创建一个。
+-sr 证书的存储位置，只有currentuser（默认值）或 localmachine两个值。
+-sv 指定保存私钥的文件，文件里面除了包含私钥外，其实也包含了证书。这个文件是需要保密的，这个文件在服务端配置时是需要用到的。
+这个CN=10.30.146.206要与自己的服务器相对应，要不然在配置HTTPS的时候会出现错误
+-a 指定签名算法，必须是md5或rsa1。(还记得签名算法的作用不？可以看一下3章的第1节中关于签名算法的介绍)
+-in 指定证书发布机构的名称
+-len 这个参数在中文的帮助文档中好像没有提到，但是这个其实很重要，用于指定公钥的位数，越大越安全，默认值是1024，推荐2048。我试了下，这个不为1024的倍数也是可以的。
+</code></pre>

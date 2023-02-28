@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="RSA分组加密算法，非对称加密算法  参考RSA - 原理、特点（加解密及签名验签）及公钥和私钥的生成  基于–大数N难分解  e*d≡1mod(r)---&gt;e*d≡1mod(φ(N))">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Security-RSA">
+<meta property="og:url" content="https://xuewenm.github.io/2019/02/13/Security-RSA/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="RSA分组加密算法，非对称加密算法  参考RSA - 原理、特点（加解密及签名验签）及公钥和私钥的生成  基于–大数N难分解  e*d≡1mod(r)---&gt;e*d≡1mod(φ(N))">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-13T05:25:10.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.414Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="Encryption">
+<meta property="article:tag" content="Decryption">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2019/02/13/Security-RSA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2019/02/13/Security-RSA/","path":"2019/02/13/Security-RSA/","title":"Security-RSA"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Security-RSA | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA"><span class="nav-number">1.</span> <span class="nav-text">RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E2%80%93%E5%A4%A7%E6%95%B0N%E9%9A%BE%E5%88%86%E8%A7%A3-e-d%E2%89%A11mod-r-gt-e-d%E2%89%A11mod-%CF%86-N"><span class="nav-number">1.1.</span> <span class="nav-text">基于–大数N难分解  e*d≡1mod(r)---&gt;e*d≡1mod(φ(N))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E7%A7%81%E9%92%A5%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.</span> <span class="nav-text">公钥私钥获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">数学原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">加密过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">解密过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DSA-Digital-Signature-Algorithm"><span class="nav-number">2.</span> <span class="nav-text">DSA(Digital Signature Algorithm)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="nav-number">2.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2019/02/13/Security-RSA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Security-RSA | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Security-RSA
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-13 13:25:10" itemprop="dateCreated datePublished" datetime="2019-02-13T13:25:10+08:00">2019-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-07 20:16:42" itemprop="dateModified" datetime="2023-02-07T20:16:42+08:00">2023-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/Security/Encryption/" itemprop="url" rel="index"><span itemprop="name">Encryption</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h1><p>分组加密算法，非对称加密算法</p>
+<blockquote>
+<p>参考<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/kikajack/article/details/80703894">RSA - 原理、特点（加解密及签名验签）及公钥和私钥的生成</a></p>
+</blockquote>
+<h2 id="基于–大数N难分解-e-d≡1mod-r-gt-e-d≡1mod-φ-N"><a href="#基于–大数N难分解-e-d≡1mod-r-gt-e-d≡1mod-φ-N" class="headerlink" title="基于–大数N难分解  e*d≡1mod(r)---&gt;e*d≡1mod(φ(N))"></a>基于–大数N难分解  <code>e*d≡1mod(r)---&gt;e*d≡1mod(φ(N))</code></h2><span id="more"></span>
+
+<h2 id="公钥私钥获取"><a href="#公钥私钥获取" class="headerlink" title="公钥私钥获取"></a>公钥私钥获取</h2><p>随意选择两个大的质数p和q，p不等于q，计算N&#x3D;pq。<br>根据欧拉函数，求得r&#x3D;φ(N)&#x3D;φ(p)φ(q)&#x3D;(p−1)(q−1)<br>选择一个小于r的整数e，使e与r互质。并求得e关于r的模反元素，命名为d（求d令ed≡1(modr)）。（模反元素存在，当且仅当e与r互质;<strong>将p和q的记录销毁。</strong><br>(N,e)是公钥，(N,d)是私钥。公钥发送给所有的通信对象（对服务器来说就是所有的客户端），私钥则必须保管好，防止泄露。  </p>
+<h2 id="数学原理"><a href="#数学原理" class="headerlink" title="数学原理"></a>数学原理</h2><ol>
+<li>欧拉函数：求小于N的正整数中与N互质的数的数目。φ(N) :φ(11)&#x3D;10; φ(4)&#x3D;2[1,3]; φ(8)&#x3D;4[1,3,5,7]      </li>
+<li>欧拉定理证明当a,n为两个互素的正整数时，则有a^φ(n)≡1(modn),其中 φ(n)为欧拉函数（小于等于n且与n互素的正整数个数）。</li>
+</ol>
+<h3 id="加密过程"><a href="#加密过程" class="headerlink" title="加密过程"></a>加密过程</h3><p>明文：m   公钥（N,e）<br>密文：c≡m^e(mod N)</p>
+<h3 id="解密过程"><a href="#解密过程" class="headerlink" title="解密过程"></a>解密过程</h3><p>密文：c    私钥（N,d）<br>明文： c^d(mod N)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">c^d(mod N)≡ m^de(mod N)</span><br><span class="line"></span><br><span class="line">由于ed≡1(modr)  --&gt;   ed≡1(mod φ(N))</span><br><span class="line"></span><br><span class="line">c^d(mod N)≡ m^de(mod N)  ≡ m^ (Kφ(N)+1) (mod N) ≡m* (m^ φ(N))^K  (mod N) //K 为倍系数  倍数</span><br><span class="line"></span><br><span class="line">N=p*q (p,q为两不相同大质数)，m与N互质</span><br><span class="line"></span><br><span class="line">m^φ(N) ≡ 1 mod N</span><br><span class="line"></span><br><span class="line">c^d(mod N)≡ m^de(mod N)  ≡ m^ (Kφ(N)+1) (mod N) ≡m* (m^ φ(N))^K  (mod N)</span><br><span class="line"></span><br><span class="line">≡ m *1^K (mod N)≡m (mod N)</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">方式一：</span><br><span class="line"><span class="type">BigInteger</span> <span class="variable">rs</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigInteger</span>(String.format(<span class="string">&quot;%x&quot;</span>, <span class="keyword">new</span> <span class="title class_">BigInteger</span>(<span class="number">1</span>, text.getBytes())), <span class="number">16</span>)</span><br><span class="line">					.modPow(<span class="keyword">new</span> <span class="title class_">BigInteger</span>(pubKey, <span class="number">16</span>), <span class="keyword">new</span> <span class="title class_">BigInteger</span>(modulus, <span class="number">16</span>));<span class="comment">//(pubKey=e,modulus=N)</span></span><br><span class="line"><span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> rs.toString(<span class="number">16</span>);</span><br><span class="line"></span><br><span class="line">方式二：</span><br><span class="line"><span class="type">RSAPublicKeySpec</span> <span class="variable">keySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RSAPublicKeySpec</span>(modulus, pubkey);<span class="comment">//(modulus=N,pubKey=e)</span></span><br><span class="line"><span class="type">KeyFactory</span> <span class="variable">keyFactory</span> <span class="operator">=</span> KeyFactory.getInstance(<span class="string">&quot;RSA&quot;</span>);</span><br><span class="line"><span class="type">PublicKey</span> <span class="variable">publicKey</span> <span class="operator">=</span> keyFactory.generatePublic(keySpec);</span><br><span class="line"></span><br><span class="line"><span class="comment">//ECB（无IV） 无填充</span></span><br><span class="line"><span class="type">Cipher</span> <span class="variable">cipher</span> <span class="operator">=</span> Cipher.getInstance(<span class="string">&quot;RSA/ECB/NoPadding&quot;</span>);<span class="comment">// PKCS1Padding</span></span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, publicKey);</span><br><span class="line"></span><br><span class="line">randomStr = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(randomStr).reverse().toString();<span class="comment">//待加密字符串</span></span><br><span class="line"><span class="type">byte</span>[] data = randomStr.getBytes(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"><span class="type">int</span> <span class="variable">inputLen</span> <span class="operator">=</span> data.length;</span><br><span class="line"><span class="type">ByteArrayOutputStream</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line"><span class="type">int</span> <span class="variable">offSet</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="type">byte</span>[] cache;</span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对数据分段加密</span></span><br><span class="line"><span class="keyword">while</span> (inputLen - offSet &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> (inputLen - offSet &gt; MAX_ENCRYPT_BLOCK) &#123;</span><br><span class="line">		cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		cache = cipher.doFinal(data, offSet, inputLen - offSet);</span><br><span class="line">	&#125;</span><br><span class="line">	out.write(cache, <span class="number">0</span>, cache.length);</span><br><span class="line">	i++;</span><br><span class="line">	offSet = i * MAX_ENCRYPT_BLOCK;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">byte</span>[] encryptedData = out.toByteArray();</span><br><span class="line">out.close();</span><br><span class="line"><span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> byte2HexString(encryptedData);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="DSA-Digital-Signature-Algorithm"><a href="#DSA-Digital-Signature-Algorithm" class="headerlink" title="DSA(Digital Signature Algorithm)"></a>DSA(Digital Signature Algorithm)</h1><p>DSA是基于整数有限域离散对数难题的，其安全性与RSA相比差不多。DSA的一个重要特点是两个素数公开，这样，当使用别人的p和q时，即使不知道私钥，你也能确认它们是否是随机产生的，还是作了手脚。RSA算法却做不到。<!--？？？ 理解 ？？？-->   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">算法中应用了下述参数：</span><br><span class="line">p：L bits长的素数。L是64的倍数，范围是512到1024；</span><br><span class="line">q：p - 1的160bits的素因子；</span><br><span class="line">g：g = h^((p-1)/q) mod p，h满足h &lt; p - 1, h^((p-1)/q) mod p &gt; 1；</span><br><span class="line">x：x &lt; q，x为私钥 ；</span><br><span class="line">y：y = g^x mod p ，( p, q, g, y )为公钥；</span><br><span class="line">H( x )：One-Way Hash函数。DSS（FIPS186-4）中选用SHA-1或者SHA-2( Secure Hash Algorithm系列中的2个较新版本，其中SHA-2有4个，SHA-224，SHA-256，SHA-384，SHA-512，最原始的SHA已经不再被使用)。</span><br><span class="line">p, q, g可由一组用户共享，但在实际应用中，使用公共模数可能会带来一定的威胁。签名及验证协议如下：</span><br><span class="line">1. P产生随机数k，k &lt; q；</span><br><span class="line">2. P计算 r = ( g^k mod p ) mod q</span><br><span class="line">s = ( k^(-1) (H(m) + xr)) mod q</span><br><span class="line">签名结果是( m, r, s )。</span><br><span class="line">3. 验证时计算 w = s^(-1)mod q</span><br><span class="line">u1 = ( H( m ) * w ) mod q</span><br><span class="line">u2 = ( r * w ) mod q</span><br><span class="line">v = (( g^u1 * y^u2 ) mod p ) mod q</span><br><span class="line">若v = r，则认为签名有效。</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.codec.binary.Base64;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 常用数字签名算法DSA</span></span><br><span class="line"><span class="comment"> * 数字签名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> kongqz</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DSACoder</span> &#123;</span><br><span class="line">	<span class="comment">//数字签名，密钥算法</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY_ALGORITHM=<span class="string">&quot;DSA&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 数字签名</span></span><br><span class="line"><span class="comment">	 * 签名/验证算法</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String SIGNATURE_ALGORITHM=<span class="string">&quot;SHA1withDSA&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * DSA密钥长度，RSA算法的默认密钥长度是1024</span></span><br><span class="line"><span class="comment">	 * 密钥长度必须是64的倍数，在512到1024位之间</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> KEY_SIZE=<span class="number">1024</span>;</span><br><span class="line">	<span class="comment">//公钥</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PUBLIC_KEY=<span class="string">&quot;DSAPublicKey&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//私钥</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PRIVATE_KEY=<span class="string">&quot;DSAPrivateKey&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 初始化密钥对</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> Map 甲方密钥的Map</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,Object&gt; <span class="title function_">initKey</span><span class="params">()</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">		<span class="comment">//实例化密钥生成器</span></span><br><span class="line">		KeyPairGenerator keyPairGenerator=KeyPairGenerator.getInstance(KEY_ALGORITHM);</span><br><span class="line">		<span class="comment">//初始化密钥生成器</span></span><br><span class="line">		keyPairGenerator.initialize(KEY_SIZE,<span class="keyword">new</span> <span class="title class_">SecureRandom</span>());</span><br><span class="line">		<span class="comment">//生成密钥对</span></span><br><span class="line">		KeyPair keyPair=keyPairGenerator.generateKeyPair();</span><br><span class="line">		<span class="comment">//甲方公钥</span></span><br><span class="line">		DSAPublicKey publicKey=(DSAPublicKey) keyPair.getPublic();</span><br><span class="line">		<span class="comment">//甲方私钥</span></span><br><span class="line">		DSAPrivateKey privateKey=(DSAPrivateKey) keyPair.getPrivate();</span><br><span class="line">		<span class="comment">//将密钥存储在map中</span></span><br><span class="line">		Map&lt;String,Object&gt; keyMap=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String,Object&gt;();</span><br><span class="line">		keyMap.put(PUBLIC_KEY, publicKey);</span><br><span class="line">		keyMap.put(PRIVATE_KEY, privateKey);</span><br><span class="line">		<span class="keyword">return</span> keyMap;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 签名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> data待签名数据</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> privateKey 密钥</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> byte[] 数字签名</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] sign(<span class="type">byte</span>[] data,<span class="type">byte</span>[] privateKey) <span class="keyword">throws</span> Exception&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//取得私钥</span></span><br><span class="line">		PKCS8EncodedKeySpec pkcs8KeySpec=<span class="keyword">new</span> <span class="title class_">PKCS8EncodedKeySpec</span>(privateKey);</span><br><span class="line">		KeyFactory keyFactory=KeyFactory.getInstance(KEY_ALGORITHM);</span><br><span class="line">		<span class="comment">//生成私钥</span></span><br><span class="line">		PrivateKey priKey=keyFactory.generatePrivate(pkcs8KeySpec);</span><br><span class="line">		<span class="comment">//实例化Signature</span></span><br><span class="line">		<span class="type">Signature</span> <span class="variable">signature</span> <span class="operator">=</span> Signature.getInstance(SIGNATURE_ALGORITHM);</span><br><span class="line">		<span class="comment">//初始化Signature</span></span><br><span class="line">		signature.initSign(priKey);</span><br><span class="line">		<span class="comment">//更新</span></span><br><span class="line">		signature.update(data);</span><br><span class="line">		<span class="keyword">return</span> signature.sign();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 校验数字签名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> data 待校验数据</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> publicKey 公钥</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> sign 数字签名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> boolean 校验成功返回true，失败返回false</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">verify</span><span class="params">(<span class="type">byte</span>[] data,<span class="type">byte</span>[] publicKey,<span class="type">byte</span>[] sign)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">		<span class="comment">//转换公钥材料</span></span><br><span class="line">		<span class="comment">//实例化密钥工厂</span></span><br><span class="line">		KeyFactory keyFactory=KeyFactory.getInstance(KEY_ALGORITHM);</span><br><span class="line">		<span class="comment">//初始化公钥</span></span><br><span class="line">		<span class="comment">//密钥材料转换</span></span><br><span class="line">		X509EncodedKeySpec x509KeySpec=<span class="keyword">new</span> <span class="title class_">X509EncodedKeySpec</span>(publicKey);</span><br><span class="line">		<span class="comment">//产生公钥</span></span><br><span class="line">		PublicKey pubKey=keyFactory.generatePublic(x509KeySpec);</span><br><span class="line">		<span class="comment">//实例化Signature</span></span><br><span class="line">		<span class="type">Signature</span> <span class="variable">signature</span> <span class="operator">=</span> Signature.getInstance(SIGNATURE_ALGORITHM);</span><br><span class="line">		<span class="comment">//初始化Signature</span></span><br><span class="line">		signature.initVerify(pubKey);</span><br><span class="line">		<span class="comment">//更新</span></span><br><span class="line">		signature.update(data);</span><br><span class="line">		<span class="comment">//验证</span></span><br><span class="line">		<span class="keyword">return</span> signature.verify(sign);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 取得私钥</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> keyMap 密钥map</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> byte[] 私钥</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] getPrivateKey(Map&lt;String,Object&gt; keyMap)&#123;</span><br><span class="line">		Key key=(Key)keyMap.get(PRIVATE_KEY);</span><br><span class="line">		<span class="keyword">return</span> key.getEncoded();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 取得公钥</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> keyMap 密钥map</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> byte[] 公钥</span></span><br><span class="line"><span class="comment">	 * */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] getPublicKey(Map&lt;String,Object&gt; keyMap) <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">		Key key=(Key) keyMap.get(PUBLIC_KEY);</span><br><span class="line">		<span class="keyword">return</span> key.getEncoded();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		<span class="comment">//初始化密钥</span></span><br><span class="line">		<span class="comment">//生成密钥对</span></span><br><span class="line">		Map&lt;String,Object&gt; keyMap=DSACoder.initKey();</span><br><span class="line">		<span class="comment">//公钥</span></span><br><span class="line">		<span class="type">byte</span>[] publicKey=DSACoder.getPublicKey(keyMap);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//私钥</span></span><br><span class="line">		<span class="type">byte</span>[] privateKey=DSACoder.getPrivateKey(keyMap);</span><br><span class="line">		System.out.println(<span class="string">&quot;公钥：/n&quot;</span>+Base64.encodeBase64String(publicKey));</span><br><span class="line">		System.out.println(<span class="string">&quot;私钥：/n&quot;</span>+Base64.encodeBase64String(privateKey));</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">&quot;================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============&quot;</span>);</span><br><span class="line">		String str=<span class="string">&quot;DSA数字签名算法&quot;</span>;</span><br><span class="line">		System.out.println(<span class="string">&quot;原文:&quot;</span>+str);</span><br><span class="line">		<span class="comment">//甲方进行数据的加密</span></span><br><span class="line">		<span class="type">byte</span>[] sign=DSACoder.sign(str.getBytes(), privateKey);</span><br><span class="line">		System.out.println(<span class="string">&quot;产生签名：&quot;</span>+Base64.encodeBase64String(sign));</span><br><span class="line">		<span class="comment">//验证签名</span></span><br><span class="line">		<span class="type">boolean</span> status=DSACoder.verify(str.getBytes(), publicKey, sign);</span><br><span class="line">		System.out.println(<span class="string">&quot;状态：&quot;</span>+status+<span class="string">&quot;/n/n&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">控制台输出：</span><br><span class="line">公钥：</span><br><span class="line">MIIBtzCCASwGByqGSM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s5Of2EbdSPO9EAMMeP4C2USZp</span><br><span class="line">RV1AIlH7WT2NWPq/xfW6MPbLm1Vs14E7gB00b/JmYLdrmVClpJ+f6AR7ECLCT7up1/63xhv4O1fn</span><br><span class="line">xqimFQ8E+4P208UewwI1VBNaFpEy9nXzrith1yrv8iIDGZ3RSAHHAhUAl2BQjxUjC8yykrmCouuE</span><br><span class="line">C/BYHPUCgYEA9+GghdabPd7LvKtcNrhXuXmUr7v6OuqC+VdMCz0HgmdRWVeOutRZT+ZxBxCBgLRJ</span><br><span class="line">FnEj6EwoFhO3zwkyjMim4TwWeotUfI0o4KOuHiuzpnWRbqN/C/ohNWLx+2J6ASQ7zKTxvqhRkImo</span><br><span class="line">g9/hWuWfBpKLZl6Ae1UlZAFMO/7PSSoDgYQAAoGAdLUOPbXqOQi4MFUm5tgBs2zQO20P7P1iPCC9</span><br><span class="line">pslWvixp13NX9dTwdddkwqQtwKAfm/Ao2Gqe7VGq48kTIPr0wz01LKlCLbbw6VLikuFcgVNN+sVx</span><br><span class="line">mwVTm54aFpiOaenS575Qtyek3zjVV+eMtRNKn91rMMWpsP6pucqku6xO5uY=</span><br><span class="line">私钥：</span><br><span class="line">MIIBSwIBADCCASwGByqGSM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s5Of2EbdSPO9EAMMeP4C2</span><br><span class="line">USZpRV1AIlH7WT2NWPq/xfW6MPbLm1Vs14E7gB00b/JmYLdrmVClpJ+f6AR7ECLCT7up1/63xhv4</span><br><span class="line">O1fnxqimFQ8E+4P208UewwI1VBNaFpEy9nXzrith1yrv8iIDGZ3RSAHHAhUAl2BQjxUjC8yykrmC</span><br><span class="line">ouuEC/BYHPUCgYEA9+GghdabPd7LvKtcNrhXuXmUr7v6OuqC+VdMCz0HgmdRWVeOutRZT+ZxBxCB</span><br><span class="line">gLRJFnEj6EwoFhO3zwkyjMim4TwWeotUfI0o4KOuHiuzpnWRbqN/C/ohNWLx+2J6ASQ7zKTxvqhR</span><br><span class="line">kImog9/hWuWfBpKLZl6Ae1UlZAFMO/7PSSoEFgIUQhtJHLosUo0sxPKmCxC8NFVjD9c=</span><br><span class="line">================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============</span><br><span class="line">原文:DSA数字签名算法</span><br><span class="line">产生签名：MCwCFAsJPC7xUfrvGYXtsxiWcS6GHAe1AhRnZLZ1CJe8I41vaScvJ7UZ8yk0oA==</span><br><span class="line">状态：<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>DSA的公钥长度略长于私钥，这个和RSA有较大差别。可以通过两个算法的控制台输出公钥私钥长度比对</li>
+<li>DSA算法的签名长度与密钥长度无关。可能和待签名数据有联系…</li>
+</ol>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2019/02/13/Security-RSA/" title="Security-RSA">https://xuewenm.github.io/2019/02/13/Security-RSA/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Encryption/" rel="tag"># Encryption</a>
+              <a href="/tags/Decryption/" rel="tag"># Decryption</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/13/Security-md5/" rel="prev" title="Security-md5">
+                  <i class="fa fa-chevron-left"></i> Security-md5
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/15/ClassLoader/" rel="next" title="ClassLoader">
+                  ClassLoader <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2019/02/13/Security-RSA/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"7d864a5f6575e76c195956e957b56ed0"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

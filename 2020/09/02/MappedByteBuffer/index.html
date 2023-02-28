@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="目录 New I&#x2F;O  ByteBuffer  Direct Buffers  MappedByteBuffer  示例  参考理解   New I&#x2F;O 旧的 I&#x2F;O 包已经使用 nio 重新实现过，以便充分利用这种速度提高  速度的提高来自于所使用的数据集结构更接近于操作系统执行的 I&#x2F;O 方式：通道和缓冲器，唯一直接与通道交互的缓冲器ByteBuffer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MappedByteBuffer">
+<meta property="og:url" content="https://xuewenm.github.io/2020/09/02/MappedByteBuffer/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="目录 New I&#x2F;O  ByteBuffer  Direct Buffers  MappedByteBuffer  示例  参考理解   New I&#x2F;O 旧的 I&#x2F;O 包已经使用 nio 重新实现过，以便充分利用这种速度提高  速度的提高来自于所使用的数据集结构更接近于操作系统执行的 I&#x2F;O 方式：通道和缓冲器，唯一直接与通道交互的缓冲器ByteBuffer">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200901203630879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200901213234949.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200901213615877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200901213741243.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-09-02T04:20:09.000Z">
+<meta property="article:modified_time" content="2023-02-18T12:51:05.360Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="NIO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200901203630879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2020/09/02/MappedByteBuffer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2020/09/02/MappedByteBuffer/","path":"2020/09/02/MappedByteBuffer/","title":"MappedByteBuffer"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MappedByteBuffer | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#New-I-x2F-O"><span class="nav-number"></span> <span class="nav-text">New I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ByteBuffer"><span class="nav-number">1.</span> <span class="nav-text">ByteBuffer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Direct-Buffers"><span class="nav-number">1.1.</span> <span class="nav-text">Direct Buffers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MappedByteBuffer"><span class="nav-number">1.2.</span> <span class="nav-text">MappedByteBuffer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number"></span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E7%90%86%E8%A7%A3"><span class="nav-number"></span> <span class="nav-text">参考理解</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2020/09/02/MappedByteBuffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MappedByteBuffer | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MappedByteBuffer
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-02 12:20:09" itemprop="dateCreated datePublished" datetime="2020-09-02T12:20:09+08:00">2020-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-18 20:51:05" itemprop="dateModified" datetime="2023-02-18T20:51:05+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/NIO/" itemprop="url" rel="index"><span itemprop="name">NIO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ul>
+<li><p><a href="#New_IO_2">New I&#x2F;O</a></p>
+</li>
+<li><p><a href="#ByteBuffer_33">ByteBuffer</a></p>
+</li>
+<li><p><a href="#Direct_Buffers_64">Direct Buffers</a></p>
+</li>
+<li><p><a href="#MappedByteBuffer_80">MappedByteBuffer</a></p>
+</li>
+<li><p><a href="#_148">示例</a></p>
+</li>
+<li><p><a href="#_223">参考理解</a></p>
+</li>
+</ul>
+<h2 id="New-I-x2F-O"><a href="#New-I-x2F-O" class="headerlink" title="New I&#x2F;O"></a>New I&#x2F;O</h2><blockquote>
+<p>旧的 I&#x2F;O 包已经使用 nio 重新实现过，以便充分利用这种速度提高</p>
+</blockquote>
+<p>速度的提高来自于所使用的数据集结构更接近于操作系统执行的 I&#x2F;O 方式：<strong>通道</strong>和<strong>缓冲器</strong>，唯一直接与通道交互的缓冲器<code>ByteBuffer</code>。旧的 I&#x2F;O 库中的<code>FileInputStream</code>,<code>FileOutputStream</code>,<code>RandomAccessFile</code>可以用来生成<code>FileChannel</code>;<code>Reader</code>和<code>Writer</code>不能用于产生通道，但是在<code>java.nio.channels.Channels</code>类中提供了在通道中产生<code>Reader</code>和<code>Writer</code>的方法。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200901203630879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center"></p>
+<span id="more"></span>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Constructs a reader that decodes bytes from the given channel using the given decoder.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Reader <span class="title function_">newReader</span><span class="params">(ReadableByteChannel ch, CharsetDecoder dec, <span class="type">int</span> minBufferCap)</span>&#123;</span><br><span class="line">     checkNotNull(ch, <span class="string">&quot;ch&quot;</span>);</span><br><span class="line">     <span class="keyword">return</span> StreamDecoder.forDecoder(ch, dec.reset(), minBufferCap);<span class="comment">// new StreamDecoder(...);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Reader <span class="title function_">newReader</span><span class="params">(ReadableByteChannel ch, String csName)</span>&#123;</span><br><span class="line">    checkNotNull(csName, <span class="string">&quot;csName&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> newReader(ch, Charset.forName(csName).newDecoder(), -<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Writer <span class="title function_">newWriter</span><span class="params">(<span class="keyword">final</span> WritableByteChannel ch, <span class="keyword">final</span> CharsetEncoder enc, <span class="keyword">final</span> <span class="type">int</span> minBufferCap)</span>&#123;</span><br><span class="line">    checkNotNull(ch, <span class="string">&quot;ch&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> StreamEncoder.forEncoder(ch, enc.reset(), minBufferCap);<span class="comment">// ..</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Writer <span class="title function_">newWriter</span><span class="params">(WritableByteChannel ch, String csName)</span>&#123;</span><br><span class="line">     checkNotNull(csName, <span class="string">&quot;csName&quot;</span>);</span><br><span class="line">     <span class="keyword">return</span> newWriter(ch, Charset.forName(csName).newEncoder(), -<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ByteBuffer"><a href="#ByteBuffer" class="headerlink" title="ByteBuffer"></a>ByteBuffer</h3><p>A byte buffer is either <em>direct</em> or <em>non-direct</em>.</p>
+<ul>
+<li><p>Given a direct byte buffer, the Java virtual machine will make a best effort to perform native I&#x2F;O operations directly upon it. That is, it will attempt to avoid copying the buffer’s content to (or from) an intermediate buffer before (or after) each invocation of one of the underlying operating system’s native I&#x2F;O operations.</p>
+</li>
+<li><p>The contents of direct buffers may reside outside of the normal garbage-collected heap, and so their impact upon the memory footprint of an application might not be obvious.</p>
+</li>
+<li><p>It is therefore recommended that <em><strong>direct buffers be allocated primarily for large, long-lived buffers that are subject to the underlying system’s native I&#x2F;O operations.</strong></em></p>
+</li>
+<li><p>In general it is best to allocate direct buffers <strong>only when they yield a measureable gain in program performance.</strong></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer(<span class="type">int</span> mark, <span class="type">int</span> pos, <span class="type">int</span> lim, <span class="type">int</span> cap,   <span class="comment">// package-private</span></span><br><span class="line">                 <span class="type">byte</span>\[\] hb, <span class="type">int</span> offset)&#123;</span><br><span class="line">		 	<span class="built_in">super</span>(mark, pos, lim, cap);</span><br><span class="line">			<span class="built_in">this</span>.hb = hb;     		<span class="comment">///   Non-null only for heap buffers</span></span><br><span class="line">			<span class="built_in">this</span>.offset = offset;	<span class="comment">///   </span></span><br><span class="line">&#125;</span><br><span class="line">Buffer(<span class="type">int</span> mark, <span class="type">int</span> pos, <span class="type">int</span> lim, <span class="type">int</span> cap) &#123;       <span class="comment">// package-private</span></span><br><span class="line">		    <span class="keyword">if</span> (cap &lt; <span class="number">0</span>)</span><br><span class="line">		          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Negative capacity: &quot;</span> + cap);</span><br><span class="line">	        <span class="built_in">this</span>.capacity = cap;</span><br><span class="line">	        limit(lim);</span><br><span class="line">	        position(pos);</span><br><span class="line">	        <span class="keyword">if</span> (mark &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">	           <span class="keyword">if</span> (mark &gt; pos)</span><br><span class="line">	              <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;mark &gt; position: (&quot;</span> + mark + <span class="string">&quot; &gt; &quot;</span> + pos + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">	           <span class="built_in">this</span>.mark = mark;</span><br><span class="line">	       &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Direct-Buffers"><a href="#Direct-Buffers" class="headerlink" title="Direct Buffers"></a>Direct Buffers</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Allocates a new direct byte buffer.</span><br><span class="line">// this method typically have somewhat higher allocation and deallocation costs than non-direct buffers. 更高的分配和释放成本</span><br><span class="line">public static ByteBuffer allocateDirect(int capacity) &#123;</span><br><span class="line"> 	return new DirectByteBuffer(capacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Maps a region of this channel&#x27;s file directly into memory.</span><br><span class="line">//Read/write: Changes made to the resulting buffer will eventually be propagated to the file; they may or may not be made visible to other programs that have mapped the same file.</span><br><span class="line">//它们可能对映射了同一文件的其他程序可见，也可能不可见。</span><br><span class="line">//Private: Changes made to the resulting buffer will not be propagated to the file and will not be visible to other programs that have mapped the same file; instead, they will cause private copies of the modified portions of the buffer to be created.                                  </span><br><span class="line">public abstract MappedByteBuffer map(MapMode mode, long position, long size) throws IOException;</span><br></pre></td></tr></table></figure>
+
+<h4 id="MappedByteBuffer"><a href="#MappedByteBuffer" class="headerlink" title="MappedByteBuffer"></a>MappedByteBuffer</h4><blockquote>
+<p>A direct byte buffer whose content is a memory-mapped region of a file.<br><em>A mapped byte buffer and the file mapping that it represents remain valid until the buffer itself is garbage-collected.</em></p>
+</blockquote>
+<p>For most operating systems, <em><strong>mapping a file into memory</strong></em> is <em>more expensive</em> than reading or writing <strong>a few tens of kilobytes</strong> of data via the usual {@link #read read} and {@link #write write} methods. From the standpoint of performance it is generally <em><strong>only worth mapping relatively large files into memory.</strong></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tells whether or not this buffer&#x27;s content is resident in physical memory.</span></span><br><span class="line"><span class="comment">// A return value of &lt;tt&gt;false&lt;/tt&gt; does not necessarily imply that the buffer&#x27;s content is not resident in physical memory.</span></span><br><span class="line"><span class="comment">// The returned value is a hint, rather than a guarantee,</span></span><br><span class="line"><span class="comment">// because the underlying operating system may</span></span><br><span class="line"><span class="comment">// have paged out some of the buffer&#x27;s data by the time that an invocation of this method returns.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">isLoaded</span><span class="params">()</span> &#123;</span><br><span class="line">		checkMapped();</span><br><span class="line">        <span class="keyword">if</span> ((address == <span class="number">0</span>) || (capacity() == <span class="number">0</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">long</span> <span class="variable">offset</span> <span class="operator">=</span> mappingOffset();</span><br><span class="line">        <span class="type">long</span> <span class="variable">length</span> <span class="operator">=</span> mappingLength(offset);</span><br><span class="line">        <span class="keyword">return</span> isLoaded0(mappingAddress(offset), length, Bits.pageCount(length));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">native</span> <span class="type">boolean</span> <span class="title function_">isLoaded0</span><span class="params">(<span class="type">long</span> address, <span class="type">long</span> length, <span class="type">int</span> pageCount)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Loads this buffer&#x27;s content into physical memory.</span></span><br><span class="line"><span class="comment">// This method makes a best effort to ensure that ...</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> MappedByteBuffer <span class="title function_">load</span><span class="params">()</span> &#123;</span><br><span class="line">        checkMapped();</span><br><span class="line">        <span class="keyword">if</span> ((address == <span class="number">0</span>) || (capacity() == <span class="number">0</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        <span class="type">long</span> <span class="variable">offset</span> <span class="operator">=</span> mappingOffset();</span><br><span class="line">        <span class="type">long</span> <span class="variable">length</span> <span class="operator">=</span> mappingLength(offset);</span><br><span class="line">        load0(mappingAddress(offset), length);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  A checksum is computed as we go along to prevent the compiler from otherwise</span></span><br><span class="line">        <span class="comment">// considering the loop as dead code.</span></span><br><span class="line">        <span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> Unsafe.getUnsafe();</span><br><span class="line">        <span class="type">int</span> <span class="variable">ps</span> <span class="operator">=</span> Bits.pageSize();</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> Bits.pageCount(length);</span><br><span class="line">        <span class="type">long</span> <span class="variable">a</span> <span class="operator">=</span> mappingAddress(offset);</span><br><span class="line">        <span class="type">byte</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;count; i++) &#123;</span><br><span class="line">            x ^= unsafe.getByte(a);<span class="comment">//Read a byte from each page to bring it into memory.</span></span><br><span class="line">            a += ps;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (unused != <span class="number">0</span>)</span><br><span class="line">            unused = x;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">load0</span><span class="params">(<span class="type">long</span> address, <span class="type">long</span> length)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Forces any changes made to this buffer&#x27;s content to be written to the storage device containing the mapped file.</span></span><br><span class="line"><span class="comment">// If the file mapped into this buffer resides on a local storage device</span></span><br><span class="line"><span class="comment">// then when this method returns it is guaranteed that</span></span><br><span class="line"><span class="comment">// all changes made to the buffer since it was created, or since this method was last invoked, will have been written to that device.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// If the file does not reside on a local device then no such guarantee is made.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> MappedByteBuffer <span class="title function_">force</span><span class="params">()</span> &#123;<span class="comment">// read/write mode</span></span><br><span class="line">        checkMapped();</span><br><span class="line">        <span class="keyword">if</span> ((address != <span class="number">0</span>) &amp;&amp; (capacity() != <span class="number">0</span>)) &#123;</span><br><span class="line">            <span class="type">long</span> <span class="variable">offset</span> <span class="operator">=</span> mappingOffset();</span><br><span class="line">            force0(fd, mappingAddress(offset), mappingLength(offset));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><blockquote>
+<p>将 E:&#x2F;&#x2F;test 目录下的大文件进行读写</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Main.java</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">testFiles</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ExecutorService</span> <span class="variable">executorService</span> <span class="operator">=</span> Executors.newFixedThreadPool(<span class="number">12</span>);</span><br><span class="line">       	<span class="comment">//....</span></span><br><span class="line">                                       <span class="type">FileChannel</span> <span class="variable">fileChannel</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RandomAccessFile</span>(file1, <span class="string">&quot;rw&quot;</span>).getChannel();</span><br><span class="line">                                <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">                                    <span class="type">MappedByteBuffer</span> <span class="variable">buffer</span> <span class="operator">=</span> fileChannel.map(FileChannel.MapMode.READ\_WRITE, j \* block, block);</span><br><span class="line">                                    executorService.execute(<span class="keyword">new</span> <span class="title class_">RWTest</span>(file1.getName(), fileChannel, buffer, j \* block, block));</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;  <span class="comment">// 文件太小</span></span><br><span class="line">                   &#125;</span><br><span class="line"><span class="comment">//RWTest.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        <span class="type">FileLock</span> <span class="variable">fileLock</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                fileLock = fileChannel.tryLock(position, block, <span class="literal">false</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;there is another thread here.&quot;</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e1) &#123;</span><br><span class="line">                    e1.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// do something ...</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (buffer.hasRemaining()) &#123;</span><br><span class="line">            buffer.put((<span class="type">byte</span>) (buffer.get(index) ^ chaos\[index % <span class="number">16</span>\]));<span class="comment">//数据读写</span></span><br><span class="line">            index++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (fileLock != <span class="literal">null</span>)</span><br><span class="line">                fileLock.release();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">long</span> <span class="variable">stop</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        System.out.println(String.format(<span class="string">&quot;%s 耗费 %d毫秒&quot;</span>, <span class="built_in">this</span>, stop - start));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20200901213234949.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center"><br><img src="https://img-blog.csdnimg.cn/20200901213615877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center"><br><img src="https://img-blog.csdnimg.cn/20200901213741243.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NjIwODU1,size_16,color_FFFFFF,t_70#pic_center"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 首次运行</span><br><span class="line">Thread pool-1-thread-3-14 	position:643952840  block: 321976420    covert:aa.mkv  耗费 25074毫秒</span><br><span class="line">Thread pool-1-thread-7-18 	position:1931858520  block: 321976420    covert:aa.mkv  耗费 25310毫秒</span><br><span class="line">Thread pool-1-thread-8-19 	position:2253834940  block: 321976420    covert:aa.mkv  耗费 26502毫秒</span><br><span class="line">Thread pool-1-thread-2-13 	position:321976420  block: 321976420    covert:aa.mkv  耗费 27924毫秒</span><br><span class="line">Thread pool-1-thread-4-15 	position:965929260  block: 321976420    covert:aa.mkv  耗费 28847毫秒</span><br><span class="line">Thread pool-1-thread-6-17 	position:1609882100  block: 321976420    covert:aa.mkv  耗费 28859毫秒</span><br><span class="line">Thread pool-1-thread-5-16 	position:1287905680  block: 321976420    covert:aa.mkv  耗费 29086毫秒</span><br><span class="line">Thread pool-1-thread-1-12 	position:0  block: 321976420    covert:aa.mkv  耗费 29309毫秒</span><br><span class="line"></span><br><span class="line">// 第二次转码，在内存中，速度极快</span><br><span class="line">Thread pool-1-thread-2-13 	position:321976420  block: 321976420    covert:aa.mkv  耗费 1248毫秒</span><br><span class="line">Thread pool-1-thread-7-18 	position:1931858520  block: 321976420    covert:aa.mkv  耗费 1275毫秒</span><br><span class="line">Thread pool-1-thread-4-15 	position:965929260  block: 321976420    covert:aa.mkv  耗费 1285毫秒</span><br><span class="line">Thread pool-1-thread-6-17 	position:1609882100  block: 321976420    covert:aa.mkv  耗费 1290毫秒</span><br><span class="line">Thread pool-1-thread-5-16 	position:1287905680  block: 321976420    covert:aa.mkv  耗费 1297毫秒</span><br><span class="line">Thread pool-1-thread-8-19 	position:2253834940  block: 321976420    covert:aa.mkv  耗费 1300毫秒</span><br><span class="line">Thread pool-1-thread-3-14 	position:643952840  block: 321976420    covert:aa.mkv  耗费 1311毫秒</span><br><span class="line">Thread pool-1-thread-1-12 	position:0  block: 321976420    covert:aa.mkv  耗费 1348毫秒</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考理解"><a href="#参考理解" class="headerlink" title="参考理解"></a>参考理解</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f90866dcbffc">占小狼 - 深入浅出 MappedByteBuffer</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/guozp/p/10470431.html">mrguozp-MappedByteBuffer</a></p>
+<p>传统的基于文件流的方式读取文件方式是系统指令调用，文件数据首先会被读取到进程的内核空间的缓冲区，而后复制到进程的用户空间，这个过程中存在两次数据拷贝；而内存映射方式读取文件的方式，也是系统指令调用，在产生缺页中断后，CPU 直接从磁盘文件 load 数据到进程的用户空间，只有一次数据拷贝。</p>
+<ul>
+<li><p>性能分析<br>从代码层面上看，从硬盘上将文件读入内存，都要经过文件系统进行数据拷贝，并且数据拷贝操作是由文件系统和硬件驱动实现的，理论上来说，拷贝数据的效率是一样的。<br>但是通过内存映射的方法访问硬盘上的文件，效率要比 read 和 write 系统调用高，这是为什么？<br>read() 是系统调用，首先将文件从硬盘拷贝到内核空间的一个缓冲区，再将这些数据拷贝到用户空间，实际上进行了两次数据拷贝；<br>map() 也是系统调用，但没有进行数据拷贝，当缺页中断发生时，直接将文件从硬盘拷贝到用户空间，只进行了一次数据拷贝。<br>所以，采用内存映射的读写效率要比传统的 read&#x2F;write 性能高。</p>
+</li>
+<li><p>总结<br>MappedByteBuffer 使用虚拟内存，因此分配 (map) 的内存大小不受 JVM 的 - Xmx 参数限制，但是也是有大小限制的。<br>如果当文件超出 1.5G 限制时，可以通过 position 参数重新 map 文件后面的内容。<br>MappedByteBuffer 在处理大文件时的确性能很高，但也存在一些问题，如内存占用、文件关闭不确定，被其打开的文件只有在垃圾回收的才会被关闭，而且这个时间点是不确定的。</p>
+</li>
+<li><p>使用注意<br>关于 MappedByteBuffer 资源释放问题<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/langgufu314/article/details/84627609">langgufu314-java 大文件读写操作，java nio 之 MappedByteBuffer，高效文件 &#x2F; 内存映射</a></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件复制,只作为示例  此类文件复制:transferFrom transferTo</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Tester</span>(<span class="string">&quot;Questions here&quot;</span>) &#123;</span><br><span class="line">      	<span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">            <span class="type">File</span> <span class="variable">source</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;E://test//aa.mkv&quot;</span>);</span><br><span class="line">            <span class="type">File</span> <span class="variable">dest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;E://aa.mkv&quot;</span>);</span><br><span class="line">            <span class="type">FileChannel</span> <span class="variable">in</span> <span class="operator">=</span> <span class="literal">null</span>, out = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                in = <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(source).getChannel();</span><br><span class="line">                out = <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(dest).getChannel();</span><br><span class="line">                <span class="type">long</span> <span class="variable">size</span> <span class="operator">=</span> in.size() &gt; <span class="number">2147483647L</span> ? <span class="number">2147483647</span> : in.size();</span><br><span class="line">                <span class="type">MappedByteBuffer</span> <span class="variable">buf</span> <span class="operator">=</span> in.map(FileChannel.MapMode.READ\_ONLY, <span class="number">0</span>, size);</span><br><span class="line">                out.write(buf);</span><br><span class="line">                in.close();</span><br><span class="line">                out.close();</span><br><span class="line">                System.out.println(source.delete());<span class="comment">//文件复制完成后，删除源文件</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                in.close();</span><br><span class="line">                out.close();</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Questions here : false  //无法成功删除</span><br><span class="line">耗时20050ms</span><br></pre></td></tr></table></figure>
+
+<p>主要原因是变量 buf 仍然有源文件的句柄，文件处于不可删除状态。既然 MappedByteBuffer 是从 FileChannel 中 map()出来的，为 什么它又不提供 unmap()呢？SUN 自己也没有讲清楚为什么。O’Reilly 的 &lt;<Java nio>&gt; 中说是因为 “安全” 的原因，但是到底 unmap()会怎么不安全，作者也没有讲清楚。<br>在 sun 网站也有相应的 BUG 报告：bug id:4724038 <a target="_blank" rel="noopener" href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4724038">链接</a>，但是 sun 自己不认为是 BUG，而只是一个 RFE(Request For Enhancement)，有待改进。</Java></p>
+<p>解决方案：</p>
+<blockquote>
+<p>利用反射获取 cleaner 方法进行清理</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">clean</span><span class="params">(<span class="keyword">final</span> Object buffer)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        AccessController.doPrivileged(<span class="keyword">new</span> <span class="title class_">PrivilegedAction</span>() &#123;</span><br><span class="line">            <span class="keyword">public</span> Object <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="type">Method</span> <span class="variable">getCleanerMethod</span> <span class="operator">=</span> buffer.getClass().getMethod(<span class="string">&quot;cleaner&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>\[<span class="number">0</span>\]);<span class="comment">//获取 cleaner 方法</span></span><br><span class="line">                    getCleanerMethod.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                    sun.misc.<span class="type">Cleaner</span> <span class="variable">cleaner</span> <span class="operator">=</span> (sun.misc.Cleaner) getCleanerMethod.invoke(buffer, <span class="keyword">new</span> <span class="title class_">Object</span>\[<span class="number">0</span>\]);<span class="comment">//ok...</span></span><br><span class="line">                    cleaner.clean();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2020/09/02/MappedByteBuffer/" title="MappedByteBuffer">https://xuewenm.github.io/2020/09/02/MappedByteBuffer/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/NIO/" rel="tag"># NIO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/14/Network/" rel="prev" title="双网卡同时上网">
+                  <i class="fa fa-chevron-left"></i> 双网卡同时上网
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/02/StandardIO/" rel="next" title="Java程序输入输出">
+                  Java程序输入输出 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2020/09/02/MappedByteBuffer/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"6dd49da27406b097d2171f4dbb263299"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

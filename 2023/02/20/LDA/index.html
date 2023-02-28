@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="LDA数学八卦Game 9 Unigram Model 上帝 只有一个骰子 ，这个骰子有V个面，每个面对应一个词、各个面的概率不一 每抛一次骰子，抛的面就对应一个词的产生；如果一篇文档有n个词，上帝就独立地抛n次骰子产生n个词">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LDA数学八卦">
+<meta property="og:url" content="https://xuewenm.github.io/2023/02/20/LDA/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="LDA数学八卦Game 9 Unigram Model 上帝 只有一个骰子 ，这个骰子有V个面，每个面对应一个词、各个面的概率不一 每抛一次骰子，抛的面就对应一个词的产生；如果一篇文档有n个词，上帝就独立地抛n次骰子产生n个词">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9534e6d0f8954a5c828db570fcb56ba4.png">
+<meta property="article:published_time" content="2023-02-20T03:56:42.000Z">
+<meta property="article:modified_time" content="2023-02-20T04:33:48.631Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="LDA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/9534e6d0f8954a5c828db570fcb56ba4.png">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2023/02/20/LDA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2023/02/20/LDA/","path":"2023/02/20/LDA/","title":"LDA数学八卦"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LDA数学八卦 | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LDA%E6%95%B0%E5%AD%A6%E5%85%AB%E5%8D%A6"><span class="nav-number">1.</span> <span class="nav-text">LDA数学八卦</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Game-9-Unigram-Model"><span class="nav-number">1.1.</span> <span class="nav-text">Game 9 Unigram Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Game-10-%E8%B4%9D%E5%8F%B6%E6%96%AFUnigram-Model%E5%81%87%E8%AE%BE"><span class="nav-number">1.2.</span> <span class="nav-text">Game 10 贝叶斯Unigram Model假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Game-11-PLSA-Topic-Model"><span class="nav-number">1.3.</span> <span class="nav-text">Game 11 PLSA Topic Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA-Topic-Model"><span class="nav-number">1.4.</span> <span class="nav-text">LDA Topic Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LDA-Topic-Model-2-%E7%AD%89%E4%BB%B7"><span class="nav-number">1.4.1.</span> <span class="nav-text">LDA Topic Model 2 (等价)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gibbs-Sampling"><span class="nav-number">1.5.</span> <span class="nav-text">Gibbs Sampling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training-amp-Inference"><span class="nav-number">2.</span> <span class="nav-text">Training &amp; Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA-Training"><span class="nav-number">2.1.</span> <span class="nav-text">LDA Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA-Inference"><span class="nav-number">2.2.</span> <span class="nav-text">LDA Inference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Read-%E3%80%8AParameter-estimation-for-text-analysis%E3%80%8B"><span class="nav-number">3.</span> <span class="nav-text">Read 《Parameter estimation for text analysis》</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-number">4.</span> <span class="nav-text">code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LDA-limitations-what%E2%80%99s-next"><span class="nav-number">5.</span> <span class="nav-text">LDA limitations: what’s next?</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2023/02/20/LDA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LDA数学八卦 | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LDA数学八卦
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-02-20 11:56:42 / 修改时间：12:33:48" itemprop="dateCreated datePublished" datetime="2023-02-20T11:56:42+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/LDA/" itemprop="url" rel="index"><span itemprop="name">LDA</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="LDA数学八卦"><a href="#LDA数学八卦" class="headerlink" title="LDA数学八卦"></a>LDA数学八卦</h2><h3 id="Game-9-Unigram-Model"><a href="#Game-9-Unigram-Model" class="headerlink" title="Game 9 Unigram Model"></a>Game 9 Unigram Model</h3><ol>
+<li>上帝 <strong>只有一个骰子</strong> ，这个骰子有V个面，每个面对应一个词、各个面的概率不一</li>
+<li>每抛一次骰子，抛的面就对应一个词的产生；如果一篇文档有n个词，上帝就独立地抛n次骰子产生n个词</li>
+</ol>
+<span id="more"></span>
+
+<p><strong>变量：$\overset{\rightarrow}{p}&#x3D;(p_1,p_2,…,p_V)$,样本：语料 $\mathscr{W}$</strong></p>
+<p>各个面的概率 $\overset{\rightarrow}{p}&#x3D;(p_1,p_2,…,p_V)$ 抛骰子过程 多项分布  $w \sim Multi(w \vert \overset{\rightarrow}{p})$</p>
+<p>对于一篇文档 $d&#x3D;\overset{\rightarrow}{w}&#x3D;(w_1,w_2,….,w_n)$ ,故而该文档产生的概率为：<br>$$p(\overset{\rightarrow}{w})&#x3D;\prod_{i&#x3D;1}^n{p(w_i)}$$</p>
+<p>$p(w_i)$ 第i个词 $w_i$ 出现一次的概率</p>
+<p>语料库中包含m篇文档 $\mathscr{W}&#x3D;(\overset{\rightarrow}{w_1},\overset{\rightarrow}{w_2},…,\overset{\rightarrow}{w_m})$ 对应的语料概率为：<br>$$p(\mathscr{W})&#x3D;\prod_{i&#x3D;1}^{m}{p(\overset{\rightarrow}{w_i})}$$</p>
+<p><strong>在Unigram Model中，假设文档之间是独立的，文档之间的词也是独立的，词袋模型（Bag of words）</strong></p>
+<p>故上述问题可进行简化：<br>统计整个语料共有V个词， 其中第i词 $w_i$ 的词频 $n_i$  ( $i \in(1,V),\sum_{i&#x3D;1}^{V}n_i&#x3D;N$ ),整个语料库就是一个多项分布模型：<br>即 $\overset{\rightarrow}{n}&#x3D;(n_1,n_2,…,n_k)$ 恰是一个多项分布：<br>$$p(\overset{\rightarrow}{n})&#x3D;Multi(\overset{\rightarrow}{n} \vert \overset{\rightarrow}{p},N)&#x3D;\binom{N}{\overset{\rightarrow}{n}}\prod_{j&#x3D;1}^{V}{p_j^{n_j}}$$</p>
+<p>$$p(\mathscr{W})&#x3D;\prod_{i&#x3D;1}^{m}{p(\overset{\rightarrow}{w_i})}&#x3D;\binom{N}{\overset{\rightarrow}{n}}\prod_{j&#x3D;1}^{V}{p_j^{n_j}}$$</p>
+<p>统计学派：<br>$$\hat{p_i}&#x3D;\frac {n_i}{N}$$</p>
+<p><strong>Problem:贝叶斯学派认为只有一个骰子的设定不合理，即参数也符合一个分布</strong></p>
+<h3 id="Game-10-贝叶斯Unigram-Model假设"><a href="#Game-10-贝叶斯Unigram-Model假设" class="headerlink" title="Game 10 贝叶斯Unigram Model假设"></a>Game 10 贝叶斯Unigram Model假设</h3><ol>
+<li>上帝有一个装有 <strong>无穷多个骰子</strong> 的坛子，里面有各式各样的骰子，每个骰子有V个面</li>
+<li>上帝从坛子中抽取一个骰子出来， <strong>然后用这一个骰子不断地抛</strong>，然后产生了语料中的所有词</li>
+</ol>
+<blockquote>
+<p>限制放宽： 多个骰子但只有V个面的骰子，而且只用其中一个骰子</p>
+</blockquote>
+<p><strong>先验： $\overset{\rightarrow}{\alpha}$,Dirichlet更新参数: $\overset{\rightarrow}{\rho}$</strong></p>
+<p>选中骰子各面抛出的概率服从先验 $\overset{\rightarrow}{\rho} \sim q(\overset{\rightarrow}{\rho})$ ，因此语料的分布概率：</p>
+<p>$$p(\mathscr{W})&#x3D;\int p(\mathscr{W} \vert \overset{\rightarrow}{\rho})q(\overset{\rightarrow}{\rho})d\overset{\rightarrow}{\rho}$$</p>
+<p>$$p(\overset{\rightarrow}{n})&#x3D;Multi(\overset{\rightarrow}{n} \vert \overset{\rightarrow}{\rho},N)$$</p>
+<p>假设此处 $\overset{\rightarrow}{\rho} \sim q(\overset{\rightarrow}{\rho})&#x3D;Dir(\overset{\rightarrow}{\alpha})$  ,其中 $\alpha_i$ 为被选中骰子抛出第i面的概率。</p>
+<p>$$Dir(\overset{\rightarrow}{\rho} \vert \overset{\rightarrow}{\alpha})&#x3D; \frac {1}{\Delta(\overset{\rightarrow}{\alpha})} \prod_{k&#x3D;1}^{V}\rho_k^{\alpha_{k}-1}$$</p>
+<p>$$\Delta(\overset{\rightarrow}{\alpha})&#x3D;\int{\prod_{k&#x3D;1}^V{\rho_k^{\alpha_k-1}}}d\overset{\rightarrow}{\rho}  \quad\quad \tiny{归一化因子，令Dir符合一个分布,[0,1]}$$</p>
+<p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ouxD5T0I-1634471260497)(.&#x2F;img&#x2F;UnigramModel的概率图模型.png)]</p>
+<p>语料词频： $\overset {\rightarrow}{n}$</p>
+<p>$$p(\overset{\rightarrow}{\rho} \vert \mathscr{W}, \overset{\rightarrow}{\alpha})&#x3D;Dir(\overset{\rightarrow}{\rho} \vert\overset{\rightarrow}{\alpha} + \overset{\rightarrow}{n})$$</p>
+<p>故：<br>$$E(\overset{\rightarrow}{\rho})&#x3D;(\frac {n_i+\alpha_i}{\sum_{j&#x3D;1}^V(n_j+\alpha_j)})_{i&#x3D;1}^V$$<br>语料产生的概率：</p>
+<p>$$<br>\begin{aligned}<br>p(\mathscr{W} \vert \overset{\rightarrow}{\alpha}) &amp;&#x3D; \int p(\mathscr{W} \vert \overset{\rightarrow}{\rho},\overset{\rightarrow}{\alpha})d\overset{\rightarrow}{\rho}\<br>&amp;&#x3D;\int p(\mathscr{W} \vert \overset{\rightarrow}{\rho}) p(\overset{\rightarrow}{\rho} \vert \overset{\rightarrow}{\alpha}) d\overset{\rightarrow}{\rho}\<br>&amp;&#x3D;\int \prod_{k&#x3D;1}^V{\rho_k^{n_k}Dir(\overset{\rightarrow}{p}\vert \overset{\rightarrow}{\alpha})}d \overset{\rightarrow}{\rho}\<br>&amp;&#x3D;\int \prod_{k&#x3D;1}^V{\rho_k^{n_k} \frac 1 {\Delta(\overset{\rightarrow}{\alpha})} \prod_{j&#x3D;1}^V \rho_j^{\alpha_j-1}}d \overset{\rightarrow}{\rho}\<br>&amp;&#x3D;\frac 1 {\Delta(\overset{\rightarrow}{\alpha})} \int \prod_{k&#x3D;1}^V{\rho_k^{n_k+\alpha_k-1}} d \overset{\rightarrow}{\rho}\<br>&amp;&#x3D;\frac {\Delta(\overset{\rightarrow}{\alpha}+\overset{\rightarrow}{n})} {\Delta(\overset{\rightarrow}{\alpha})}<br>\end{aligned}$$</p>
+<p><strong>结合PLSA(Probabilistic Latent Semantic Analysis)模型，一篇文档对应主题分布，一个主题对应词分布</strong></p>
+<h3 id="Game-11-PLSA-Topic-Model"><a href="#Game-11-PLSA-Topic-Model" class="headerlink" title="Game 11 PLSA Topic Model"></a>Game 11 PLSA Topic Model</h3><ol>
+<li>上帝有两种类型的骰子，一类是doc-topic骰子，每个doc-topic骰子有K个面每个面对应一个topic编号;另一类是topic-word骰子，每个topic-word骰子有V个面，每个面对应一个词</li>
+<li>上帝 <strong>一共有K个topic-word骰子</strong> ，每个骰子有一个编号，编号1,2，…,K</li>
+<li>生成每篇文档之前，上帝都会先为这片文章制造 <strong>一个特定的doc-topic骰子</strong> ，然后重复一下过程，生成每个文档中的单词<ul>
+<li>投掷这个doc-topic骰子，得到一个topic编号z</li>
+<li>选择K各topic-word骰子中编号为z的那个，投掷这个骰子，于是得到一个词</li>
+</ul>
+</li>
+</ol>
+<p>该规则下，文档之间是独立的，词之间也是独立地，还是一个词袋模型</p>
+<p>K个topic-word骰子，对应的 $\varphi_1,\varphi_2,…,\varphi_K$ 为每个主题的词概率分布<br>对于包含M篇文档的语料 $C&#x3D;(d_1,d_2,…,d_M)$ 中每篇文档 $d_m$ 都会有一个特定的 doc-topic骰子 $\theta_m$ 为当前文档的主题概率分布</p>
+<p>对于文档 $d_m$ 下某个词的生成概率:<br>$$p(w\vert d_m)&#x3D;\sum_{z&#x3D;1}^K{p(w\vert z) p(z \vert d_m)}&#x3D;\sum_{z&#x3D;1}^K{\varphi_{zw}\theta_{mz}}$$</p>
+<p>对于文档 $d_m$ 的概率:<br>$$p(w \vert d_m)&#x3D;\prod_{i&#x3D;1}^{n_{d_m}}\sum_{z&#x3D;1}^K{p(w_i\vert z) p(z \vert d_m)}&#x3D;\prod_{i&#x3D;1}^{n_{d_m}}\sum_{z&#x3D;1}^K{\varphi_{zw_i}\theta_{mz}}$$</p>
+<p>对于语料C的概率：<br>$$p(C)&#x3D;\prod_{m&#x3D;1}^{M}{p(w\vert d_m)}$$</p>
+<p><strong>贝叶斯Problem：doc-topic骰子 $\theta_m$ 和 topic-word骰子 $\varphi_k$都是模型的参数，参数为随机变量也要服从一个先验分布</strong></p>
+<h3 id="LDA-Topic-Model"><a href="#LDA-Topic-Model" class="headerlink" title="LDA Topic Model"></a>LDA Topic Model</h3><ol>
+<li>上帝有两个坛子，第一个毯子撞的是doc-topic骰子，第二个坛子装的是topic-word骰子</li>
+<li>上帝随机的 <strong>从第二个坛子中独立地抽取K个topic-word骰子</strong> ，编号为1,2，…,K</li>
+<li>生成每篇文档之前，上帝都会现 <strong>从第一个坛子中随机抽取一个doc-topic骰子</strong> ，然后重复一下过程，生成每个文档中的单词<ul>
+<li>投掷这个doc-topic骰子，得到一个topic编号z</li>
+<li>选择K各topic-word骰子中编号为z的那个，投掷这个骰子，于是得到一个词</li>
+</ul>
+</li>
+</ol>
+<p>假设语料库中有M篇文档，所有的word和对应的topic如下：<br>$$W&#x3D;(w_1,w_2,…,w_M)\Z&#x3D;(z_1,z_2,…,z_M)$$</p>
+<p>$w_m$ 第m篇文档中的所有词， $z_m$ 第m篇文档对应的所有主题<br>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-mWzVa4Eb-1634471260499)(.&#x2F;img&#x2F;语料生成过程中的word和topic.png)]<br>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-swY7XCit-1634471260501)(.&#x2F;img&#x2F;LDA图模型.png)]</p>
+<blockquote>
+<p>$\alpha,\beta$ 为先验分布，选择Dirichlet分布</p>
+</blockquote>
+<p>概率图：</p>
+<ol>
+<li>$\overset{\rightarrow}{\alpha}\rightarrow \overset{\rightarrow}{\theta_m}\rightarrow z_{m,n}$ :生成第m篇文档时，现从第一个坛子中抽取一个doc-topic骰子 $\overset{\rightarrow}{\theta_m}$ ，然后投掷该骰子生成该文档第n个词对应的主题编号 $z_{m,n}$</li>
+<li>$\overset{\rightarrow}{\beta}\rightarrow \overset{\rightarrow}{\varphi_k}\rightarrow w_{m,n} \vert k&#x3D;z_{m,n}$: 生成第m篇中的第n个词：在K个topic-word骰子中选取编号为 $k&#x3D;z_{m,n}$ ,投掷生成词 $w_{m,n}$</li>
+</ol>
+<p>Dirichlet-Multinomial共轭结构：<br>生成第m篇文档时所有词对应的主题<br>$\overset{\rightarrow}{\alpha}\rightarrow \overset{\rightarrow}{\theta_m}\rightarrow \overset{\rightarrow}{z_{m}}$</p>
+<p>$$p(\overset{\rightarrow}{z_{m}}\vert \overset{\rightarrow}{\alpha})&#x3D;\frac {\Delta(\overset{\rightarrow}{\alpha}+\overset{\rightarrow}{n_m})} {\Delta(\overset{\rightarrow}{\alpha})}$$</p>
+<p>$\overset{\rightarrow}{n_m}&#x3D;(n_m^{(1)},n_m^{(2)},…..,n_m^{(K)})$ 表示第m篇文档中各个topic产生的词的个数（各个topic的个数）。</p>
+<p>$\overset{\rightarrow}{\theta_m}\sim Dir(\overset{\rightarrow}{\theta_m}\vert \overset{\rightarrow}{n_m}+\overset{\rightarrow}{\alpha})$</p>
+<p><strong>M篇文档生成相互独立，因此共有M个Dirichlet-Multinomial共轭结构.</strong></p>
+<p>在当前规则下，每处理完成一篇文档之后，再处理下一篇文档。文档中的每个词的生成都要抛取两次。如果语料中共有N个词，那么上帝需要抛2N次，轮换的进行doc-topic和topic-word骰子。</p>
+<p>基于文档之间，词之间的独立性。<br><strong>实际上，我们可以前N次只抛doc-topic骰子得到语料中所有词的topic，然后基于topic再抛N次topic-word模型生成N个词</strong></p>
+<h4 id="LDA-Topic-Model-2-等价"><a href="#LDA-Topic-Model-2-等价" class="headerlink" title="LDA Topic Model 2 (等价)"></a>LDA Topic Model 2 (等价)</h4><ol>
+<li>上帝有两个坛子，第一个坛子装的是doc-topic骰子，第二个坛子装的是topic-word骰子</li>
+<li>上帝随机的 <strong>从第二个坛子中独立地抽取K个topic-word骰子</strong> ，编号为1,2，…,K</li>
+<li>生成每篇文档之前，上帝都会现 <strong>从第一个坛子中随机抽取一个doc-topic骰子</strong> ，然后重复投掷这个doc-topic骰子，为每个词生成一个topic编号</li>
+<li>按照生成的topic编号，从K个topic-word骰子中选取编号为 $z_{current}$ 的那个，投掷这个骰子，于是得到当前词</li>
+</ol>
+<p>基于以上规则，先生成所有topic，然后对每个词在在给定topic的条件下生成word。 <em>在语料中词的topic已经生成的条件下，任何两个word的生成动作都是可换的。</em> 于是将语料生成词的顺序进行交换，将具有相同topic的词放在一起。</p>
+<p>$$\overset{\rightarrow}{w’}&#x3D;(\overset{\rightarrow}{w_i})_{i&#x3D;1}^K$$</p>
+<p>$\overset{\rightarrow}{w_i}$ 表示第i个topic下生成的词的集合</p>
+<p>$$\overset{\rightarrow}{z’}&#x3D;(\overset{\rightarrow}{z_i})_{i&#x3D;1}^K$$</p>
+<p>$\overset{\rightarrow}{z_i}$ 表示与上面对应词的主题编号，显然 $\overset{\rightarrow}{z_i}$ 的各个分量均相同。</p>
+<p>Dirichlet-Multinomial共轭结构：<br>生成语料中第k个主题时词的分布</p>
+<p>$\overset{\rightarrow}{\beta}\rightarrow \overset{\rightarrow}{\varphi_k}\rightarrow \overset{\rightarrow}{w_k}$:</p>
+<p>$$p(\overset{\rightarrow}{w_k} \vert \overset{\rightarrow}{\beta})&#x3D;\frac {\Delta(\overset{\rightarrow}{\beta}+\overset{\rightarrow}{n_k})} {\Delta(\overset{\rightarrow}{\beta})}$$</p>
+<p>$\overset{\rightarrow}{n_k}&#x3D;(n_k^{(1)},n_k^{(2)},….,n_k^{(V)})$ 表示第k个topic下生成各个词的个数</p>
+<p>$$\overset{\rightarrow}{\varphi_k} \sim Dir(\overset{\rightarrow}{\varphi_k}\vert \overset{\rightarrow}{n_k}+\overset{\rightarrow}{\beta})$$</p>
+<p><strong>K个主题下词的生成相互独立，因此共有K个Dirichlet-Multinomial共轭结构.</strong></p>
+<p>$$<br>\begin{aligned}<br>p(\overset{\rightarrow}{w},\overset{\rightarrow}{z} \vert \overset{\rightarrow}{\alpha},\overset{\rightarrow}{\beta})&amp;&#x3D;p(\overset{\rightarrow}{w} \vert \overset{\rightarrow}{z}, \overset{\rightarrow}{\beta}) p(\overset{\rightarrow}{z} \vert \overset{\rightarrow}{\alpha})\<br>&amp;&#x3D;\prod_{k&#x3D;1}^K{p(\overset{\rightarrow}{w_k} \vert \overset{\rightarrow}{\beta})}\prod_{m&#x3D;1}^{M}{p(\overset{\rightarrow}{z_{m}}\vert \overset{\rightarrow}{\alpha})}\<br>&amp;&#x3D;\prod_{k&#x3D;1}^K{\frac {\Delta(\overset{\rightarrow}{\beta}+\overset{\rightarrow}{n_k})} {\Delta(\overset{\rightarrow}{\beta})}}\prod_{m&#x3D;1}^{M}{\frac {\Delta(\overset{\rightarrow}{\alpha}+\overset{\rightarrow}{n_m})} {\Delta(\overset{\rightarrow}{\alpha})}}<br>\end{aligned}$$</p>
+<p>$\overset{\rightarrow}{n_k}$ 第k个主题下的词频,$\overset{\rightarrow}{n_m}$ 第m篇文档下主题的频数</p>
+<h3 id="Gibbs-Sampling"><a href="#Gibbs-Sampling" class="headerlink" title="Gibbs Sampling"></a>Gibbs Sampling</h3><blockquote>
+<p>Gibbs 取样的思路，我们需要逐一排除每个词的主题分配，再根据其他词的主题分配和观察到的单词计算当前词的主题，即求解 $p(z_i&#x3D;k \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})$</p>
+</blockquote>
+<p>先验 $(\alpha,\beta)$ 下的联合分布 $p(\overset{\rightarrow}{w},\overset{\rightarrow}{z})$ ,由于 $\overset{\rightarrow}{w}$ 为采样数据(词)，只有 $\overset{\rightarrow}{z}$ 为隐变量（主题）, 真正需要采样的数据为 $p(\overset{\rightarrow}{z} \vert \overset{\rightarrow}{w})$</p>
+<p>语料库 $\overset{\rightarrow}{z}$ 中第i个词对应得topic记为 $z_i$ ，其中 $i&#x3D;(m,n)$ 表示第m篇文档中第n个词所对应的主题。 用 $\neg i$ 表示去除下标i的词。</p>
+<p><strong>Gibbs Sampling: 求得任意一个坐标轴i下的条件分布 $p(z_i&#x3D;k \vert z_{\neg i},\overset{\rightarrow}{w})$</strong></p>
+<p>假设已经观测到 $w_i&#x3D;t$ 则<br>$$\begin{aligned}<br>p(z_i&#x3D;k \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w}) &amp;&#x3D; \frac{p(z_i&#x3D;k , \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})}{p(\overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})}\<br>&amp;&#x3D; \frac{p(z_i&#x3D;k , \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})}{p(\overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}},w_i)}\<br>&amp;&#x3D; \frac{p(z_i&#x3D;k , \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})}{p(\overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})\cdot p(w_i)}\<br>&amp; w_i 为观测变量\<br>&amp;\propto \frac{p(z_i&#x3D;k , \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w})}{p(\overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})}\<br>&amp;&#x3D;p(z_i&#x3D;k,w_i&#x3D;t\vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})<br>\end{aligned}$$</p>
+<p>在去除预料中第i个词时有：</p>
+<p>$$<br>p(\overset{\rightarrow}{\theta_m} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}}) &#x3D; Dir(\overset{\rightarrow}{\theta_m} \vert \overset{\rightarrow}{n_{m,\neg i}}+\overset{\rightarrow}{\alpha})\<br>p(\overset{\rightarrow}{\varphi_k} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}}) &#x3D; Dir(\overset{\rightarrow}{\varphi_k} \vert \overset{\rightarrow}{n_{m,\neg i}}+\overset{\rightarrow}{\beta})<br>$$</p>
+<p><strong>Gibbs Sampling 采样概率分布</strong></p>
+<p>$$<br>\begin{aligned}<br>p(z_i&#x3D;k \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w}) &amp;\propto p(z_i&#x3D;k,w_i&#x3D;t\vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}}) \<br>&amp;&#x3D; \int p(z_i&#x3D;k,w_i&#x3D;t,\overset{\rightarrow}{\theta_m},\overset{\rightarrow}{\varphi_k} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})d\overset{\rightarrow}{\theta_m}d\overset{\rightarrow}{\varphi_k}\<br>&amp;&#x3D; \int p(z_i&#x3D;k,\overset{\rightarrow}{\theta_m} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}}) p(w_i&#x3D;t,\overset{\rightarrow}{\varphi_k}  \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})d\overset{\rightarrow}{\theta_m}d\overset{\rightarrow}{\varphi_k}\<br>&amp;&#x3D; \int p(z_i&#x3D;k \vert \overset{\rightarrow}{\theta_m})p(\overset{\rightarrow}{\theta_m} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})   \cdot p(w_i&#x3D;t \vert \overset{\rightarrow}{\varphi_k})p(\overset{\rightarrow}{\varphi_k} \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w_{\neg i}})d\overset{\rightarrow}{\theta_m}d\overset{\rightarrow}{\varphi_k}\<br>&amp;\<br>&amp;&#x3D;\int \theta_{mk} \times Dir(\overset{\rightarrow}{\theta_m} \vert \overset{\rightarrow}{n_{m,\neg i}}+\overset{\rightarrow}{\alpha})d\overset{\rightarrow}{\theta_m}  \cdot \int \varphi_{kt} \times Dir(\overset{\rightarrow}{\varphi_k} \vert \overset{\rightarrow}{n_{m,\neg i}}+\overset{\rightarrow}{\beta}) d\overset{\rightarrow}{\varphi_k}\<br>&amp;&#x3D;E(\theta_{mk})E(\varphi_{kt})\<br>&amp;&#x3D;\hat{\theta}<em>{mk} \hat{\varphi}</em>{kt}<br>\end{aligned}<br>$$</p>
+<p>Dirichlet Process下有(后验)：<br>$$<br>\hat{\theta}<em>{mk}&#x3D; \frac {n</em>{m,\neg{i}}^{(k)}+\alpha_k} {\sum_{k&#x3D;1}^K{(n_{m,\neg{i}}^{(t)}+\alpha_k)}} \quad m篇文档第k个主题 \<br>\hat{\varphi}<em>{kt}&#x3D; \frac{n</em>{k,\neg{i}}^{(t)}+\beta_t} {\sum_{t&#x3D;1}^V{(n_{k,\neg{i}}^{(t)}+\beta_t)}} \quad 第k个主题第t个词<br>$$</p>
+<p>因此LDA模型Gibbs Sampling公式：</p>
+<p>$$<br>p(z_i&#x3D;k \vert \overset{\rightarrow}{z_{\neg i}},\overset{\rightarrow}{w}) \propto \frac {n_{m,\neg{i}}^{(k)}+\alpha_k} {\sum_{k&#x3D;1}^K{(n_{m,\neg{i}}^{(t)}+\alpha_k)}} \cdot \frac{n_{k,\neg{i}}^{(t)}+\beta_t} {\sum_{t&#x3D;1}^V{(n_{k,\neg{i}}^{(t)}+\beta_t)}}\<br>p(topic_k\vert doc_m)p(word_t \vert topic_k)<br>$$</p>
+<p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-yTLLcma3-1634471260503)(.&#x2F;img&#x2F;doc_topic_word.png)]</p>
+<h2 id="Training-amp-Inference"><a href="#Training-amp-Inference" class="headerlink" title="Training &amp; Inference"></a>Training &amp; Inference</h2><p>LDA模型参数为文档主题概率分布 $\theta$ 和 主题词概率分布 $\varphi$</p>
+<p>目标：</p>
+<ul>
+<li>估计模型中的参数 $(\overset{\rightarrow}{\varphi_i})<em>{i&#x3D;1}^{K}$  和 $(\overset{\rightarrow}{\theta_i})</em>{i&#x3D;1}^M$</li>
+<li>对于新来的文档 $doc_{new}$ ，计算该文档的topic分布 $\overset{\rightarrow}{\theta_{new}}$</li>
+</ul>
+<h3 id="LDA-Training"><a href="#LDA-Training" class="headerlink" title="LDA Training"></a>LDA Training</h3><ol>
+<li>随机初始化： 对语料中每篇文档中的每个词w，随机赋予一个topic编号z；</li>
+<li>重新扫描语料库，对每一个词w，按照Gibbs Sampling公式重新采样它的topic，在语料中进行更新</li>
+<li>重复以上语料库的重新采样过程直到Gibbs Sampling收敛</li>
+<li>统计语料库中topic-word共现频率矩阵，该矩阵即为LDA模型</li>
+</ol>
+<h3 id="LDA-Inference"><a href="#LDA-Inference" class="headerlink" title="LDA Inference"></a>LDA Inference</h3><ol>
+<li>随机初始化： 对当前文档中每个词w，随机赋一个topic编号z;</li>
+<li>重新扫描当前文档，按照Gibbs Sampling公式，对每个词w，重新采样它的topic</li>
+<li>重复以上过程直到Gibbs Sampling 收敛</li>
+<li>统计文档中的topic分布，该分布就是 $\overset{\rightarrow}{\theta_{new}}$</li>
+</ol>
+<h2 id="Read-《Parameter-estimation-for-text-analysis》"><a href="#Read-《Parameter-estimation-for-text-analysis》" class="headerlink" title="Read 《Parameter estimation for text analysis》"></a>Read 《Parameter estimation for text analysis》</h2><p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ZQKgocjO-1634723973024)(.&#x2F;img&#x2F;Gibbs_sampling_for_LDA.png)]</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> <span class="built_in">range</span>(M):</span><br><span class="line">    Nm = <span class="built_in">len</span>(documents[m])</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(Nm):</span><br><span class="line">        t = documents[m][n]</span><br><span class="line">        N_mk[m][topic[m][n]] -= <span class="number">1</span>   <span class="comment"># okay -1</span></span><br><span class="line">        N_kt[topic[m][n]][t] -= <span class="number">1</span></span><br><span class="line">        N_kt_tsum[topic[m][n]] -= <span class="number">1</span></span><br><span class="line">        <span class="comment"># probs in the K topics</span></span><br><span class="line">        prob = [(N_kt[k][t] + beta[t] - <span class="number">1</span>) * (N_mk[m][k] + alpha[k] - <span class="number">1</span>) / (N_kt_tsum[k] + np.<span class="built_in">sum</span>(beta) - <span class="number">1</span>) <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(K)]</span><br><span class="line">        prob = np.array(prob)</span><br><span class="line">        <span class="keyword">if</span> np.<span class="built_in">sum</span>(prob) == <span class="number">0.0</span>:</span><br><span class="line">            prob = np.array([<span class="number">1</span> / <span class="built_in">len</span>(prob)] * <span class="built_in">len</span>(prob))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            prob = prob / np.<span class="built_in">sum</span>(prob)    <span class="comment"># ok</span></span><br><span class="line">        choices = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(K)]</span><br><span class="line">        k = np.random.choice(choices, p=prob)    <span class="comment"># 依概率分配主题</span></span><br><span class="line">        <span class="comment"># update topic[m][n]</span></span><br><span class="line">        <span class="keyword">if</span> topic[m][n] != k:</span><br><span class="line">            changed += <span class="number">1</span></span><br><span class="line">            topic[m][n] = k</span><br><span class="line">        N_mk[m][k] += <span class="number">1</span></span><br><span class="line">        N_kt[k][t] += <span class="number">1</span></span><br><span class="line">        N_kt_tsum[k] += <span class="number">1</span></span><br><span class="line"><span class="comment"># update theta and phi</span></span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> <span class="built_in">range</span>(M):</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(K):</span><br><span class="line">        theta[m][k] = (N_mk[m][k] + alpha[k]) / (N_mk_ksum[m] + np.<span class="built_in">sum</span>(alpha))</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(K):</span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(V):</span><br><span class="line">        phi[k][t] = (N_kt[k][t] + beta[t]) / (N_kt_tsum[k] + np.<span class="built_in">sum</span>(beta))</span><br></pre></td></tr></table></figure>
+
+<h2 id="LDA-limitations-what’s-next"><a href="#LDA-limitations-what’s-next" class="headerlink" title="LDA limitations: what’s next?"></a>LDA limitations: what’s next?</h2><p><a target="_blank" rel="noopener" href="https://engineering.intenthq.com/2015/02/automatic-topic-modelling-with-lda/">engineering.intenthq.com</a></p>
+<p>Although LDA is a great algorithm for topic-modelling, it still has some limitations, mainly due to the fact that it’s has become popular and available to the mass recently. <strong>One major limitation is perhaps given by its underlying unigram text model</strong> : LDA doesn’t consider the mutual position of the words in the document. Documents like “Man, I love this can” and “I can love this man” are probably modelled the same way. It’s also true that for longer documents, mismatching topics is harder.  <em><strong>To overcome this limitation, at the cost of almost square the complexity, you can use 2-grams (or N-grams)along with 1-gram.</strong></em></p>
+<p>Another weakness of LDA is in <strong>the topics composition: they’re overlapping.</strong> In fact, you can find <em><strong>the same word in multiple topics</strong></em> (the example above, of the word “can”, is obvious). The generated topics, therefore, are not independent and orthogonal like in a PCA-decomposed basis, for example. This implies that you must pay lots of attention while dealing with them (e.g. <em><strong>don’t use cosine similarity</strong></em>).</p>
+<p>For a more structured approach - especially if the topic composition is very misleading - you might consider the hierarchical variation of LDA, named H-LDA, (or simply Hierarchical LDA). In H-LDA, topics are joined together in a hierarchy by using a Nested Chinese Restaurant Process (NCRP). This model is more complex than LDA, and the description is beyond the goal of this blog entry, but if you like to have an idea of the possible output, here it is. Don’t forget that we’re still in the probabilistic world: each node of the H-DLA tree is a topic        distribution.</p>
+<p><img src="https://img-blog.csdnimg.cn/9534e6d0f8954a5c828db570fcb56ba4.png" alt="在这里插入图片描述"></p>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2023/02/20/LDA/" title="LDA数学八卦">https://xuewenm.github.io/2023/02/20/LDA/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/LDA/" rel="tag"># LDA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/19/Restart/" rel="prev" title="再起航">
+                  <i class="fa fa-chevron-left"></i> 再起航
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/20/BloomFilter/" rel="next" title="BloomFilter">
+                  BloomFilter <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2023/02/20/LDA/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8e12a188bc0002c2630f79d52a1c21a5"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

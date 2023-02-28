@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Select函数http:&#x2F;&#x2F;hi.baidu.com&#x2F;%B1%D5%C4%BF%B3%C9%B7%F0&#x2F;blog&#x2F;item&#x2F;e7284ef16bcec3c70a46e05e.html select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 &#x2F; 输出模型，原型：        123#include &lt;sys&#x2F;tim">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Select函数">
+<meta property="og:url" content="https://xuewenm.github.io/c/Select.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="Select函数http:&#x2F;&#x2F;hi.baidu.com&#x2F;%B1%D5%C4%BF%B3%C9%B7%F0&#x2F;blog&#x2F;item&#x2F;e7284ef16bcec3c70a46e05e.html select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 &#x2F; 输出模型，原型：        123#include &lt;sys&#x2F;tim">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-27T11:51:23.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.366Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/c/Select">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/c/Select.html","path":"c/Select.html","title":"Select函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Select函数 | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Select%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">Select函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">参数:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-%E5%87%BD%E6%95%B0%E7%9A%84%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E7%AE%80%E5%8D%95%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">select 函数的接口比较简单：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">参数：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nfds"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">nfds</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#readset"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">readset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#writeset"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">writeset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exceptset"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">exceptset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#timeout"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%EF%BC%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">返回值：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remarks%EF%BC%9A"><span class="nav-number">1.2.4.</span> <span class="nav-text">Remarks：</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Select函数
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h1 id="Select函数"><a href="#Select函数" class="headerlink" title="Select函数"></a>Select函数</h1><p><a target="_blank" rel="noopener" href="http://hi.baidu.com/%B1%D5%C4%BF%B3%C9%B7%F0/blog/item/e7284ef16bcec3c70a46e05e.html">http://hi.baidu.com/%B1%D5%C4%BF%B3%C9%B7%F0/blog/item/e7284ef16bcec3c70a46e05e.html</a></p>
+<p>select 函数用于在非阻塞中，当一个套接字或一组套接字有信号时通知你，系统提供 select 函数来实现多路复用输入 &#x2F; 输出模型，原型：       </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span>        </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span>         </span></span><br><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> maxfd,fd_set *rdset,fd_set *wrset,fd_set *exset,<span class="keyword">struct</span> timeval *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数:"></a>参数:</h2><ul>
+<li>maxfd 是需要监视的最大的文件描述符值 + 1；</li>
+<li>rdset,wrset,exset 分别对应于需要检测的可读文件描述符的集合，可写文件描述符的集 合及异常文件描述符的集合。</li>
+<li>struct timeval 结构用于描述一段时间长度，如果在这个时间内，需要监视的描述符没有事件发生则函数返回，返回值为 0。</li>
+<li><strong>fd_set</strong> （它比较重要所以先介绍一下）是一组文件描述字 (fd) 的集合，它用一位来表示一个 fd（下面会仔细介绍），</li>
+</ul>
+<p><strong>对于 <code>fd_set</code> 类型通过下面四个宏来操作：</strong></p>
+<ul>
+<li>FD_ZERO(fd_set *fdset);<br>将指定的文件描述符集清空，在对文件描述符集合进行设置前，必须对其进行初始化，如果不清空，由于在系统分配内存空间后，通常并不作清空处理，所以结果是不可知的。    </li>
+<li>FD_SET(fd_set *fdset);<br>用于在文件描述符集合中增加一个新的文件描述符。    </li>
+<li>FD_CLR(fd_set *fdset);<br>用于在文件描述符集合中删除一个文件描述符。</li>
+<li>FD_ISSET(int fd,fd_set *fdset);<br>用于测试指定的文件描述符是否在该集合中。</li>
+</ul>
+<p>过去，一个 fd_set 通常只能包含 &lt;32 的 fd（文件描述字），因为 fd_set 其实只用了一个 32 位矢量来表示 fd；现在, UNIX 系统通常会在头文件 &lt; sys&#x2F;select.h&gt; 中定义常量 FD_SETSIZE，它是数据类型 fd_set 的描述字数量，其值通常是 1024，这样就能表示 &lt; 1024 的 fd。根据 fd_set 的位矢量实现，我们可以重新理解操作 fd_set 的四个宏：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fd_set <span class="built_in">set</span>;    </span><br><span class="line">FD_ZERO(&amp;<span class="built_in">set</span>);         </span><br><span class="line">FD_SET(<span class="number">0</span>, &amp;<span class="built_in">set</span>);       </span><br><span class="line">FD_CLR(<span class="number">4</span>, &amp;<span class="built_in">set</span>);         </span><br><span class="line">FD_ISSET(<span class="number">5</span>, &amp;<span class="built_in">set</span>);   </span><br></pre></td></tr></table></figure>
+
+<p>―――――――――――――――――――――――――――――――――――――――<br>注意 <code>fd</code> 的最大值必须 &lt; <code>FD_SETSIZE</code>。<br>―――――――――――――――――――――――――――――――――――――――</p>
+<h2 id="select-函数的接口比较简单："><a href="#select-函数的接口比较简单：" class="headerlink" title="select 函数的接口比较简单："></a>select 函数的接口比较简单：</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> nfds, fd_set *readset, fd_set *writeset,fd_set* exceptset, <span class="keyword">struct</span> tim *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>测试指定的 fd 可读？可写？有异常条件待处理？    </p>
+<h3 id="参数："><a href="#参数：" class="headerlink" title="参数："></a>参数：</h3><h4 id="nfds"><a href="#nfds" class="headerlink" title="nfds"></a>nfds</h4><p>需要检查的文件描述字个数（即检查到 fd_set 的第几位），数值应该比三组 fd_set 中所含的最大 fd 值更大，一般设为三组 fd_set 中所含的最大 fd 值加 1（如在 readset,writeset,exceptset 中所含最大的 fd 为 5，则 nfds&#x3D;6，因为 fd 是从 0 开始的）。设这个值是为提高效率，使函数不必检查 fd_set 的所有 1024 位。</p>
+<h4 id="readset"><a href="#readset" class="headerlink" title="readset"></a>readset</h4><p>用来检查可读性的一组文件描述字。</p>
+<h4 id="writeset"><a href="#writeset" class="headerlink" title="writeset"></a>writeset</h4><p>用来检查可写性的一组文件描述字。</p>
+<h4 id="exceptset"><a href="#exceptset" class="headerlink" title="exceptset"></a>exceptset</h4><p>用来检查是否有异常条件出现的文件描述字。(注：错误不包括在异常条件之内)</p>
+<h4 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h4><p>用于描述一段时间长度，如果在这个时间内，需要监视的描述符没有事件发生则函数返回，返回值为 0。   </p>
+<p><strong>有三种可能：</strong>      </p>
+<ol>
+<li>timeout&#x3D;NULL（阻塞：select 将一直被阻塞，直到某个文件描述符上发生了事件）</li>
+<li>timeout 所指向的结构设为非零时间（等待固定时间：如果在指定的时间段里有事件发生或者时间耗尽，函数均返回）</li>
+<li><strong>timeout 所指向的结构，时间设为 0（非阻塞：仅检测描述符集合的状态，然后立即返回，并不等待外部事件的发生）</strong></li>
+</ol>
+<h3 id="返回值："><a href="#返回值：" class="headerlink" title="返回值："></a>返回值：</h3><p><em><strong>返回对应位仍然为 1 的 fd 的总数。</strong></em></p>
+<h3 id="Remarks："><a href="#Remarks：" class="headerlink" title="Remarks："></a>Remarks：</h3><p>三组 fd_set 均将某些 fd 位置 0，只有那些可读，可写以及有异常条件待处理的 fd 位仍然为 1。</p>
+<p>举个例子，比如 recv(),   在没有数据到来调用它的时候, 你的线程将被阻塞, 如果数据一直不来, 你的线程就要阻塞很久. 这样显然不好. 所以采用 select 来查看套节字是否可读 (也就是是否有数据读了)    </p>
+<p><strong>步骤如下：</strong>    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">socket   s;   </span><br><span class="line">.....   </span><br><span class="line">fd_set   <span class="built_in">set</span>;   </span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;             </span><br><span class="line">  FD_ZERO(&amp;<span class="built_in">set</span>);<span class="comment">//将你的套节字集合清空         </span></span><br><span class="line">  FD_SET(s,&amp;<span class="built_in">set</span>);<span class="comment">//加入你感兴趣的套节字到集合,这里是一个读数据的套节字s         </span></span><br><span class="line">  select(<span class="number">0</span>,&amp;<span class="built_in">set</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);<span class="comment">//检查套节字是否可读,                                                           </span></span><br><span class="line">  <span class="comment">//很多情况下就是是否有数据(注意,只是说很多情况)                                                          </span></span><br><span class="line">  <span class="comment">//这里select是否出错没有写         </span></span><br><span class="line">  <span class="keyword">if</span>(FD_ISSET(s,   &amp;<span class="built_in">set</span>)   <span class="comment">//检查s是否在这个集合里面,         </span></span><br><span class="line">  &#123;                                           </span><br><span class="line">    <span class="comment">//select将更新这个集合,把其中不可读的套节字去掉                                                     //只保留符合条件的套节字在这个集合里面                                       </span></span><br><span class="line">    recv(s,...);         </span><br><span class="line">  &#125;         </span><br><span class="line">  <span class="comment">//do   something   here   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>理解 <code>select</code> 模型的关键在于理解 <code>fd_set</code>, 为说明方便，取 <code>fd_set</code> 长度为 1 <code>字节，fd_set</code> 中的每一 <code>bit</code> 可以对应一个文件描述符 <code>fd</code>。则 1 字节长的 <code>fd_set</code> 最大可以对应 8 个 <code>fd</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（1）执行 fd_set set; FD_ZERO(&amp;set); 则 set 用位表示是 0000,0000。</span><br><span class="line">（2）若 fd＝5, 执行 FD_SET(fd,&amp;set); 后 set 变为 0001,0000(第 5 位置为 1)</span><br><span class="line">（3）若再加入 fd＝2，fd=1, 则 set 变为 0001,0011</span><br><span class="line">（4）执行 select(6,&amp;set,0,0,0) 阻塞等待</span><br><span class="line">（5）若 fd=1,fd=2 上都发生可读事件，则 select 返回，此时 set 变为 0000,0011。注意：没有事件发生的 fd=5 被清空。</span><br></pre></td></tr></table></figure>
+
+<p>基于上面的讨论，可以轻松得出 select 模型的特点：</p>
+<ol>
+<li>可监控的文件描述符个数取决与 sizeof(fd_set) 的值。<br>我这边服务 器上 sizeof(fd_set)＝512，每 bit 表示一个文件描述符，则我服务器上支持的最大文件描述符是 512*8&#x3D;4096。<br>据说可调，另有说虽然可调，但调整上限受于编译内核时的变量值。<br>本人对调整 fd_set 的大小不太感兴趣，参考 <a target="_blank" rel="noopener" href="http://www.cppblog.com/CppExplore/archive/2008/03/21/45061.html">技术系列之 网络模型（二）</a>  中的模型 2（1）可以有效突破 select 可监控的文件描述符上限。   </li>
+<li>将 fd 加入 select 监控集的同时，还要再使用一个数据结构 <code>array</code> 保存放到 select 监控集中的 fd.<br>一是用于再 <code>select</code> 返回后，<code>array</code> 作为源数据和 <code>fd_set</code> 进行 <code>FD_ISSET</code> 判断。<br>二是 <code>select</code> 返回后会把以前加入的但并无事件发生的 <code>fd</code> 清空，则每次开始 <code>select</code> 前都要重新从 <code>array</code> 取得 <code>fd</code> 逐一加入（<code>FD_ZERO</code> 最先），扫描 <code>array</code> 的同时取得 <code>fd</code> 最大值 <code>maxfd</code>，用于 <code>select</code> 的第一个 参数。   </li>
+<li>可见 <code>select</code> 模型必须在 <code>select</code> 前循环 <code>array</code>（加 <code>fd</code>，取 <code>maxfd</code>），<code>select</code> 返回后循环 <code>array</code>（<code>FD_ISSET</code> 判断是否有时间发生）。</li>
+</ol>
+<p>下面给一个伪码说明基本 select 模型的服务器模型：    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>[slect_len];   </span><br><span class="line">nSock=<span class="number">0</span>;</span><br><span class="line"><span class="built_in">array</span>[nSock++]=listen_fd;</span><br><span class="line">(之前listen port已绑定并listen)</span><br><span class="line"></span><br><span class="line">maxfd=listen_fd;</span><br><span class="line"><span class="keyword">while</span>&#123;   </span><br><span class="line">  FD_ZERO(&amp;<span class="built_in">set</span>);   </span><br><span class="line">  foreach (fd in <span class="built_in">array</span>)    &#123;       </span><br><span class="line">    fd大于maxfd，则maxfd=fd       </span><br><span class="line">    FD_SET(fd,&amp;<span class="built_in">set</span>)   </span><br><span class="line">  &#125;   </span><br><span class="line"></span><br><span class="line">  res=select(maxfd+<span class="number">1</span>,&amp;<span class="built_in">set</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)；   </span><br><span class="line">  <span class="keyword">if</span>(FD_ISSET(listen_fd,&amp;<span class="built_in">set</span>))   &#123;       </span><br><span class="line">    newfd=accept(listen_fd);    <span class="comment">//... ...   </span></span><br><span class="line">    <span class="built_in">array</span>[nsock++]=newfd;       <span class="comment">// the fd that can be read       </span></span><br><span class="line">    <span class="keyword">if</span>(--res=<span class="number">0</span>)    <span class="keyword">continue</span>   </span><br><span class="line">  &#125;   </span><br><span class="line">  foreach 下标<span class="number">1</span>开始 (fd in <span class="built_in">array</span>)    &#123;       </span><br><span class="line">    <span class="keyword">if</span>(FD_ISSET(fd,&amp;<span class="built_in">set</span>))         </span><br><span class="line">     执行读等相关操作          </span><br><span class="line">     如果错误或者关闭，则要删除该fd，将<span class="built_in">array</span>中相应位置和最后一个元素互换就好，nsock减一             </span><br><span class="line">     <span class="keyword">if</span>(--res=<span class="number">0</span>) <span class="keyword">continue</span>   </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 select 函数的过程一般是：<br>先调用宏 FD_ZERO 将指定的 fd_set 清零，然后调用宏 FD_SET 将需要测试的 fd 加入 fd_set，接着调用函数 select 测试 fd_set 中的所有 fd，最后用宏 FD_ISSET 检查某个 fd 在函数 select 调用后，相应位是否仍然为 1。  </p>
+<p>以下是一个测试单个文件描述字可读性的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">isready</span><span class="params">(<span class="type">int</span> fd)</span>     &#123;         </span><br><span class="line">  <span class="type">int</span> rc;         </span><br><span class="line">  fd_set fds;         </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">tim</span> <span class="title">tv</span>;</span>             </span><br><span class="line">  FD_ZERO(&amp;fds);         </span><br><span class="line">  FD_SET(fd,&amp;fds);         </span><br><span class="line">  tv.tv_sec = tv.tv_usec = <span class="number">0</span>;             </span><br><span class="line">  rc = select(fd+<span class="number">1</span>, &amp;fds, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;tv);         </span><br><span class="line">  <span class="keyword">if</span> (rc &lt; <span class="number">0</span>)   <span class="comment">//error         return -1;             </span></span><br><span class="line">  <span class="keyword">return</span> FD_ISSET(fd,&amp;fds) ? <span class="number">1</span> : <span class="number">0</span>;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面还有一个复杂一些的应用：<br>&#x2F;&#x2F; 这段代码将指定测试 Socket 的描述字的可读可写性，因为 Socket 使用的也是 fd</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">uint32 <span class="title function_">SocketWait</span><span class="params">(TSocket *s,<span class="type">bool</span> rd,<span class="type">bool</span> wr,uint32 timems)</span>    &#123;     </span><br><span class="line">  fd_set rfds,wfds;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _WIN32     </span></span><br><span class="line">  TIM tv;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span>     </span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">tim</span> <span class="title">tv</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>         </span></span><br><span class="line">  FD_ZERO(&amp;rfds);     </span><br><span class="line">  FD_ZERO(&amp;wfds);      </span><br><span class="line">  <span class="keyword">if</span> (rd)     <span class="comment">//TRUE     </span></span><br><span class="line">  FD_SET(*s,&amp;rfds);   <span class="comment">//添加要测试的描述字      </span></span><br><span class="line">  <span class="keyword">if</span> (wr)     <span class="comment">//FALSE       </span></span><br><span class="line">  FD_SET(*s,&amp;wfds);      </span><br><span class="line">  tv.tv_sec=timems/<span class="number">1000</span>;     <span class="comment">//second     </span></span><br><span class="line">  tv.tv_usec=timems%<span class="number">1000</span>;     <span class="comment">//ms      </span></span><br><span class="line">  <span class="keyword">for</span> (;;) <span class="comment">//如果errno==EINTR，反复测试缓冲区的可读性          switch(select((*s)+1,&amp;rfds,&amp;wfds,NULL,              (timems==TIME_INFINITE?NULL:&amp;tv)))</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">//测试在规定的时间内套接口接收缓冲区中是否有数据可读      </span></span><br><span class="line">    <span class="comment">//0－－超时，-1－－出错         </span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:                  <span class="keyword">return</span> <span class="number">0</span>;          </span><br><span class="line">    <span class="keyword">case</span> (<span class="number">-1</span>):                 </span><br><span class="line">      <span class="keyword">if</span> (SocketError()==EINTR)                   </span><br><span class="line">      <span class="keyword">break</span>;                            </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//有错但不是EINTR           </span></span><br><span class="line">    <span class="keyword">default</span>:              </span><br><span class="line">      <span class="keyword">if</span> (FD_ISSET(*s,&amp;rfds))</span><br><span class="line">      <span class="comment">//如果s是fds中的一员返回非0，否则返回0                   </span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;              </span><br><span class="line">      <span class="keyword">if</span> (FD_ISSET(*s,&amp;wfds))                   </span><br><span class="line">      <span class="keyword">return</span> <span class="number">2</span>;              </span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;         </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p><strong>阻塞监听写操作</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// family： AF_INET   type: SOCK_STREAM   protocol: TCP</span></span><br><span class="line"><span class="comment">// 注意：1.type和protocol不可以随意组合，如SOCK_STREAM不可以跟IPPROTO_UDP组合。当第三个参数为0时，会自动选择第二个参数类型对应的默认协议。</span></span><br><span class="line">m_sockClient = socket(family, type, <span class="number">0</span>);<span class="comment">//create socket client ...</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> optval=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(setsockopt(m_sockClient, SOL_SOCKET, SO_KEEPALIVE, (<span class="type">char</span> *) &amp;optval, <span class="keyword">sizeof</span>(optval)))</span><br><span class="line">    <span class="comment">//set socket Option    OPTION:SO_KEEPALIVE=VALUE:1</span></span><br><span class="line">    &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;setsockopt error.%d\n&quot;</span>, errno);</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//... ...F_GETFL 取得文件描述符状态旗标，此旗标为open（）的参数flags</span></span><br><span class="line"><span class="comment">// but socket ??</span></span><br><span class="line">flags = fcntl(m_sockClient, F_GETFL, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (flags &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ALOGE(LOG_TAG, <span class="string">&quot; get socket flags fail.%d\n&quot;</span>, errno);</span><br><span class="line">    closeSocket();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//F_SETFL 设置文件描述符状态旗标，参数arg为新旗标，但只允许O_APPEND、O_NONBLOCK和O_ASYNC位的改变，</span></span><br><span class="line"><span class="comment">//其他位的改变将不受影响。</span></span><br><span class="line"><span class="keyword">if</span> (fcntl(m_sockClient, F_SETFL, flags | O_NONBLOCK) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ALOGE(LOG_TAG, <span class="string">&quot; set socket O_NONBLOCK fail.%d\n&quot;</span>, errno);</span><br><span class="line">    closeSocket();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> retries_count = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> connect_success = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (retries_count &lt; <span class="number">3</span>) &#123;<span class="comment">//远程连接pszServerIP --&gt; result --&gt; addr_in</span></span><br><span class="line">    <span class="keyword">if</span>(connect(m_sockClient, (sockaddr *)&amp;addr_in, <span class="keyword">sizeof</span>(addr_in)) == SOCKET_ERROR)&#123;</span><br><span class="line">         <span class="keyword">if</span> (errno == EINPROGRESS ||errno == EALREADY || errno == EWOULDBLOCK ||  errno == EISCONN || errno == EAGAIN) &#123;</span><br><span class="line">            retries_count++;</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            ALOGE(LOG_TAG, <span class="string">&quot;connect error:%d:%s\n&quot;</span>,errno, strerror(errno));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        connect_success = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    usleep(<span class="number">10000000</span>); <span class="comment">// 10s</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(connect_success == <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">to</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> *<span class="title">toptr</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line">    fd_set wfd;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;wfd,<span class="number">0</span>,<span class="keyword">sizeof</span>(wfd));</span><br><span class="line">    <span class="type">int</span> err;</span><br><span class="line">    <span class="type">socklen_t</span> errlen;</span><br><span class="line"></span><br><span class="line">    FD_ZERO(&amp;wfd);</span><br><span class="line">    FD_SET(m_sockClient, &amp;wfd);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//select 阻塞,监听socket发生写操作时---&gt;操作</span></span><br><span class="line">    <span class="keyword">if</span> (select(FD_SETSIZE, <span class="literal">NULL</span>, &amp;wfd, <span class="literal">NULL</span>, toptr) == SOCKET_ERROR) &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;select after connect error:%s&quot;</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket 描述符不在写操作符集</span></span><br><span class="line">    <span class="keyword">if</span> (!FD_ISSET(m_sockClient, &amp;wfd)) &#123;</span><br><span class="line">        errno = ETIMEDOUT;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;select after connect error ETIMEDOUT,%d\n&quot;</span>, errno);</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    err = <span class="number">0</span>;</span><br><span class="line">    errlen = <span class="keyword">sizeof</span>(err);</span><br><span class="line">    <span class="keyword">if</span> (getsockopt(m_sockClient, SOL_SOCKET, SO_ERROR, &amp;err, &amp;errlen) == SOCKET_ERROR) &#123;</span><br><span class="line">      <span class="comment">//option:ERROR</span></span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;getsockopt after connect error :%s&quot;</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        errno = err;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;getsockopt after connect error :%s&quot;</span>,strerror(errno));</span><br><span class="line">        closeSocket();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>读操作状态</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(socket_status == RUNNING)&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125; ;</span><br><span class="line">    <span class="built_in">memset</span>(buf, <span class="number">0</span>, <span class="number">1024</span>);</span><br><span class="line">    fd_set ds_Read, ds_error;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;ds_Read, <span class="number">0</span>, <span class="keyword">sizeof</span>(ds_Read));</span><br><span class="line">    <span class="built_in">memset</span>(&amp;ds_error, <span class="number">0</span>, <span class="keyword">sizeof</span>(ds_error));</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> status = <span class="number">0</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">timeout</span>=</span>&#123;TIMEOUT_INTERVAL,<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    FD_ZERO(&amp;ds_Read);</span><br><span class="line">    FD_SET(m_sockClient,&amp;ds_Read);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//select： ok     非阻塞仅检查状态</span></span><br><span class="line">    status = select((m_sockClient + <span class="number">1</span>),&amp;ds_Read,<span class="literal">NULL</span>,<span class="literal">NULL</span>,&amp;timeout);</span><br><span class="line">    <span class="keyword">if</span>(isSocketValid() == <span class="literal">false</span>)&#123;</span><br><span class="line">        ALOGI(LOG_TAG, <span class="string">&quot;receive_func: m_sockClient = %d\n&quot;</span>, m_sockClient);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (status &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;receive_func: select socket status, %s, errno: %d\n&quot;</span>,strerror(errno), errno);</span><br><span class="line">        handle_disconnect();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (status == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">            ALOGI(LOG_TAG, <span class="string">&quot;receive_func: select socket status not readable\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">continue</span>;<span class="comment">//直到readable</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">        ALOGI(LOG_TAG, <span class="string">&quot;receive_func: readable fd returned:%d\n&quot;</span>,status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(FD_ISSET(m_sockClient,&amp;ds_Read) )</span><br><span class="line">    &#123;<span class="comment">/////////ok</span></span><br><span class="line">        <span class="type">int</span> buf_len = recv(m_sockClient, buf,<span class="number">1024</span>, <span class="number">0</span>) ;<span class="comment">//read</span></span><br><span class="line">        <span class="keyword">if</span>(LOG_INFO)&#123;</span><br><span class="line">            ALOGI(LOG_TAG, <span class="string">&quot;receive buf_len = %d&quot;</span>, buf_len);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (buf_len &gt; <span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">bool</span> result = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(cloudsink != <span class="literal">NULL</span>)&#123;</span><br><span class="line">                result = cloudsink-&gt;received_cb(buf, buf_len);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(result == <span class="literal">false</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(ALLLOGS)&#123;</span><br><span class="line">                    ALOGI(LOG_TAG, <span class="string">&quot;receive_func: the creator do not need the socket any more %d\n&quot;</span>,m_sockClient);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(buf_len == <span class="number">0</span>)&#123;</span><br><span class="line">            ALOGE(LOG_TAG, <span class="string">&quot;receive_func: recv, %s, errno: %d\n&quot;</span>,strerror(errno), errno);</span><br><span class="line">            handle_disconnect();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(errno == EAGAIN)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                ALOGE(LOG_TAG, <span class="string">&quot;receive_func: recv &lt; 0, %s, errno: %d\n&quot;</span>,strerror(errno), errno);</span><br><span class="line">                handle_disconnect();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        ALOGE(LOG_TAG, <span class="string">&quot;receive_func: FD_ISSET %d error %d\n&quot;</span>,m_sockClient, errno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/c/Select.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3ecaee47dce04f1d6efdd301b85e71f4"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

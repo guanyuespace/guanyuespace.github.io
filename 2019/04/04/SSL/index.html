@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SSL 一个故事教你看懂什么是数字证书，它的原理是什么?它的作用是什么？Https协议：超文本传输安全协议，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。     SSL(SecureSocketLayer)是netscape公司提出的主要用于web的安全通信标准.TLS(TransportLayerSecurity)是IETF的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSL&amp;Https Server">
+<meta property="og:url" content="https://xuewenm.github.io/2019/04/04/SSL/index.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="SSL 一个故事教你看懂什么是数字证书，它的原理是什么?它的作用是什么？Https协议：超文本传输安全协议，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。     SSL(SecureSocketLayer)是netscape公司提出的主要用于web的安全通信标准.TLS(TransportLayerSecurity)是IETF的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xuewenm.github.io/2019/04/04/SSL/req.jpg">
+<meta property="og:image" content="https://xuewenm.github.io/2019/04/04/SSL/rep.jpg">
+<meta property="og:image" content="http://www.barretlee.com/blogimgs/2015/10/20151001_b347f684.jpg">
+<meta property="article:published_time" content="2019-04-04T01:27:32.000Z">
+<meta property="article:modified_time" content="2023-02-19T08:40:05.674Z">
+<meta property="article:author" content="XueWen">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="SSL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xuewenm.github.io/2019/04/04/SSL/req.jpg">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/2019/04/04/SSL/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/2019/04/04/SSL/","path":"2019/04/04/SSL/","title":"SSL&Https Server"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SSL&Https Server | Wen's blog</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSL"><span class="nav-number">1.</span> <span class="nav-text">SSL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BB%BA%E7%AB%8B%E2%80%93-gt-CA%E7%9A%84%E5%BC%95%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">安全通信模型的建立–&gt;CA的引入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">RSA公钥加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">引入对称加密算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E5%85%AC%E9%92%A5%E6%98%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E5%B8%83%E7%9A%84%EF%BC%88or%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%8F%91%E5%B8%83%E5%85%AC%E9%92%A5%E7%9A%84%EF%BC%89%EF%BC%9F"><span class="nav-number">1.1.3.</span> <span class="nav-text">如何确保公钥是服务器发布的（or服务器是如何发布公钥的）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E7%9A%84%E5%8F%91%E5%B8%83"><span class="nav-number">1.1.4.</span> <span class="nav-text">公钥的发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E5%B1%95"><span class="nav-number">1.1.5.</span> <span class="nav-text">拓展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Https%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">Https服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeJs-%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">NodeJs 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">Java实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6%E5%88%9B%E5%BB%BA"><span class="nav-number">1.2.3.</span> <span class="nav-text">证书创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https%E8%BF%90%E4%BD%9C"><span class="nav-number">1.2.4.</span> <span class="nav-text">Https运作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CA-%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">CA 数字证书认证中心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90%E4%B8%8E%E8%87%AA%E7%AD%BE"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">证书生成与自签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTPS%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">HTTPS本地测试</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuewenm.github.io/2019/04/04/SSL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ic_hello.png">
+      <meta itemprop="name" content="XueWen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's blog">
+      <meta itemprop="description" content="不积硅步无以至千里，不积小流何以成江海。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SSL&Https Server | Wen's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSL&Https Server
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-04 09:27:32" itemprop="dateCreated datePublished" datetime="2019-04-04T09:27:32+08:00">2019-04-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-19 16:40:05" itemprop="dateModified" datetime="2023-02-19T16:40:05+08:00">2023-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Network/SSL/" itemprop="url" rel="index"><span itemprop="name">SSL</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>21 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/franson-2016/p/5530671.html">一个故事教你看懂什么是数字证书，它的原理是什么?它的作用是什么？</a><br>Https协议：超文本传输安全协议，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。   </p>
+</blockquote>
+<p>SSL(SecureSocketLayer)是netscape公司提出的主要用于web的安全通信标准.<br>TLS(TransportLayerSecurity)是IETF的TLS工作组在SSL3.0基础之上提出的安全通信标准，SSL&#x2F;TLS提供的安全机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改。   </p>
+<p>SSL位与应用层和 TCP&#x2F;IP之间的一层，数据经过它流出的时候被加密，再往TCP&#x2F;IP送，而数据从TCP&#x2F;IP流入之后先进入它这一层被解密，同时它也能够验证网络连接两端的身份</p>
+<p>SSL协议包含2个子协议，一个是 <em>包协议，</em> 一个是 <em>握手协议。</em> 包协议位于握手协议更下一层。</p>
+<p>SSL握手过程说简单点就是：<strong>通信双方通过不对称加密算法来协商好一个对称加密算法以及使用的key，然后用这个算法加密以后所有的数据完成应用层协议的数据交换。</strong>  </p>
+<span id="more"></span>
+
+
+<h2 id="安全通信模型的建立–-gt-CA的引入"><a href="#安全通信模型的建立–-gt-CA的引入" class="headerlink" title="安全通信模型的建立–&gt;CA的引入"></a>安全通信模型的建立–&gt;CA的引入</h2><h3 id="RSA公钥加密"><a href="#RSA公钥加密" class="headerlink" title="RSA公钥加密"></a>RSA公钥加密</h3><p>“客户”-&gt;“服务器”：你好<br>“服务器”-&gt;“客户”：你好，我是服务器</p>
+<p>“客户”-&gt;“服务器”：向我证明你就是服务器<br>“服务器”-&gt;“客户”：你好，我是服务器 {你好，我是服务器}[私钥|RSA]</p>
+<p>“客户”-&gt;“服务器”：{我的帐号是aaa，密码是123，把我的余额的信息发给我看看}[公钥|RSA]<br>“服务器”-&gt;“客户”：{你的余额是100元}[私钥|RSA]  —&gt; <em><strong>problem here !!!</strong></em></p>
+<p>注意上面的的信息 {你的余额是100元}[私钥]，这个是“服务器”用私钥加密后的内容，但是我们之前说了，公钥是发布出去的，因此所有的人都知道公钥，所以除了“客户”，其它的人也可以用公钥对{你的余额是100元}[私钥]进行解密。所以如果“服务器”用私钥加密发给“客户”，这个信息是无法保密的，因为只要有公钥就可以解密这内容。然而“服务器”也不能用公钥对发送的内容进行加密，因为“客户”没有私钥，发送个“客户”也解密不了。]</p>
+<h3 id="引入对称加密算法"><a href="#引入对称加密算法" class="headerlink" title="引入对称加密算法"></a>引入对称加密算法</h3><p>“客户”-&gt;“服务器”：你好<br>“服务器”-&gt;“客户”：你好，我是服务器</p>
+<p>“客户”-&gt;“服务器”：向我证明你就是服务器<br>“服务器”-&gt;“客户”：你好，我是服务器 {你好，我是服务器}[私钥|RSA]</p>
+<p>“客户”-&gt;“服务器”：{我们后面的通信过程，用对称加密来进行，这里是 <em>对称加密算法</em> 和 <em>密钥</em> }[公钥|RSA]    &#x2F;&#x2F;对称加密的算法和密钥的具体内容，客户把它们发送给服务器。<br>“服务器”-&gt;“客户”：{OK，收到！}[密钥|对称加密算法]</p>
+<p>“客户”-&gt;“服务器”：{我的帐号是aaa，密码是123，把我的余额的信息发给我看看}[密钥|对称加密算法]<br>“服务器”-&gt;“客户”：{你的余额是100元}[密钥|对称加密算法]</p>
+<p>在上面的通信过程中， <em>“客户”在确认了“服务器”的身份后，“客户”自己选择一个对称加密算法和一个密钥，把这个对称加密算法和密钥一起用公钥加密后发送给“服务器”。</em><br>注意，由于对称加密算法和密钥是用公钥加密的，就算这个加密后的内容被“黑客”截获了，由于没有私钥，“黑客”也无从知道对称加密算法和密钥的内容。    </p>
+<p>由于是用公钥加密的，只有私钥能够解密，这样就可以保证只有服务器可以知道对称加密算法和密钥，而其它人不可能知道(这个对称加密算法和密钥是“客户”自己选择的，所以“客户”自己当然知道如何解密加密)。这样“服务器”和“客户”就可以用对称加密算法和密钥来加密通信的内容了。<br>RSA加密算法在这个通信过程中所起到的作用主要有两个：     </p>
+<ul>
+<li>因为私钥只有“服务器”拥有，因此“客户”可以通过判断对方是否有私钥来判断对方是否是“服务器”。   </li>
+<li>客户端通过RSA的掩护，安全的和服务器商量好一个对称加密算法和密钥来保证后面通信过程内容的安全。</li>
+</ul>
+<h3 id="如何确保公钥是服务器发布的（or服务器是如何发布公钥的）？"><a href="#如何确保公钥是服务器发布的（or服务器是如何发布公钥的）？" class="headerlink" title="如何确保公钥是服务器发布的（or服务器是如何发布公钥的）？"></a>如何确保公钥是服务器发布的（or服务器是如何发布公钥的）？</h3><p>在最开始我们就说过，“服务器”要对外发布公钥，<em><strong>那“服务器”如何把公钥发送给“客户”呢？我们第一反应可能会想到以下的两个方法：</strong></em>      </p>
+<ol>
+<li><em><strong>把公钥放到互联网的某个地方的一个下载地址，事先给“客户”去下载。</strong></em>  </li>
+<li><em><strong>每次和“客户”开始通信时，“服务器”把公钥发给“客户”。</strong></em></li>
+</ol>
+<p>但是这个两个方法都有一定的问题:      </p>
+<ol>
+<li><p><strong>对于a)方法，“客户”无法确定这个下载地址是不是“服务器”发布的，你凭什么就相信这个地址下载的东西就是“服务器”发布的而不是别人伪造的呢，万一下载到一个假的怎么办？另外要所有的“客户”都在通信前事先去下载公钥也很不现实。</strong>        </p>
+</li>
+<li><p><strong>对于b)方法，也有问题，因为任何人都可以自己生成一对公钥和私钥，他只要向“客户”发送他自己的私钥就可以冒充“服务器”了。</strong> 示意如下：</p>
+</li>
+</ol>
+<p>“客户”-&gt;“黑客”：你好           &#x2F;&#x2F;黑客截获“客户”发给“服务器”的消息<br>“黑客”-&gt;“客户”：你好，我是服务器，这个是我的公钥    &#x2F;&#x2F;黑客自己生成一对公钥和私钥，把公钥发给“客户”，自己保留私钥</p>
+<p>“客户”-&gt;“黑客”：向我证明你就是服务器<br>“黑客”-&gt;“客户”：你好，我是服务器 {你好，我是服务器}[黑客自己的私钥|RSA]      &#x2F;&#x2F; <em>客户收到“黑客”用私钥加密的信息后，是可以用“黑客”发给自己的公钥解密的，从而会误认为“黑客”是“服务器”</em>   </p>
+<p>因此“黑客”只需要自己生成一对公钥和私钥，然后把公钥发送给“客户”，自己保留私钥，这样由于“客户”可以用黑客的公钥解密黑客的私钥加密的内容，“客户”就会相信“黑客”是“服务器”，从而导致了安全问题。</p>
+<p><em><strong>这里问题的根源就在于，大家都可以生成公钥、私钥对，无法确认公钥对到底是谁的。 如果能够确定公钥到底是谁的，就不会有这个问题了。</strong></em> 例如，如果收到“黑客”冒充“服务器”发过来的公钥，经过某种检查，如果能够发现这个公钥不是“服务器”的就好了。    </p>
+<h3 id="公钥的发布"><a href="#公钥的发布" class="headerlink" title="公钥的发布"></a>公钥的发布</h3><blockquote>
+<p>为了解决这个问题，<em><strong>数字证书</strong></em> 出现了，它可以解决我们上面的问题。</p>
+</blockquote>
+<p>先大概看下什么是数字证书，一个证书包含下面的具体内容：    </p>
+<ul>
+<li>证书的发布机构</li>
+<li>证书的有效期</li>
+<li>公钥</li>
+<li>证书所有者（Subject）</li>
+<li>签名所使用的算法</li>
+<li>指纹以及指纹算法</li>
+</ul>
+<p>数字证书可以保证数字证书里的公钥确实是这个证书的所有者(Subject)的，或者证书可以用来确认对方的身份。也就是说，我们拿到一个数字证书，我们可以判断出这个数字证书到底是谁的。至于是如何判断的，后面会在详细讨论数字证书时详细解释。现在把前面的通信过程使用数字证书修改为如下：<br>“客户”-&gt;“服务器”：你好<br>“服务器”-&gt;“客户”：你好，我是服务器，<b>这里是我的数字证书</b>        &#x2F;&#x2F;这里用证书代替了公钥   </p>
+<p>“客户”-&gt;“服务器”：向我证明你就是服务器<br>“服务器”-&gt;“客户”：你好，我是服务器 {你好，我是服务器}[私钥|RSA]     </p>
+<p>“服务器”把自己的证书发给了“客户”，而不是发送公钥。 <strong>“客户”可以根据证书校验这个证书到底是不是“服务器”的，也就是能校验这个证书的所有者是不是“服务器”，从而确认这个证书中的公钥的确是“服务器”的。</strong> 后面的过程和以前是一样，“客户”让“服务器”证明自己的身份，“服务器”用私钥加密一段内容连同明文一起发给“客户”，“客户”把加密内容用数字证书中的公钥解密后和明文对比，如果一致，那么对方就确实是“服务器”，然后双方协商一个对称加密来保证通信过程的安全。到这里，整个过程就完整了，我们回顾一下：</p>
+<p>完整过程：<br>step1： “客户”向服务端发送一个通信请求<br>“客户”-&gt;“服务器”：你好</p>
+<p>step2： “服务器”向客户发送自己的数字证书。证书中有一个公钥用来加密信息，私钥由“服务器”持有<br>“服务器”-&gt;“客户”：你好，我是服务器，这里是我的数字证书</p>
+<p>step3： “客户”收到“服务器”的证书后，它会去验证这个数字证书到底是不是“服务器”的，数字证书有没有什么问题，数字证书如果检查没有问题，就说明数字证书中的公钥确实是“服务器”的。检查数字证书后，“客户”会发送一个随机的字符串给“服务器”用私钥去加密，服务器把加密的结果返回给“客户”，“客户”用公钥解密这个返回结果，如果解密结果与之前生成的随机字符串一致，那说明对方确实是私钥的持有者，或者说对方确实是“服务器”。     </p>
+<p>“客户”-&gt;“服务器”：向我证明你就是服务器，这是一个随机字符串     &#x2F;&#x2F;前面的例子中为了方便解释，用的是“你好”等内容，实际情况下一般是随机生成的一个字符串。<br>“服务器”-&gt;“客户”：{一个随机字符串}[私钥|RSA]       </p>
+<p>step4： 验证“服务器”的身份后，“客户”生成一个对称加密算法和密钥，用于后面的通信的加密和解密。这个对称加密算法和密钥，“客户”会用公钥加密后发送给“服务器”，别人截获了也没用，因为只有“服务器”手中有可以解密的私钥。这样，后面“服务器”和“客户”就都可以用对称加密算法来加密和解密通信内容了。     </p>
+<p>“服务器”-&gt;“客户”：{OK，已经收到你发来的对称加密算法和密钥！有什么可以帮到你的？}[密钥|对称加密算法]<br>“客户”-&gt;“服务器”：{我的帐号是aaa，密码是123，把我的余额的信息发给我看看}[密钥|对称加密算法]<br>“服务器”-&gt;“客户”：{你好，你的余额是100元}[密钥|对称加密算法]         </p>
+<p>…… &#x2F;&#x2F;继续其它的通信    </p>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><p>【问题1】上面的通信过程中说到，在检查完证书后，“客户”发送一个随机的字符串给“服务器”去用私钥加密，以便判断对方是否真的持有私钥。但是有一个问题，“黑客”也可以发送一个字符串给“服务器”去加密并且得到加密后的内容，这样对于“服务器”来说是不安全的，<strong>因为黑客可以发送一些简单的有规律的字符串给“服务器”加密，从而寻找加密的规律，有可能威胁到私钥的安全。所以说，“服务器”随随便便用私钥去加密一个来路不明的字符串并把结果发送给对方是不安全的。</strong></p>
+<p>〖解决方法〗<br>每次收到“客户”发来的要加密的的字符串时， <strong>“服务器”并不是真正的加密这个字符串本身，而是把这个字符串进行一个hash计算，加密这个字符串的hash值(不加密原来的字符串)后发送给“客户”，“客户”收到后解密这个hash值并自己计算字符串的hash值然后进行对比是否一致。</strong> 也就是说，“服务器”不直接加密收到的字符串，而是加密这个字符串的一个hash值，这样就避免了加密那些有规律的字符串，从而降低被破解的机率。“客户”自己发送的字符串，因此它自己可以计算字符串的hash值，然后再把“服务器”发送过来的加密的hash值和自己计算的进行对比，同样也能确定对方是否是“服务器”。</p>
+<p>【问题2】在双方的通信过程中，“黑客”可以截获发送的加密了的内容，虽然他无法解密这个内容，但是他可以捣乱，<em>例如把信息原封不动的发送多次，扰乱通信过程。</em>    </p>
+<p>〖解决方法〗<br><em>可以给通信的内容加上一个序号或者一个随机的值</em> ，如果“客户”或者“服务器”接收到的信息中有之前出现过的序号或者随机值，那么说明有人在通信过程中重发信息内容进行捣乱，双方会立刻停止通信。 <strong>有人可能会问，如果有人一直这么捣乱怎么办？那不是无法通信了？ 答案是的确是这样的，</strong>  <em>例如有人控制了你连接互联网的路由器，他的确可以针对你。</em> 但是一些重要的应用，例如军队或者政府的内部网络，它们都不使用我们平时使用的公网，因此一般人不会破坏到他们的通信。</p>
+<p>【问题3】在双方的通信过程中，“黑客”除了简单的重复发送截获的消息之外，还可以修改截获后的密文修改后再发送，因为修改的是密文，虽然不能完全控制消息解密后的内容，但是仍然会破坏解密后的密文。因此发送过程如果黑客对密文进行了修改，“客户”和“服务器”是无法判断密文是否被修改的。虽然不一定能达到目的，但是“黑客”可以一直这样碰碰运气。</p>
+<p>〖解决方法〗<br><strong>在每次发送信息时，先对信息的内容进行一个hash计算得出一个hash值，将信息的内容和这个hash值一起加密后发送。</strong> 接收方在收到后进行解密得到明文的内容和hash值，然后接收方再自己对收到信息内容做一次hash计算，与收到的hash值进行对比看是否匹配，如果匹配就说明信息在传输过程中没有被修改过。<strong>如果不匹配说明中途有人故意对加密数据进行了修改，立刻中断通话过程后做其它处理。</strong>          </p>
+<h2 id="Https服务器"><a href="#Https服务器" class="headerlink" title="Https服务器"></a>Https服务器</h2><blockquote>
+<p>利用Nodejs搭建简易服务器</p>
+</blockquote>
+<p>HTTPS 区别于 HTTP，它多了加密(encryption)，认证(verification)，鉴定(identification)。它的安全源自非对称加密以及第三方的 CA 认证。   </p>
+<h3 id="NodeJs-实现"><a href="#NodeJs-实现" class="headerlink" title="NodeJs 实现"></a>NodeJs 实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">  <span class="attr">key</span>:fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./CA/server.key&#x27;</span>),</span><br><span class="line">  <span class="attr">cert</span>:fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./CA/server.crt&#x27;</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/getSession&quot;</span>,<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">  res.<span class="title function_">send</span>(<span class="string">&quot;Hello Here&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">http.<span class="title function_">createServer</span>(app).<span class="title function_">listen</span>(<span class="number">80</span>);</span><br><span class="line">https.<span class="title function_">createServer</span>(options,app).<span class="title function_">listen</span>(<span class="number">443</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/04/04/SSL/req.jpg" alt="client_request" title="wechat mini programs requests"><br><img src="/2019/04/04/SSL/rep.jpg" alt="server_result" title="results get from server"></p>
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><!-- SSLSocketServer&keystore -->
+
+<h3 id="证书创建"><a href="#证书创建" class="headerlink" title="证书创建"></a>证书创建</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liyulong1982/p/6106129.html">HTTPS证书生成原理和部署细节</a>   </p>
+</blockquote>
+<ul>
+<li>证书的发布机构</li>
+<li>证书的有效期</li>
+<li>公钥<br>这个我们在前面介绍公钥密码体制时介绍过，公钥是用来对消息进行加密的，第2章的例子中经常用到的。这个数字证书的公钥是2048位的，它的值可以在图的中间的那个对话框中看得到，是很长的一串数字。      </li>
+<li>证书所有者（Subject）</li>
+<li>签名所使用的算法<br>就是指的这个数字证书的数字签名所使用的加密算法，这样就可以使用证书发布机构的证书里面的公钥，根据这个算法对指纹进行解密。指纹的加密结果就是数字签名(第1.5节中解释过数字签名)。     </li>
+<li>指纹以及指纹算法<br>这个是用来保证证书的完整性的，也就是说确保证书没有被修改过。其原理就是在发布证书时，发布者根据指纹算法(一个hash算法)计算整个证书的hash值(指纹)并和证书放在一起，使用者在打开证书时，自己也根据指纹算法计算一下证书的hash值(指纹)，如果和刚开始的值对得上，就说明证书没有被修改过，因为证书的内容被修改后，根据证书的内容计算的出的hash值(指纹)是会变化的。 注意，这个指纹会使用”SecureTrust CA”这个证书机构的私钥用签名算法(Signature algorithm)加密后和证书放在一起。         —&gt;签名:Private Key(Hash(content))</li>
+</ul>
+<!-- 签名就是在信息的后面再加上一段内容，可以证明信息没有被修改过，怎么样可以达到这个效果呢？  一般是对信息做一个hash计算得到一个hash值，注意，这个过程是不可逆的，也就是说无法通过hash值得出原来的信息内容。在把信息发送出去时，把这个hash值加密后做为一个签名和信息一起发出去。 接收方在收到信息后，会重新计算信息的hash值，并和信息所附带的hash值(解密后)进行对比，如果一致，就说明信息的内容没有被修改过，因为这里hash计算可以保证不同的内容一定会得到不同的hash值，所以只要内容一被修改，根据信息内容计算的hash值就会变化。 **当然，不怀好意的人也可以修改信息内容的同时也修改hash值，从而让它们可以相匹配，为了防止这种情况，hash值一般都会加密后(也就是签名)再和信息一起发送，以保证这个hash值不被修改。** 至于如何让别人可以解密这个签名，这个过程涉及到数字证书等概念，我们后面在说到数字证书时再详细说明，这里您先只需先理解签名的这个概念。 -->  
+<p>注意：<strong>为了保证安全，在证书的发布机构发布证书时，证书的指纹和指纹算法，都会加密后再和证书放到一起发布，以防有人修改指纹后伪造相应的数字证书。</strong>  <em>这里问题又来了，证书的指纹和指纹算法用什么加密呢？他们是用证书发布机构的私钥进行加密的。</em>  <strong>可以用证书发布机构的公钥对指纹和指纹算法解密，也就是说证书发布机构除了给别人发布证书外，他自己本身也有自己的证书。</strong> 证书发布机构的证书是哪里来的呢？？？这个证书发布机构的数字证书(一般由他自己生成)在我们的操作系统刚安装好时(例如windows xp等操作系统)，这些证书发布机构的数字证书就已经被微软(或者其它操作系统的开发机构)安装在操作系统中了，微软等公司会根据一些权威安全机构的评估选取一些信誉很好并且通过一定的安全认证的证书发布机构，把这些证书发布机构的证书默认就安装在操作系统里面了，并且设置为操作系统信任的数字证书。这些证书发布机构自己持有与他自己的数字证书对应的私钥，他会用这个私钥加密所有他发布的证书的指纹作为数字签名。</p>
+<h3 id="Https运作"><a href="#Https运作" class="headerlink" title="Https运作"></a>Https运作</h3><p><img src="http://www.barretlee.com/blogimgs/2015/10/20151001_b347f684.jpg"><br>如上图所示，简述如下：   </p>
+<ul>
+<li>客户端生成一个随机数 random-client，传到服务器端（Say Hello)</li>
+<li>服务器端生成一个随机数 random-server，和着公钥，一起回馈给客户端（I got it)</li>
+<li>客户端收到的东西原封不动，<em><strong>加上 premaster secret（通过 random-client、random-server 经过一定算法生成的东西），再一次送给服务器端，</strong></em> 这次传过去的东西会使用公钥加密</li>
+<li>服务器端先使用私钥解密，拿到 premaster secret，此时客户端和服务器端都拥有了三个要素：random-client、random-server 和 premaster secret</li>
+<li>此时安全通道已经建立，以后的交流都会校检上面的三个要素通过算法算出的 session key</li>
+</ul>
+<h4 id="CA-数字证书认证中心"><a href="#CA-数字证书认证中心" class="headerlink" title="CA 数字证书认证中心"></a>CA 数字证书认证中心</h4><p>如果网站只靠上图运作，可能会被中间人攻击，试想一下，在客户端和服务端中间有一个中间人，两者之间的传输对中间人来说是透明的，那么中间人完全可以获取两端之间的任何数据，然后将数据原封不动的转发给两端，由于中间人也拿到了三要素和公钥，它照样可以解密传输内容，并且还可以篡改内容。</p>
+<p>为了确保我们的数据安全，我们还需要一个 CA 数字证书。HTTPS的传输采用的是非对称加密，一组非对称加密密钥包含公钥和私钥，通过公钥加密的内容只有私钥能够解密。上面我们看到，整个传输过程，服务器端是没有透露私钥的。而 CA 数字认证涉及到私钥，整个过程比较复杂，我也没有很深入的了解，后续有详细了解之后再补充下。   </p>
+<p>CA 认证分为三类：DV ( domain validation)，OV ( organization validation)，EV ( extended validation)，证书申请难度从前往后递增，貌似 EV 这种不仅仅是有钱就可以申请的。    </p>
+<p>对于一般的小型网站尤其是博客，可以使用自签名证书来构建安全网络，所谓自签名证书，就是自己扮演 CA 机构，自己给自己的服务器颁发证书。    </p>
+<h4 id="证书生成与自签"><a href="#证书生成与自签" class="headerlink" title="证书生成与自签"></a>证书生成与自签</h4><p>… …</p>
+<h4 id="HTTPS本地测试"><a href="#HTTPS本地测试" class="headerlink" title="HTTPS本地测试"></a>HTTPS本地测试</h4><p>服务器代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file https-server.js</span></span><br><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.crt&#x27;</span>)</span><br><span class="line">&#125;;</span><br><span class="line">https.<span class="title function_">createServer</span>(options, <span class="keyword">function</span>(<span class="params">req, res</span>) &#123;</span><br><span class="line">res.<span class="title function_">writeHead</span>(<span class="number">200</span>);</span><br><span class="line">res.<span class="title function_">end</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">&#125;).<span class="title function_">listen</span>(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
+<p>https 服务器，options 将私钥和证书带上。</p>
+<p>客户端代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file https-client.js</span></span><br><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">&quot;localhost&quot;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">8000</span>,</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">    <span class="attr">methed</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.crt&#x27;</span>),</span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/ca.crt&#x27;</span>)]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">options.<span class="property">agent</span> = <span class="keyword">new</span> https.<span class="title class_">Agent</span>(options);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> req = https.<span class="title function_">request</span>(options, <span class="keyword">function</span>(<span class="params">res</span>) &#123;</span><br><span class="line">    res.<span class="title function_">setEncoding</span>(<span class="string">&#x27;utf-8&#x27;</span>);</span><br><span class="line">    res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>(<span class="params">d</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(d);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">req.<span class="title function_">end</span>();</span><br><span class="line"></span><br><span class="line">req.<span class="title function_">on</span>(<span class="string">&#x27;error&#x27;</span>, <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(e);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+    </div>
+	
+	<div>
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------再接再厉<i class="fa fa-paw"></i>更进一步---------------</div>
+    
+</div>
+ 
+	</div>
+	
+	
+	
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢支持</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="XueWen 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XueWen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xuewenm.github.io/2019/04/04/SSL/" title="SSL&amp;Https Server">https://xuewenm.github.io/2019/04/04/SSL/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"># Network</a>
+              <a href="/tags/SSL/" rel="tag"># SSL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/22/HashSet/" rel="prev" title="HashSet">
+                  <i class="fa fa-chevron-left"></i> HashSet
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/04/node-crypto/" rel="next" title="node-crypto">
+                  node-crypto <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/2019/04/04/SSL/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ce6993afe4c012229da5c03eaea80e11"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

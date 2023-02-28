@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="开放数据校验与加解密 小程序登录（wx.login） 登录流程时序 说明： 注意：     数据签名校验 加密数据解密算法 Node.js进行解密数据   会话密钥 session_key 有效性   auth.code2Session HTTPS 调用   UnionID UnionID获取途径   授权 获取用户授权设置 打开设置界面 提前发起授权请求   获取手机号 使用方法 注意">
+<meta property="og:type" content="website">
+<meta property="og:title" content="微信小程序开放数据获取">
+<meta property="og:url" content="https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%A7%A3%E5%AF%86.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="开放数据校验与加解密 小程序登录（wx.login） 登录流程时序 说明： 注意：     数据签名校验 加密数据解密算法 Node.js进行解密数据   会话密钥 session_key 有效性   auth.code2Session HTTPS 调用   UnionID UnionID获取途径   授权 获取用户授权设置 打开设置界面 提前发起授权请求   获取手机号 使用方法 注意">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/signature.jpg">
+<meta property="og:image" content="https://res.wx.qq.com/wxdoc/dist/assets/img/signature.8a30a825.jpg">
+<meta property="og:image" content="https://res.wx.qq.com/wxdoc/dist/assets/img/api-login.2fcc9f35.jpg">
+<meta property="article:published_time" content="2019-04-01T05:36:30.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.531Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/signature.jpg">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%A7%A3%E5%AF%86">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%A7%A3%E5%AF%86.html","path":"interest/数据加解密.html","title":"微信小程序开放数据获取"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微信小程序开放数据获取 | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C%E4%B8%8E%E5%8A%A0%E8%A7%A3%E5%AF%86"><span class="nav-number">1.</span> <span class="nav-text">开放数据校验与加解密</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E5%BD%95%EF%BC%88wx-login%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">小程序登录（wx.login）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B%E6%97%B6%E5%BA%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">登录流程时序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">说明：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">注意：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C"><span class="nav-number">1.2.</span> <span class="nav-text">数据签名校验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%88%E6%9D%83"><span class="nav-number">1.3.</span> <span class="nav-text">授权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.3.1.</span> <span class="nav-text">获取用户授权设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">打开设置界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%89%8D%E5%8F%91%E8%B5%B7%E6%8E%88%E6%9D%83%E8%AF%B7%E6%B1%82"><span class="nav-number">1.3.3.</span> <span class="nav-text">提前发起授权请求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%89%8B%E6%9C%BA%E5%8F%B7"><span class="nav-number">1.4.</span> <span class="nav-text">获取手机号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">1.4.2.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E7%89%A9%E8%AE%A4%E8%AF%81"><span class="nav-number">1.5.</span> <span class="nav-text">生物认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">1.6.</span> <span class="nav-text">网络</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">微信小程序开放数据获取
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <!-- TOC -->
+
+<ul>
+<li><a href="#%E5%BC%80%E6%94%BE%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C%E4%B8%8E%E5%8A%A0%E8%A7%A3%E5%AF%86">开放数据校验与加解密</a><ul>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E5%BD%95wxlogin">小程序登录（wx.login）</a><ul>
+<li><a href="#%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B%E6%97%B6%E5%BA%8F">登录流程时序</a><ul>
+<li><a href="#%E8%AF%B4%E6%98%8E">说明：</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F">注意：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C">数据签名校验</a><ul>
+<li><a href="#%E5%8A%A0%E5%AF%86%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95">加密数据解密算法</a><ul>
+<li><a href="#nodejs%E8%BF%9B%E8%A1%8C%E8%A7%A3%E5%AF%86%E6%95%B0%E6%8D%AE">Node.js进行解密数据</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BC%9A%E8%AF%9D%E5%AF%86%E9%92%A5-session_key-%E6%9C%89%E6%95%88%E6%80%A7">会话密钥 session_key 有效性</a></li>
+</ul>
+</li>
+<li><a href="#authcode2session">auth.code2Session</a><ul>
+<li><a href="#https-%E8%B0%83%E7%94%A8">HTTPS 调用</a></li>
+</ul>
+</li>
+<li><a href="#unionid">UnionID</a><ul>
+<li><a href="#unionid%E8%8E%B7%E5%8F%96%E9%80%94%E5%BE%84">UnionID获取途径</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8E%88%E6%9D%83">授权</a><ul>
+<li><a href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83%E8%AE%BE%E7%BD%AE">获取用户授权设置</a></li>
+<li><a href="#%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2">打开设置界面</a></li>
+<li><a href="#%E6%8F%90%E5%89%8D%E5%8F%91%E8%B5%B7%E6%8E%88%E6%9D%83%E8%AF%B7%E6%B1%82">提前发起授权请求</a></li>
+</ul>
+</li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E6%89%8B%E6%9C%BA%E5%8F%B7">获取手机号</a><ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F">注意</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%9F%E7%89%A9%E8%AE%A4%E8%AF%81">生物认证</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C">网络</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h1 id="开放数据校验与加解密"><a href="#开放数据校验与加解密" class="headerlink" title="开放数据校验与加解密"></a>开放数据校验与加解密</h1><p>小程序可以通过各种前端接口获取微信提供的开放数据。考虑到开发者服务器也需要获取这些开放数据，微信会对这些数据做签名和加密处理。开发者后台拿到开放数据后可以对数据进行校验签名和解密，来保证数据不被篡改。  </p>
+<blockquote>
+<p>小程序，开发者服务器，微信接口服务</p>
+</blockquote>
+<p><img src="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/image/signature.jpg" alt="数据的传递流程" title="数据的传递流程">   </p>
+<p><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/signature.8a30a825.jpg"><br>签名校验以及数据加解密涉及用户的会话密钥 <strong>session_key</strong> 。 开发者应该事先通过 <em><strong>wx.login</strong></em> 登录流程获取会话密钥 session_key 并保存在服务器。<strong>为了数据不被篡改，开发者不应该把 session_key 传到小程序客户端等服务器外的环境。</strong></p>
+<h2 id="小程序登录（wx-login）"><a href="#小程序登录（wx-login）" class="headerlink" title="小程序登录（wx.login）"></a>小程序登录（wx.login）</h2><p>小程序可以通过微信官方提供的登录能力方便地获取微信提供的用户身份标识，快速建立小程序内的用户体系。    </p>
+<h3 id="登录流程时序"><a href="#登录流程时序" class="headerlink" title="登录流程时序"></a>登录流程时序</h3><p><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/api-login.2fcc9f35.jpg"></p>
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><ol>
+<li>调用 wx.login() 获取 临时登录凭证code ，并回传到开发者服务器。</li>
+<li>调用 auth.code2Session 接口，换取 用户唯一标识 OpenID 和 会话密钥 session_key。<br>之后开发者服务器可以根据用户标识来生成自定义登录态，用于后续业务逻辑中前后端交互时识别用户身份。</li>
+</ol>
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><p>会话密钥 session_key 是对用户数据进行 加密签名 的密钥。<strong>为了应用自身的数据安全，开发者服务器不应该把会话密钥下发到小程序，也不应该对外提供这个密钥。</strong><br>临时登录凭证 code 只能使用一次  </p>
+<h2 id="数据签名校验"><a href="#数据签名校验" class="headerlink" title="数据签名校验"></a>数据签名校验</h2><p>为了确保开放接口返回用户数据的安全性， <em>微信会对明文数据进行签名。</em> 开发者可以根据业务需要对数据包进行签名校验，确保数据的完整性。<br>通过调用接口（如 wx.getUserInfo）获取数据时，接口会同时返回 rawData、signature，其中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">signature = sha1( rawData + session_key )    </span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line">开发者将 signature、rawData 发送到开发者服务器进行校验。服务器利用用户对应的 session_key 使用相同的算法计算出签名 signature2 ，比对 signature 与 signature2 即可校验数据的完整性。   </span><br><span class="line"></span><br><span class="line">### 加密数据解密算法</span><br><span class="line">接口如果涉及敏感数据（如wx.getUserInfo当中的 openId 和 unionId），接口的明文内容将不包含这些敏感数据。开发者如需要获取敏感数据，需要对接口返回的加密数据(encryptedData) 进行对称解密。 解密算法如下：</span><br></pre></td></tr></table></figure>
+<p>对称解密使用的算法为 AES-128-CBC，数据采用PKCS#7填充。<br>对称解密的目标密文为 Base64_Decode(encryptedData)。<br>对称解密秘钥 aeskey &#x3D; Base64_Decode(session_key), aeskey 是16字节。<br>对称解密算法初始向量 为Base64_Decode(iv)，其中iv由数据接口返回。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">另外，为了应用能校验数据的有效性，会在敏感数据加上数据水印( watermark )       </span><br><span class="line">#### Node.js进行解密数据   </span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">var crypto = require(&#x27;crypto&#x27;)</span><br><span class="line">function WXBizDataCrypt(appId, sessionKey) &#123;</span><br><span class="line">  this.appId = appId</span><br><span class="line">  this.sessionKey = sessionKey</span><br><span class="line">&#125;</span><br><span class="line">WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) &#123;</span><br><span class="line">  // base64 decode</span><br><span class="line">  var sessionKey = new Buffer(this.sessionKey, &#x27;base64&#x27;)</span><br><span class="line">  encryptedData = new Buffer(encryptedData, &#x27;base64&#x27;)</span><br><span class="line">  iv = new Buffer(iv, &#x27;base64&#x27;)</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">     // 解密</span><br><span class="line">    var decipher = crypto.createDecipheriv(&#x27;aes-128-cbc&#x27;, sessionKey, iv)</span><br><span class="line">    // 设置自动 padding 为 true，删除填充补位</span><br><span class="line">    decipher.setAutoPadding(true)</span><br><span class="line">    var decoded = decipher.update(encryptedData, &#x27;binary&#x27;, &#x27;utf8&#x27;)</span><br><span class="line">    decoded += decipher.final(&#x27;utf8&#x27;)</span><br><span class="line"></span><br><span class="line">    decoded = JSON.parse(decoded)</span><br><span class="line"></span><br><span class="line">  &#125; catch (err) &#123;</span><br><span class="line">    throw new Error(&#x27;Illegal Buffer&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (decoded.watermark.appid !== this.appId) &#123;</span><br><span class="line">    throw new Error(&#x27;Illegal Buffer&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return decoded</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">使用  </span><br></pre></td></tr></table></figure>
+<p>var pc &#x3D; new WXBizDataCrypt(appId, sessionKey)<br>var data &#x3D; pc.decryptData(encryptedData , iv)<br>console.log(‘解密后 data: ‘, data)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 会话密钥 session_key 有效性</span><br><span class="line">开发者如果遇到因为 session_key 不正确而校验签名失败或解密失败，请关注下面几个与 session_key 有关的注意事项。   </span><br><span class="line"></span><br><span class="line">- wx.login 调用时，用户的 session_key 可能会被更新而致使旧 session_key 失效（刷新机制存在最短周期，如果同一个用户短时间内多次调用 wx.login，并非每次调用都导致 session_key 刷新）。开发者应该在明确需要重新登录时才调用 wx.login，及时通过 auth.code2Session 接口更新服务器存储的 session_key。</span><br><span class="line">- 微信不会把 session_key 的有效期告知开发者。我们会根据用户使用小程序的行为对 session_key 进行续期。用户越频繁使用小程序，session_key 有效期越长。</span><br><span class="line">- 开发者在 session_key 失效时，可以通过重新执行登录流程获取有效的 session_key。使用接口 wx.checkSession可以校验 session_key 是否有效，从而避免小程序反复执行登录流程。</span><br><span class="line">- 当开发者在实现自定义登录态时，可以考虑以 session_key 有效期作为自身登录态有效期，也可以实现自定义的时效性策略。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## auth.code2Session</span><br><span class="line">&gt; 本接口应在服务器端调用，详细说明参见服务端API。</span><br><span class="line"></span><br><span class="line">登录凭证校验。通过 wx.login() 接口获得临时登录凭证 code 后传到开发者服务器调用此接口完成登录流程。更多使用方法详见 小程序登录。   </span><br><span class="line">### HTTPS 调用</span><br><span class="line">请求地址</span><br></pre></td></tr></table></figure>
+<p>GET <a target="_blank" rel="noopener" href="https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code">https://api.weixin.qq.com/sns/jscode2session?appid=APPID&amp;secret=SECRET&amp;js_code=JSCODE&amp;grant_type=authorization_code</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">## UnionID</span><br><span class="line"></span><br><span class="line">如果开发者拥有多个移动应用、网站应用、和公众帐号（包括小程序），可通过 UnionID 来区分用户的唯一性，因为只要是同一个微信开放平台帐号下的移动应用、网站应用和公众帐号（包括小程序），用户的 UnionID 是唯一的。换句话说，同一用户，对同一个微信开放平台下的不同应用，unionid是相同的。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### UnionID获取途径</span><br><span class="line">绑定了开发者帐号的小程序，可以通过以下途径获取 UnionID。</span><br><span class="line"></span><br><span class="line">1. 调用接口 wx.getUserInfo，从解密数据中获取 UnionID。注意本接口需要用户授权，请开发者妥善处理用户拒绝授权后的情况。</span><br><span class="line">```json</span><br><span class="line">decrypt: &#123;&quot;openId&quot;:&quot;ofAqB4n1m4IKBnvrixY5qshNZrTg&quot;,&quot;nickName&quot;:&quot;雪文&quot;,&quot;gender&quot;:1,&quot;language&quot;:&quot;zh_TW&quot;,&quot;city&quot;:&quot;Zhoukou&quot;,&quot;province&quot;:&quot;Henan&quot;,&quot;country&quot;:&quot;China&quot;,&quot;avatarUrl&quot;:&quot;https://wx.qlogo.cn/mmopen/vi_32/QbdueERJQxFicrvMUynsmFW1jicK6Cj9I7YB398B9qpibpPrJPJicKhLDe7F6SjxOFibAK7A3hrAsX9MQmUggiaL9Zag/132&quot;,&quot;watermark&quot;:&#123;&quot;timestamp&quot;:1554270160,&quot;appid&quot;:&quot;wxea74db422c9ef21d&quot;&#125;&#125;   </span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>如果开发者帐号下存在同主体的公众号，并且该用户已经关注了该公众号。开发者可以直接通过 wx.login + code2Session 获取到该用户 UnionID，无须用户再次授权。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;data&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;session_key&quot;</span><span class="punctuation">:</span><span class="string">&quot;RQUu5jFRxCsS43JMcfbaaQ==&quot;</span><span class="punctuation">,</span><span class="attr">&quot;openid&quot;</span><span class="punctuation">:</span><span class="string">&quot;ofAqB4n1m4IKBnvrixY5qshNZrTg&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;header&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;Content-Type&quot;</span><span class="punctuation">:</span><span class="string">&quot;text/plain;charset=utf-8&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;statusCode&quot;</span><span class="punctuation">:</span><span class="number">200</span><span class="punctuation">,</span><span class="attr">&quot;cookies&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;errMsg&quot;</span><span class="punctuation">:</span><span class="string">&quot;request:ok&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果开发者帐号下存在同主体的公众号或移动应用，并且该用户已经授权登录过该公众号或移动应用。开发者也可以直接通过 wx.login + code2Session 获取到该用户 UnionID ，无须用户再次授权。</p>
+</li>
+<li><p>用户在小程序（暂不支持小游戏）中支付完成后，开发者可以直接通过getPaidUnionId接口获取该用户的 UnionID，无需用户授权。注意：本接口仅在用户支付完成后的5分钟内有效，请开发者妥善处理。</p>
+</li>
+<li><p>小程序端调用云函数时，如果开发者帐号下存在同主体的公众号，并且该用户已经关注了该公众号，可在云函数中通过 cloud.getWXContext 获取 UnionID。</p>
+</li>
+<li><p>小程序端调用云函数时，如果开发者帐号下存在同主体的公众号或移动应用，并且该用户已经授权登录过该公众号或移动应用，也可在云函数中通过 cloud.getWXContext 获取 UnionID。</p>
+</li>
+</ol>
+<h2 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h2><p>部分接口需要经过用户授权同意才能调用。我们把这些接口按使用范围分成多个 scope ，用户选择对 scope 来进行授权，当授权给一个 scope 之后，其对应的所有接口都可以直接使用。   </p>
+<p><strong>部分接口需要获得用户授权同意后才能调用。此类接口调用时</strong>   </p>
+<ul>
+<li>如果用户未接受或拒绝过此权限，会弹窗询问用户，用户点击同意后方可调用接口；</li>
+<li>如果用户已授权，可以直接调用接口；</li>
+<li>如果用户已拒绝授权，则不会出现弹窗，而是直接进入接口 fail 回调。</li>
+</ul>
+<h3 id="获取用户授权设置"><a href="#获取用户授权设置" class="headerlink" title="获取用户授权设置"></a>获取用户授权设置</h3><p>开发者可以使用 wx.getSetting 获取用户当前的授权状态。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">authSetting	<span class="title class_">AuthSetting</span>	用户授权结果</span><br><span class="line"><span class="attr">res</span>: &#123;<span class="string">&quot;errMsg&quot;</span>:<span class="string">&quot;getSetting:ok&quot;</span>,<span class="string">&quot;authSetting&quot;</span>:&#123;<span class="string">&quot;scope.werun&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;scope.userInfo&quot;</span>:<span class="literal">true</span>&#125;&#125;</span><br><span class="line">wx.<span class="title function_">getSetting</span>(&#123;</span><br><span class="line">  <span class="attr">success</span>: <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (res.<span class="property">authSetting</span>[<span class="string">&#x27;scope.userInfo&#x27;</span>]) &#123;</span><br><span class="line">      <span class="comment">// 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框</span></span><br><span class="line">      <span class="comment">// ... ok</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">fail</span>: <span class="function"><span class="params">res</span>=&gt;</span>&#123;&#125;,</span><br><span class="line">  <span class="attr">complete</span>: <span class="function"><span class="params">res</span>=&gt;</span>&#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="打开设置界面"><a href="#打开设置界面" class="headerlink" title="打开设置界面"></a>打开设置界面</h3><p><del>开发者可以调用 wx.openSetting 打开设置界面，引导用户开启授权。</del><br><em><strong>err:{“errMsg”:”openSetting:fail can only be invoked by user TAP gesture.”}</strong></em>    </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wx.<span class="title function_">openSetting</span>(&#123;</span><br><span class="line">  <span class="title function_">success</span>(<span class="params">res</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;????&quot;</span> + res.<span class="property">authSetting</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">fail</span>: <span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">//err:&#123;&quot;errMsg&quot;:&quot;openSetting:fail can only be invoked by user TAP gesture.&quot;&#125;</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;err:&quot;</span>+<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(res));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="提前发起授权请求"><a href="#提前发起授权请求" class="headerlink" title="提前发起授权请求"></a>提前发起授权请求</h3><p>开发者可以使用 <em>wx.authorize</em> 在调用需授权 API 之前，提前向用户发起授权请求。<br>提前向用户发起授权请求。<strong>调用后会立刻弹窗询问用户是否同意授权小程序使用某项功能或获取用户的某些数据，但不会实际调用对应接口。如果用户之前已经同意授权，则不会出现弹窗，直接返回成功。</strong>    </p>
+<pre><code class="js">wx.authorize(&#123;
+  scope: &#39;scope.werun&#39;,
+  success: ()=&gt;&#123;wx.getWeRunData();  ....&#125;,
+  fail: ()=&gt;&#123;&#125;
+&#125;);
+</code></pre>
+<p><strong>scope列表</strong>    </p>
+<table>
+<thead>
+<tr>
+<th>scope</th>
+<th>对应接口</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scope.userInfo</td>
+<td><a href="../../api/wx.getUserInfo.html">wx.getUserInfo</a></td>
+<td>用户信息</td>
+</tr>
+<tr>
+<td>scope.userLocation</td>
+<td><a href="../../api/wx.getLocation.html">wx.getLocation</a>, <a href="../../api/wx.chooseLocation.html">wx.chooseLocation</a></td>
+<td>地理位置</td>
+</tr>
+<tr>
+<td>scope.address</td>
+<td><a href="../../api/wx.chooseAddress.html">wx.chooseAddress</a></td>
+<td>通讯地址</td>
+</tr>
+<tr>
+<td>scope.invoiceTitle</td>
+<td><a href="../../api/wx.chooseInvoiceTitle.html">wx.chooseInvoiceTitle</a></td>
+<td>发票抬头</td>
+</tr>
+<tr>
+<td>scope.invoice</td>
+<td><a href="../../api/wx.chooseInvoice.html">wx.chooseInvoice</a></td>
+<td>获取发票</td>
+</tr>
+<tr>
+<td>scope.werun</td>
+<td><a href="../../api/wx.getWeRunData.html">wx.getWeRunData</a></td>
+<td>微信运动步数</td>
+</tr>
+<tr>
+<td>scope.record</td>
+<td><a href="../../api/wx.startRecord.html">wx.startRecord</a></td>
+<td>录音功能</td>
+</tr>
+<tr>
+<td>scope.writePhotosAlbum</td>
+<td><a href="../../api/wx.saveImageToPhotosAlbum.html">wx.saveImageToPhotosAlbum</a>, <a href="../../api/wx.saveVideoToPhotosAlbum.html">wx.saveVideoToPhotosAlbum</a></td>
+<td>保存到相册</td>
+</tr>
+<tr>
+<td>scope.camera</td>
+<td>&lt;camera/&gt; 组件</td>
+<td>摄像头</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="获取手机号"><a href="#获取手机号" class="headerlink" title="获取手机号"></a>获取手机号</h2><p>获取微信用户绑定的手机号，需先调用wx.login接口。<br>因为需要用户主动触发才能发起获取手机号接口，所以该功能不由 API 来调用，需用 <button>组件</button>的点击来触发。    </p>
+<p><em><strong>注意：目前该接口针对非个人开发者，且完成了认证的小程序开放（不包含海外主体）。需谨慎使用，若用户举报较多或被发现在不必要场景下使用，微信有权永久回收该小程序的该接口权限。</strong></em>  </p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>需要将 <button>组件</button> open-type 的值设置为 <strong>getPhoneNumber</strong> ，当用户点击并同意之后，可以通过 <strong>bindgetphonenumber</strong> 事件回调获取到微信服务器返回的加密数据， 然后在第三方服务端结合 session_key 以及 app_id 进行解密获取手机号。    </p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>在回调中调用 wx.login 登录，可能会刷新登录态。此时服务器使用 code 换取的 sessionKey 不是加密时使用的 sessionKey，导致解密失败。建议开发者提前进行 login；或者在回调中先使用 checkSession 进行登录态检查，避免 login 刷新登录态。    </p>
+<h2 id="生物认证"><a href="#生物认证" class="headerlink" title="生物认证"></a>生物认证</h2><p>。。。</p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html">网络API介绍</a>      </p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/interest/%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%A7%A3%E5%AF%86.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8f897faf42ca78ac4b46984c46209685"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

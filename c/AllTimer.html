@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux几种定时器操作 1、alarm 2、setitimer 3、用 sleep 以及 usleep 实现定时执行任务 sigval sigqueue sigaction   5、使用 select 来提供精确定时和休眠 6、高精度硬件中断定时器 hrtimer 7、高精度定时器 posix_timer 创建一个定时器        Linux几种定时器操作 原文地址      使用定时">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Linux几种定时器操作">
+<meta property="og:url" content="https://xuewenm.github.io/c/AllTimer.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="Linux几种定时器操作 1、alarm 2、setitimer 3、用 sleep 以及 usleep 实现定时执行任务 sigval sigqueue sigaction   5、使用 select 来提供精确定时和休眠 6、高精度硬件中断定时器 hrtimer 7、高精度定时器 posix_timer 创建一个定时器        Linux几种定时器操作 原文地址      使用定时">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-05T00:53:07.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.366Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/c/AllTimer">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/c/AllTimer.html","path":"c/AllTimer.html","title":"Linux几种定时器操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux几种定时器操作 | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E5%87%A0%E7%A7%8D%E5%AE%9A%E6%97%B6%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">Linux几种定时器操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81alarm"><span class="nav-number">1.1.</span> <span class="nav-text">1、alarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81setitimer"><span class="nav-number">1.2.</span> <span class="nav-text">2、setitimer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sigval"><span class="nav-number">1.2.1.</span> <span class="nav-text">sigval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sigqueue"><span class="nav-number">1.2.2.</span> <span class="nav-text">sigqueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sigaction"><span class="nav-number">1.2.3.</span> <span class="nav-text">sigaction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E9%80%9A%E8%BF%87%E8%87%AA%E5%B7%B1%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%E5%B7%AE%E7%9A%84%E6%96%B9%E6%B3%95%E6%9D%A5%E5%AE%9A%E6%97%B6"><span class="nav-number">1.3.</span> <span class="nav-text">4、通过自己计算时间差的方法来定时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8-select-%E6%9D%A5%E6%8F%90%E4%BE%9B%E7%B2%BE%E7%A1%AE%E5%AE%9A%E6%97%B6%E5%92%8C%E4%BC%91%E7%9C%A0"><span class="nav-number">1.4.</span> <span class="nav-text">5、使用 select 来提供精确定时和休眠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%A1%AC%E4%BB%B6%E4%B8%AD%E6%96%AD%E5%AE%9A%E6%97%B6%E5%99%A8-hrtimer"><span class="nav-number">1.5.</span> <span class="nav-text">6、高精度硬件中断定时器 hrtimer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E9%AB%98%E7%B2%BE%E5%BA%A6%E5%AE%9A%E6%97%B6%E5%99%A8-posix-timer"><span class="nav-number">1.6.</span> <span class="nav-text">7、高精度定时器 posix_timer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.6.1.</span> <span class="nav-text">创建一个定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.6.2.</span> <span class="nav-text">启动一个定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E4%B8%80%E4%B8%AA%E6%B4%BB%E5%8A%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E5%89%A9%E4%BD%99%E6%97%B6%E9%97%B4"><span class="nav-number">1.6.3.</span> <span class="nav-text">获得一个活动定时器的剩余时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E8%B6%85%E9%99%90%E8%BF%90%E8%A1%8C%E6%AC%A1%E6%95%B0"><span class="nav-number">1.6.4.</span> <span class="nav-text">取得一个定时器的超限运行次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.6.5.</span> <span class="nav-text">删除一个定时器</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Linux几种定时器操作
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <!-- TOC -->
+
+<ul>
+<li><a href="#linux%E5%87%A0%E7%A7%8D%E5%AE%9A%E6%97%B6%E5%99%A8%E6%93%8D%E4%BD%9C">Linux几种定时器操作</a><ul>
+<li><a href="#1alarm">1、alarm</a></li>
+<li><a href="#2setitimer">2、setitimer</a></li>
+<li><a href="#3%E7%94%A8-sleep-%E4%BB%A5%E5%8F%8A-usleep-%E5%AE%9E%E7%8E%B0%E5%AE%9A%E6%97%B6%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1">3、<strong>用 sleep 以及 usleep 实现定时执行任务</strong></a><ul>
+<li><a href="#sigval">sigval</a></li>
+<li><a href="#sigqueue">sigqueue</a></li>
+<li><a href="#sigaction">sigaction</a></li>
+</ul>
+</li>
+<li><a href="#5%E4%BD%BF%E7%94%A8-select-%E6%9D%A5%E6%8F%90%E4%BE%9B%E7%B2%BE%E7%A1%AE%E5%AE%9A%E6%97%B6%E5%92%8C%E4%BC%91%E7%9C%A0">5、使用 select 来提供精确定时和休眠</a></li>
+<li><a href="#6%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%A1%AC%E4%BB%B6%E4%B8%AD%E6%96%AD%E5%AE%9A%E6%97%B6%E5%99%A8-hrtimer">6、高精度硬件中断定时器 hrtimer</a></li>
+<li><a href="#7%E9%AB%98%E7%B2%BE%E5%BA%A6%E5%AE%9A%E6%97%B6%E5%99%A8-posix_timer">7、高精度定时器 posix_timer</a><ul>
+<li><a href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E5%99%A8">创建一个定时器</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+
+<h1 id="Linux几种定时器操作"><a href="#Linux几种定时器操作" class="headerlink" title="Linux几种定时器操作"></a>Linux几种定时器操作</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lu_embedded/article/details/53080496">原文地址</a>    </p>
+</blockquote>
+<p>使用定时器的目的无非是为了周期性的执行某一任务，或者是到了一个指定时间去执行某一个任务。要达到这一目的，一般有两个常见的比较有效的方法。一个是用 Linux 内部的三个定时器；另一个是用 sleep 或 usleep 函数让进程睡眠一段时间；其实，还有一个方法，那就是用 gettimeofday、difftime 等自己来计算时间间隔，然后时间到了就执行某一任务，但是这种方法效率低，所以不常用。   </p>
+<h2 id="1、alarm"><a href="#1、alarm" class="headerlink" title="1、alarm"></a>1、alarm</h2><p>如果不要求很精确的话，用 alarm() 和 signal() 就够了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">alarm</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> seconds)</span></span><br></pre></td></tr></table></figure>
+<p>专门为 SIGALRM 信号而设，在指定的时间 seconds 秒后，将向进程本身发送 SIGALRM 信号，又称为闹钟时间。<br><strong>进程调用 alarm 后，任何以前的 alarm() 调用都将无效。如果参数 seconds 为零，那么进程内将不再包含任何闹钟时间。如果调用 alarm（）前，进程中已经设置了闹钟时间，则返回上一个闹钟时间的剩余时间，否则返回 0。</strong><br>示例：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sigalrm_fn</span><span class="params">(<span class="type">int</span> sig)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;alarm!\n&quot;</span>);</span><br><span class="line">    alarm(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    signal(SIGALRM, sigalrm_fn);</span><br><span class="line">    alarm(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) pause();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、setitimer"><a href="#2、setitimer" class="headerlink" title="2、setitimer"></a>2、setitimer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">setitimer</span><span class="params">(<span class="type">int</span> which, <span class="type">const</span> <span class="keyword">struct</span> itimerval *value, <span class="keyword">struct</span> itimerval *ovalue)</span>);</span><br><span class="line"><span class="type">int</span> <span class="title function_">getitimer</span><span class="params">(<span class="type">int</span> which, <span class="keyword">struct</span> itimerval *value)</span>;</span><br><span class="line"></span><br><span class="line">strcut timeval</span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">long</span> tv_sec; <span class="comment">/*秒*/</span></span><br><span class="line">   <span class="type">long</span> tv_usec; <span class="comment">/*微秒*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">itimerval</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">it_interval</span>;</span> <span class="comment">/*时间间隔*/</span></span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">it_value</span>;</span> <span class="comment">/*当前时间计数*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>setitimer() 比 alarm() 功能强大，支持 3 种类型的定时器：</p>
+<p>① <strong>ITIMER_REAL</strong>：给一个指定的时间间隔，按照实际的时间来减少这个计数，当时间间隔为 0 的时候发出 <code>SIGALRM</code> 信号。<br>② <strong>ITIMER_VIRTUAL</strong>：给定一个时间间隔，当进程执行的时候才减少计数，时间间隔为 0 的时候发出 <code>SIGVTALRM</code> 信号。<br>③ <strong>ITIMER_PROF</strong>：给定一个时间间隔，当进程执行或者是系统为进程调度的时候，减少计数，时间到了，发出 <code>SIGPROF</code> 信号。   </p>
+<p>setitimer() 第一个参数 <code>which</code> 指定定时器类型（上面三种之一）；第二个参数是结构 <code>itimerval</code> 的一个实例；第三个参数 <code>ovalue</code> 用来保存先前的值，常设为NULL。</p>
+<p>如果是以setitimer提供的定时器来休眠，只需阻塞等待定时器信号就可以了。   </p>
+<p>下面是关于 <code>setitimer</code> 调用的一个简单示范，在该例子中，每隔一秒发出一个 <code>SIGALRM</code>，每隔 0.5 秒发出一个 <code>SIGVTALRM</code> 信号：   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> sec;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sigroutine</span><span class="params">(<span class="type">int</span> signo)</span>&#123;</span><br><span class="line">   <span class="keyword">switch</span> (signo)&#123;</span><br><span class="line">   <span class="keyword">case</span> SIGALRM:</span><br><span class="line">       <span class="built_in">printf</span>(<span class="string">&quot;Catch a signal -- SIGALRM \n&quot;</span>);</span><br><span class="line">       signal(SIGALRM, sigroutine);</span><br><span class="line">       <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> SIGVTALRM:</span><br><span class="line">       <span class="built_in">printf</span>(<span class="string">&quot;Catch a signal -- SIGVTALRM \n&quot;</span>);</span><br><span class="line">       signal(SIGVTALRM, sigroutine);</span><br><span class="line">       <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">itimerval</span> <span class="title">value</span>, <span class="title">ovalue</span>, <span class="title">value2</span>;</span></span><br><span class="line"></span><br><span class="line">   sec = <span class="number">5</span>;</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">&quot;process id is %d &quot;</span>, getpid());</span><br><span class="line">   signal(SIGALRM, sigroutine);</span><br><span class="line">   signal(SIGVTALRM, sigroutine);</span><br><span class="line">   value.it_value.tv_sec = <span class="number">1</span>;</span><br><span class="line">   value.it_value.tv_usec = <span class="number">0</span>;</span><br><span class="line">   value.it_interval.tv_sec = <span class="number">1</span>;</span><br><span class="line">   value.it_interval.tv_usec = <span class="number">0</span>;</span><br><span class="line">   setitimer(ITIMER_REAL, &amp;value, &amp;ovalue);</span><br><span class="line">   value2.it_value.tv_sec = <span class="number">0</span>;</span><br><span class="line">   value2.it_value.tv_usec = <span class="number">500000</span>;</span><br><span class="line">   value2.it_interval.tv_sec = <span class="number">0</span>;</span><br><span class="line">   value2.it_interval.tv_usec = <span class="number">500000</span>;</span><br><span class="line">   setitimer(ITIMER_VIRTUAL, &amp;value2, &amp;ovalue);</span><br><span class="line">   <span class="keyword">for</span>(;;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该例子的执行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">localhost:~$ ./timer_test</span><br><span class="line">process id is 579</span><br><span class="line">Catch a signal – SIGVTALRM</span><br><span class="line">Catch a signal – SIGALRM</span><br><span class="line">Catch a signal – SIGVTALRM</span><br><span class="line">Catch a signal – SIGVTALRM</span><br><span class="line">Catch a signal – SIGALRM</span><br><span class="line">Catch a signal –GVTALRM</span><br></pre></td></tr></table></figure>
+
+<p style="background-color:blanchedalmond">**注意：** <i>Linux 信号机制基本上是从 Unix 系统中继承过来的。早期 Unix 系统中的信号机制比较简单和原始，后来在实践中暴露出一些问题，因此，把那些建立在早期机制上的信号叫做” 不可靠信号”，信号值小于 SIGRTMIN(Red hat 7.2 中，SIGRTMIN=32，SIGRTMAX=63) 的信号都是不可靠信号。这就是” 不可靠信号” 的来源。</i><b>它的主要问题是：进程每次处理信号后，就将对信号的响应设置为默认动作。在某些情况下，将导致对信号的错误处理；因此，用户如果不希望这样的操作，那么就要在信号处理函数结尾再一次调用 signal()，重新安装该信号。</b></p><br>
+## 3、**用 sleep 以及 usleep 实现定时执行任务**
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">char</span> msg[] = <span class="string">&quot;I received a msg.\n&quot;</span>;</span><br><span class="line"><span class="type">int</span> len;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_msg</span><span class="params">(<span class="type">int</span> signo)</span></span><br><span class="line">&#123;</span><br><span class="line">    write(STDERR_FILENO, msg, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">sigval</span> <span class="title">tsval</span>;</span></span><br><span class="line">    act.sa_handler = show_msg;</span><br><span class="line">    act.sa_flags = <span class="number">0</span>;</span><br><span class="line">    sigemptyset(&amp;act.sa_mask);</span><br><span class="line">    sigaction(<span class="number">50</span>, &amp;act, <span class="literal">NULL</span>);<span class="comment">//signal_value:50</span></span><br><span class="line">    len = <span class="built_in">strlen</span>(msg);</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        sleep(<span class="number">2</span>); <span class="comment">/*睡眠2秒*/</span></span><br><span class="line">        <span class="comment">/*向主进程发送信号，实际上是自己给自己发信号*/</span></span><br><span class="line">        sigqueue(getpid(), <span class="number">50</span>, tsval);<span class="comment">//触发信号：signal_value=50</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到了吧，这个要比上面的简单多了，而且你用秒表测一下，时间很准，指定 2 秒到了就给你输出一个字符串。所以，如果你只做一般的定时，到了时间去执行一个任务，这种方法是最简单的。</p>
+<h3 id="sigval"><a href="#sigval" class="headerlink" title="sigval"></a>sigval</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sigval&#123;</span><br><span class="line">  <span class="type">int</span>   sival_int;<span class="comment">//</span></span><br><span class="line">  <span class="type">void</span> *sival_pt<span class="comment">//待传递的参数地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>向指定进程发送指定信号的同时，携带数据。 <strong>但，如传地址，需注意，不同进程之间虚拟地址空间各自独立，将当前进程地址传递给另一进程没有实际意义。</strong></p>
+<h3 id="sigqueue"><a href="#sigqueue" class="headerlink" title="sigqueue"></a>sigqueue</h3><p>sigqueue(pid,signal,sigval)</p>
+<h3 id="sigaction"><a href="#sigaction" class="headerlink" title="sigaction"></a>sigaction</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sigaction</span><span class="params">(<span class="type">int</span> signum, <span class="type">const</span> <span class="keyword">struct</span> sigaction *act, <span class="keyword">struct</span> sigaction *oldact)</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> &#123;</span></span><br><span class="line">   <span class="type">void</span>     (*sa_handler)(<span class="type">int</span>);</span><br><span class="line">   <span class="type">void</span>     (*sa_sigaction)(<span class="type">int</span>, <span class="type">siginfo_t</span> *, <span class="type">void</span> *);<span class="comment">/////</span></span><br><span class="line">   <span class="type">sigset_t</span>   sa_mask;</span><br><span class="line">   <span class="type">int</span>       sa_flags;</span><br><span class="line">   <span class="type">void</span>     (*sa_restorer)(<span class="type">void</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>当注册信号捕捉函数，希望获取更多信号相关信息，不应使用sa_handler而应该使用sa_sigaction。但此时的sa_flags必须指定为SA_SIGINFO。siginfo_t是一个成员十分丰富的结构体类型，可以携带各种与信号相关的数据。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">siginfo_t</span> &#123;</span><br><span class="line">     <span class="type">int</span>      si_signo;     <span class="comment">/* Signal number */</span></span><br><span class="line">     <span class="type">int</span>      si_errno;     <span class="comment">/* An errno value */</span></span><br><span class="line">     <span class="type">int</span>      si_code;      <span class="comment">/* Signal code */</span></span><br><span class="line">     <span class="type">int</span>      si_trapno;    <span class="comment">/* Trap number that caused</span></span><br><span class="line"><span class="comment">                               hardware-generated signal</span></span><br><span class="line"><span class="comment">                               (unused on most architectures) */</span></span><br><span class="line">     <span class="type">pid_t</span>    si_pid;       <span class="comment">/* Sending process ID */</span></span><br><span class="line">     <span class="type">uid_t</span>    si_uid;       <span class="comment">/* Real user ID of sending process */</span></span><br><span class="line">     <span class="type">int</span>      si_status;    <span class="comment">/* Exit value or signal */</span></span><br><span class="line">     <span class="type">clock_t</span>  si_utime;     <span class="comment">/* User time consumed */</span></span><br><span class="line">     <span class="type">clock_t</span>  si_stime;     <span class="comment">/* System time consumed */</span></span><br><span class="line">     <span class="type">sigval_t</span> si_value;     <span class="comment">/* Signal value */</span>其他Unix版本<span class="comment">/////////传递的参数-sigval</span></span><br><span class="line">     <span class="type">int</span>      si_int;       <span class="comment">/* POSIX.1b signal */</span>posix</span><br><span class="line">     <span class="type">void</span>    *si_ptr;       <span class="comment">/* POSIX.1b signal */</span>posix</span><br><span class="line">     <span class="type">int</span>      si_overrun;   <span class="comment">/* Timer overrun count;</span></span><br><span class="line"><span class="comment">                               POSIX.1b timers */</span></span><br><span class="line">     <span class="type">int</span>      si_timerid;   <span class="comment">/* Timer ID; POSIX.1b timers */</span></span><br><span class="line">     <span class="type">void</span>    *si_addr;      <span class="comment">/* Memory location which caused fault */</span></span><br><span class="line">     <span class="type">long</span>     si_band;      <span class="comment">/* Band event (was int in</span></span><br><span class="line"><span class="comment">                               glibc 2.3.2 and earlier) */</span></span><br><span class="line">     <span class="type">int</span>      si_fd;        <span class="comment">/* File descriptor */</span></span><br><span class="line">     <span class="type">short</span>    si_addr_lsb;  <span class="comment">/* Least significant bit of address</span></span><br><span class="line"><span class="comment">                               (since Linux 2.6.32) */</span></span><br><span class="line">     <span class="type">void</span>    *si_call_addr; <span class="comment">/* Address of system call instruction</span></span><br><span class="line"><span class="comment">                               (since Linux 3.5) */</span></span><br><span class="line">     <span class="type">int</span>      si_syscall;   <span class="comment">/* Number of attempted system call</span></span><br><span class="line"><span class="comment">                               (since Linux 3.5) */</span></span><br><span class="line">     <span class="type">unsigned</span> <span class="type">int</span> si_arch;  <span class="comment">/* Architecture of attempted system call</span></span><br><span class="line"><span class="comment">                               (since Linux 3.5) */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、通过自己计算时间差的方法来定时"><a href="#4、通过自己计算时间差的方法来定时" class="headerlink" title="4、通过自己计算时间差的方法来定时"></a>4、通过自己计算时间差的方法来定时</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">char</span> msg[] = <span class="string">&quot;I received a msg.\n&quot;</span>;</span><br><span class="line"><span class="type">int</span> len;</span><br><span class="line"><span class="type">static</span> <span class="type">time_t</span> lasttime;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_msg</span><span class="params">(<span class="type">int</span> signo)</span></span><br><span class="line">&#123;</span><br><span class="line">    write(STDERR_FILENO, msg, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">sigval</span> <span class="title">tsval</span>;</span></span><br><span class="line">    act.sa_handler = show_msg;</span><br><span class="line">    act.sa_flags = <span class="number">0</span>;</span><br><span class="line">    sigemptyset(&amp;act.sa_mask);</span><br><span class="line">    sigaction(<span class="number">50</span>, &amp;act, <span class="literal">NULL</span>);</span><br><span class="line">    len = <span class="built_in">strlen</span>(msg);</span><br><span class="line">    time(&amp;lasttime);</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">time_t</span> nowtime;</span><br><span class="line">        <span class="comment">/*获取当前时间*/</span></span><br><span class="line">        time(&amp;nowtime);</span><br><span class="line">        <span class="comment">/*和上一次的时间做比较，如果大于等于2秒，则立刻发送信号*/</span></span><br><span class="line">        <span class="keyword">if</span> (nowtime - lasttime &gt;= <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/*向主进程发送信号，实际上是自己给自己发信号*/</span></span><br><span class="line">            sigqueue(getpid(), <span class="number">50</span>, tsval);</span><br><span class="line">            lasttime = nowtime;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个和上面不同之处在于，是自己手工计算时间差的，如果你想更精确的计算时间差，你可以把 time 函数换成 gettimeofday，这个可以精确到微妙。  ok…</p>
+<h2 id="5、使用-select-来提供精确定时和休眠"><a href="#5、使用-select-来提供精确定时和休眠" class="headerlink" title="5、使用 select 来提供精确定时和休眠"></a>5、使用 select 来提供精确定时和休眠</h2><!--非阻塞、阻塞操作监听文件描述符集or获取可读写状态 -->
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, <span class="keyword">struct</span> timeval *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>params：</strong>   </p>
+<ul>
+<li>n 指监视的文件描述符范围，通常设为所要 select 的 fd＋1；        </li>
+<li>readfds，writefds 和 exceptfds 分别是读，写和异常文件描述符集；     </li>
+<li>timeout 为超时时间。</li>
+</ul>
+<p>可能用到的关于文件描述符集操作的宏有：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FD_CLR(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>);   <span class="comment">// 清除fd</span></span><br><span class="line">FD_ISSET(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>); <span class="comment">// 测试fd是否设置</span></span><br><span class="line">FD_SET(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>);   <span class="comment">//设置fd</span></span><br><span class="line">FD_ZERO(fd_set *<span class="built_in">set</span>);          <span class="comment">//清空描述符集</span></span><br></pre></td></tr></table></figure>
+
+<p>我们此时用不到这些宏，因为我们并不关心文件描述符的状态，我们关心的是 select 超时。所以我们需要把 readfds，writefds 和 exceptfds 都设为 NULL，只指定 timeout 时间就行了。至于 n 我们可以不关心，所以你可以把它设为任何非负值。实现代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">int</span> <span class="title function_">msSleep</span><span class="params">(<span class="type">long</span> ms)</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">    tv.tv_sec = <span class="number">0</span>;</span><br><span class="line">    tv.tv_usec = ms;</span><br><span class="line">    <span class="keyword">return</span> select(<span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;tv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>怎么样，是不是很简单？ <code>setitimer</code> 和 <code>select</code> 都能实现进程的精确休眠，这里给出了一个简单的基于 <code>select</code> 的实现。我不推荐使用 <code>setitimer</code>，因为 Linux 系统提供的 <code>timer</code> 有限 <strong>（每个进程至多能设 3 个不同类型的 timer）</strong> ，而且 <code>setitimer</code> 实现起来没有 <code>select</code> 简单。   (but select 用作定时器浪费初衷… …)</p>
+<h2 id="6、高精度硬件中断定时器-hrtimer"><a href="#6、高精度硬件中断定时器-hrtimer" class="headerlink" title="6、高精度硬件中断定时器 hrtimer"></a>6、高精度硬件中断定时器 hrtimer</h2><p>需要在 kernel 中打开 “high resolution Timer support”，驱动程序中 hrtimer 的初始化如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hrtimer_init(&amp;m_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);</span><br><span class="line">m_timer.function = vibrator_timer_func;</span><br><span class="line">hrtimer_start(&amp;m_timer, ktime_set(<span class="number">0</span>, <span class="number">62500</span>), HRTIMER_MODE_REL_PINNED);</span><br></pre></td></tr></table></figure>
+
+<p>定时函数 vibrator_timer_func 如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">enum</span> hrtimer_restart <span class="title function_">vibrator_timer_func</span><span class="params">(<span class="keyword">struct</span> hrtimer *timer)</span></span><br><span class="line">&#123;</span><br><span class="line">  gpio_set_value(gpio_test, <span class="number">1</span>);</span><br><span class="line">  gpio_set_value(gpio_test, <span class="number">0</span>);</span><br><span class="line">  hrtimer_forward_now(&amp;m_timer,ktime_set(<span class="number">0</span>, <span class="number">62500</span>));</span><br><span class="line">  <span class="keyword">return</span> HRTIMER_RESTART;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>???????????????????????????????????????????????<br>其中 gpio_test 为输出引脚，为了方便输出查看。但是用示波器查看引脚波形时，发现虽然设定的周期为 62.5us，但是输出总是为 72us 左右，而且偶尔会有两个波形靠的很近（也就是说周期突然变为 10us 以下）。我将周期设到 40us 的话，就会出现 72us 和 10us 经常交替出现，无法实现精确的 40us 的波形，如果设置到 100us 时，则波形就是 100us 了，而且貌似没有看到有 10us 以下的周期出现。</p>
+<h2 id="7、高精度定时器-posix-timer"><a href="#7、高精度定时器-posix-timer" class="headerlink" title="7、高精度定时器 posix_timer"></a>7、高精度定时器 posix_timer</h2><p>最强大的定时器接口来自 POSIX 时钟系列，其创建、初始化以及删除一个定时器的行动被分为三个不同的函数：<code>timer_create()</code>(创建定时器)、<code>timer_settime()</code>(初始化定时器) 以及 <code>timer_delete()</code>(销毁它)。</p>
+<h3 id="创建一个定时器"><a href="#创建一个定时器" class="headerlink" title="创建一个定时器"></a>创建一个定时器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">timer_create</span><span class="params">(<span class="type">clockid_t</span> clock_id, <span class="keyword">struct</span> sigevent *evp, <span class="type">timer_t</span> *timerid)</span></span><br></pre></td></tr></table></figure>
+
+<p>进程可以通过调用 <code>timer_create()</code> 创建特定的定时器，定时器是每个进程自己的，不是在 fork 时继承的。<code>clock_id</code> 说明定时器是基于哪个时钟的，*timerid 装载的是被创建的定时器的 ID。该函数创建了定时器，并将他的 ID 放入 timerid 指向的位置中。参数 evp 指定了定时器到期要产生的异步通知。<br>如果 evp 为 NULL，那么定时器到期会产生默认的信号，对 <code>CLOCK_REALTIMER</code>来说，默认信号就是 SIGALRM。如果要产生除默认信号之外的其它信号，程序必须将 <code>evp-&gt;sigev_signo</code>设置为期望的信号码。struct sigevent 结构中的成员 <code>evp-&gt;sigev_notify</code>说明了定时器到期时应该采取的行动。通常，这个成员的值为<code>SIGEV_SIGNAL</code>，这个值说明在定时器到期时，会产生一个信号。程序可以将成员 <code>evp-&gt;sigev_notify</code>设为<code>SIGEV_NONE</code>来防止定时器到期时产生信号。</p>
+<p>如果几个定时器产生了同一个信号，处理程序可以用 evp-&gt;sigev_value 来区分是哪个定时器产生了信号。要实现这种功能，程序必须在为信号安装处理程序时，使用 struct sigaction 的成员 sa_flags 中的标志符 SA_SIGINFO。</p>
+<p>clock_id 取值为以下：<br>CLOCK_REALTIME :Systemwide realtime clock.<br>CLOCK_MONOTONIC:Represents monotonic time. Cannot be set.<br>CLOCK_PROCESS_CPUTIME_ID :High resolution per-process timer.<br>CLOCK_THREAD_CPUTIME_ID :Thread-specific timer.<br>CLOCK_REALTIME_HR :High resolution version of CLOCK_REALTIME.<br>CLOCK_MONOTONIC_HR :High resolution version of CLOCK_MONOTONIC.   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigevent</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="type">int</span> sigev_notify; <span class="comment">//notification type</span></span><br><span class="line"><span class="type">int</span> sigev_signo; <span class="comment">//signal number</span></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">sigval</span>   <span class="title">sigev_value</span>;</span> <span class="comment">//signal value</span></span><br><span class="line"><span class="type">void</span> (*sigev_notify_function)(<span class="keyword">union</span> sigval);</span><br><span class="line"><span class="type">pthread_attr_t</span> *sigev_notify_attributes;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">sigval</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="type">int</span> sival_int; <span class="comment">//integer value</span></span><br><span class="line"><span class="type">void</span> *sival_ptr; <span class="comment">//pointer value</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过将 evp-&gt;sigev_notify 设定为如下值来定制定时器到期后的行为：<br>SIGEV_NONE：什么都不做，只提供通过 timer_gettime 和 timer_getoverrun 查询超时信息。<br>SIGEV_SIGNAL: 当定时器到期，内核会将 sigev_signo 所指定的信号传送给进程。在信号处理程序中，si_value 会被设定会 sigev_value。<br>SIGEV_THREAD: 当定时器到期，内核会 (在此进程内) 以 sigev_notification_attributes 为线程属性创建一个线程，并且让它执行 sigev_notify_function，传入 sigev_value 作为为一个参数。   </p>
+<h3 id="启动一个定时器"><a href="#启动一个定时器" class="headerlink" title="启动一个定时器"></a>启动一个定时器</h3><p>timer_create() 所创建的定时器并未启动。要将它关联到一个到期时间以及启动时钟周期，可以使用 timer_settime()。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">timer_settime</span><span class="params">(<span class="type">timer_t</span> timerid, <span class="type">int</span> flags, <span class="type">const</span> <span class="keyword">struct</span> itimerspec *value, <span class="keyword">struct</span> itimerspect *ovalue)</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">itimespec</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">it_interval</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">it_value</span>;</span>   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如同 settimer()，it_value 用于指定当前的定时器到期时间。当定时器到期，it_value 的值会被更新成 it_interval 的值。如果 it_interval 的值为 0，则定时器不是一个时间间隔定时器，一旦 it_value 到期就会回到未启动状态。timespec 的结构提供了纳秒级分辨率：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span>&#123;</span></span><br><span class="line">    <span class="type">time_t</span> tv_sec;</span><br><span class="line">    <span class="type">long</span> tv_nsec;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果 flags 的值为 TIMER_ABSTIME，则 value 所指定的时间值会被解读成绝对值 (此值的默认的解读方式为相对于当前的时间)。这个经修改的行为可避免取得当前时间、计算“该时间” 与“所期望的未来时间”的相对差额以及启动定时器期间造成竞争条件。<br>如果 ovalue 的值不是 NULL，则之前的定时器到期时间会被存入其所提供的 itimerspec。如果定时器之前处在未启动状态，则此结构的成员全都会被设定成 0。</p>
+<h3 id="获得一个活动定时器的剩余时间"><a href="#获得一个活动定时器的剩余时间" class="headerlink" title="获得一个活动定时器的剩余时间"></a>获得一个活动定时器的剩余时间</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">timer_gettime</span><span class="params">(<span class="type">timer_t</span> timerid,<span class="keyword">struct</span> itimerspec *value)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="取得一个定时器的超限运行次数"><a href="#取得一个定时器的超限运行次数" class="headerlink" title="取得一个定时器的超限运行次数"></a>取得一个定时器的超限运行次数</h3><p>有可能一个定时器到期了，而同一定时器上一次到期时产生的信号还处于挂起状态。在这种情况下，其中的一个信号可能会丢失。这就是定时器超限。程序可以通过调用 timer_getoverrun 来确定一个特定的定时器出现这种超限的次数。定时器超限只能发生在同一个定时器产生的信号上。由多个定时器，甚至是那些使用相同的时钟和信号的定时器，所产生的信号都会排队而不会丢失。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">timer_getoverrun</span><span class="params">(<span class="type">timer_t</span> timerid)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>执行成功时，timer_getoverrun()会返回定时器初次到期与通知进程 (例如通过信号) 定时器已到期之间额外发生的定时器到期次数。举例来说，在我们之前的例子中，一个 1ms 的定时器运行了 10ms，则此调用会返回 9。如果超限运行的次数等于或大于 DELAYTIMER_MAX，则此调用会返回 DELAYTIMER_MAX。<br>执行失败时，此函数会返回 - 1 并将 errno 设定会 EINVAL，这个唯一的错误情况代表 timerid 指定了无效的定时器。</p>
+<h3 id="删除一个定时器"><a href="#删除一个定时器" class="headerlink" title="删除一个定时器"></a>删除一个定时器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">timer_delete</span> <span class="params">(<span class="type">timer_t</span> timerid)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>一次成功的 timer_delete() 调用会销毁关联到 timerid 的定时器并且返回 0。执行失败时，此调用会返回 - 1 并将 errno 设定会 EINVAL，这个唯一的错误情况代表 timerid 不是一个有效的定时器。</p>
+<p>例 1：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>  <span class="title function_">handle</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="type">time_t</span> t;</span><br><span class="line"> <span class="type">char</span> p[<span class="number">32</span>];</span><br><span class="line"> time(&amp;t);</span><br><span class="line"> strftime(p, <span class="keyword">sizeof</span>(p), <span class="string">&quot;%T&quot;</span>, localtime(&amp;t));</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;time is %s\n&quot;</span>, p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">sigevent</span> <span class="title">evp</span>;</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">itimerspec</span> <span class="title">ts</span>;</span></span><br><span class="line"> <span class="type">timer_t</span> timer;</span><br><span class="line"> <span class="type">int</span> ret;</span><br><span class="line"> evp.sigev_value.sival_ptr = &amp;timer;</span><br><span class="line"> evp.sigev_notify = SIGEV_SIGNAL;</span><br><span class="line"> evp.sigev_signo = SIGUSR1;</span><br><span class="line"> signal(SIGUSR1, handle);</span><br><span class="line"> ret = timer_create(CLOCK_REALTIME, &amp;evp, &amp;timer);</span><br><span class="line"> <span class="keyword">if</span>( ret )</span><br><span class="line">  perror(<span class="string">&quot;timer_create&quot;</span>);</span><br><span class="line"> ts.it_interval.tv_sec = <span class="number">1</span>;</span><br><span class="line"> ts.it_interval.tv_nsec = <span class="number">0</span>;</span><br><span class="line"> ts.it_value.tv_sec = <span class="number">3</span>;</span><br><span class="line"> ts.it_value.tv_nsec = <span class="number">0</span>;</span><br><span class="line"> ret = timer_settime(timer, <span class="number">0</span>, &amp;ts, <span class="literal">NULL</span>);</span><br><span class="line"> <span class="keyword">if</span>( ret )</span><br><span class="line">  perror(<span class="string">&quot;timer_settime&quot;</span>);</span><br><span class="line"> <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例 2：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>  <span class="title function_">handle</span><span class="params">(<span class="keyword">union</span> sigval v)</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="type">time_t</span> t;</span><br><span class="line"> <span class="type">char</span> p[<span class="number">32</span>];</span><br><span class="line"> time(&amp;t);</span><br><span class="line"> strftime(p, <span class="keyword">sizeof</span>(p), <span class="string">&quot;%T&quot;</span>, localtime(&amp;t));</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;%s thread %lu, val = %d, signal captured.\n&quot;</span>, p, pthread_self(), v.sival_int);</span><br><span class="line"> <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">sigevent</span> <span class="title">evp</span>;</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">itimerspec</span> <span class="title">ts</span>;</span></span><br><span class="line"> <span class="type">timer_t</span> timer;</span><br><span class="line"> <span class="type">int</span> ret;</span><br><span class="line"> <span class="built_in">memset</span>   (&amp;evp,   <span class="number">0</span>,   <span class="keyword">sizeof</span>   (evp));</span><br><span class="line"> evp.sigev_value.sival_ptr = &amp;timer;</span><br><span class="line"> evp.sigev_notify = SIGEV_THREAD;</span><br><span class="line"> evp.sigev_notify_function = handle;</span><br><span class="line"> evp.sigev_value.sival_int = <span class="number">3</span>;   <span class="comment">//作为handle()的参数</span></span><br><span class="line"> ret = timer_create(CLOCK_REALTIME, &amp;evp, &amp;timer);</span><br><span class="line"> <span class="keyword">if</span>( ret)</span><br><span class="line">  perror(<span class="string">&quot;timer_create&quot;</span>);</span><br><span class="line"> ts.it_interval.tv_sec = <span class="number">1</span>;</span><br><span class="line"> ts.it_interval.tv_nsec = <span class="number">0</span>;</span><br><span class="line"> ts.it_value.tv_sec = <span class="number">3</span>;</span><br><span class="line"> ts.it_value.tv_nsec = <span class="number">0</span>;</span><br><span class="line"> ret = timer_settime(timer, TIMER_ABSTIME, &amp;ts, <span class="literal">NULL</span>);</span><br><span class="line"> <span class="keyword">if</span>( ret )</span><br><span class="line">  perror(<span class="string">&quot;timer_settime&quot;</span>);</span><br><span class="line"> <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例 3：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//#define TEST1 1</span></span><br><span class="line"><span class="comment">//#define TEST2 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TEST3 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span><span class="params">(* signal_handler)</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">doFork</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="type">pid_t</span> pid=fork();</span><br><span class="line">  <span class="keyword">if</span>(pid==<span class="number">-1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;fork() failed! error message:%s\n&quot;</span>,strerror(errno));</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> pid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="type">pid_t</span> pid)</span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;pid: %d\t&quot;</span>,pid);</span><br><span class="line">  <span class="keyword">if</span>(pid&gt;<span class="number">0</span>)</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;father is runing !\n&quot;</span>);</span><br><span class="line">      sleep(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(pid==<span class="number">0</span>)</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;i am child!\n&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;game over!\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">myFunc</span><span class="params">(<span class="type">int</span> param)</span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%s:%d\n&quot;</span>,<span class="string">&quot;it is my func&quot;</span>,param);<span class="comment">//the param value is the value of signal</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> arg, <span class="type">char</span> \*args[])</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> TEST1</span></span><br><span class="line">    pid=doFork();</span><br><span class="line">    <span class="comment">//进程 Terminate 或 Stop 的时候，SIGCHLD 会发送给它的父进程。缺省情况下该 Signal 会被忽略</span></span><br><span class="line">    <span class="comment">//注册信号，屏蔽SIGCHLD信号，子进程退出，将不会给父进程发送信号，因此也不会出现僵尸进程</span></span><br><span class="line">    signal(SIGCHLD,SIG_IGN);<span class="comment">//SIG_IGN:忽略创建子进程信号</span></span><br><span class="line">    test(pid);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> TEST2</span></span><br><span class="line">    signal(SIGCHLD,SIG_DFL);<span class="comment">//恢复默认处理</span></span><br><span class="line">    pid=doFork();</span><br><span class="line">    test(pid);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> TEST3</span></span><br><span class="line">    signal_handler m_handler=myFunc;</span><br><span class="line">    signal(SIGCHLD,m_handler);<span class="comment">//自定义信号处理函数</span></span><br><span class="line">    pid=doFork();</span><br><span class="line">    test(pid);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/c/AllTimer.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"219424452f14d5ee61d2fc420623212f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

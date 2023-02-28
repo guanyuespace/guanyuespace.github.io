@@ -1,0 +1,17 @@
+<hr>
+<h2 id="title-Cent-OS-7-wifi-date-2019-03-20-10-44-20tag-Linux-Wifi"><a href="#title-Cent-OS-7-wifi-date-2019-03-20-10-44-20tag-Linux-Wifi" class="headerlink" title="title: Cent OS 7(wifi)date: 2019-03-20 10:44:20tag:- Linux- Wifi"></a>title: Cent OS 7(wifi)<br>date: 2019-03-20 10:44:20<br>tag:<br>- Linux<br>- Wifi</h2><h1 id="Cent-OS-7-wifi"><a href="#Cent-OS-7-wifi" class="headerlink" title="Cent OS 7(wifi)"></a>Cent OS 7(wifi)</h1><ul>
+<li>参考：<br><a href="https://askubuntu.com/questions/1067286/still-no-wifi-adapter-for-realtek-rtl8822be-found-in-18-04">still-no-wifi-adapter-for-realtek-rtl8822be-found-in-18-04</a><br><a href="https://www.jianshu.com/p/e513b515149f">联想拯救者 + ubuntu16.04 + WIFI设置</a><br><a href="https://www.jianshu.com/p/d7731e86379b">无线网卡无法使用的问题</a><br><a href="https://blog.csdn.net/Nurke/article/details/76465968">联想笔记本安装ubuntu，无线网卡被禁用的问题及解决方法</a></li>
+</ul>
+<!-- more -->
+
+<p>I was having the same issue on a Lenovo Legion Y530 laptop, which has a Realtek rtl8822be wireless network card, with 18.10 Ubuntu Mate. What I did to fix it was, plugging it into the network via ethernet, I ran sudo apt-get update and sudo apt-get upgrage then, using your favorite text editor edit blacklist.conf</p>
+<pre><code class="shell">sudo gedit /etc/modprobe.d/blacklist.conf
+</code></pre>
+<p>I added the line:</p>
+<pre><code class="shell">blacklist ideapad_laptop
+</code></pre>
+<p>then saved and closed the file, and rebooted.</p>
+<p>if you didnt want to make this change, without testing it, you could do this:</p>
+<pre><code class="shell">sudo rmmod ideapad_laptop
+</code></pre>
+<p>doing this, gave me instant results. wireless networks appeared, I was able to connect, and life was great again. I have no idea if your setup will have an ideapad module, but you might try it. Alternatively, you might have an HP module that needs blocking to enable this device.   </p>

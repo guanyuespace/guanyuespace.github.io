@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="微信支付 个人无法开通微信支付    微信支付WeChat Open Platform【主要API列表】        微信支付 申请开通微信支付参数 规范 参数规定 安全规范 签名算法 Example   生成随机数算法 API证书 商户回调API安全   业务流程 业务流程时序图   开发步骤 openid: code2session() 获取（登录api–getSession） 调起数据签名">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小程序-微信支付API">
+<meta property="og:url" content="https://xuewenm.github.io/interest/WeChatPay.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="微信支付 个人无法开通微信支付    微信支付WeChat Open Platform【主要API列表】        微信支付 申请开通微信支付参数 规范 参数规定 安全规范 签名算法 Example   生成随机数算法 API证书 商户回调API安全   业务流程 业务流程时序图   开发步骤 openid: code2session() 获取（登录api–getSession） 调起数据签名">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xuewenm.github.io/interest/wechat_pay_cer.jpg">
+<meta property="og:image" content="https://pay.weixin.qq.com/wiki/doc/api/img/wxa-7-2.jpg">
+<meta property="article:published_time" content="2019-04-09T05:36:30.000Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.527Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xuewenm.github.io/interest/wechat_pay_cer.jpg">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/interest/WeChatPay">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/interest/WeChatPay.html","path":"interest/WeChatPay.html","title":"小程序-微信支付API"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>小程序-微信支付API | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98"><span class="nav-number">1.</span> <span class="nav-text">微信支付</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%BC%80%E9%80%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">申请开通微信支付参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%84%E8%8C%83"><span class="nav-number">1.2.</span> <span class="nav-text">规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%A7%84%E5%AE%9A"><span class="nav-number">1.3.</span> <span class="nav-text">参数规定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83"><span class="nav-number">1.4.</span> <span class="nav-text">安全规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.1.</span> <span class="nav-text">签名算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.2.</span> <span class="nav-text">生成随机数算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API%E8%AF%81%E4%B9%A6"><span class="nav-number">1.4.3.</span> <span class="nav-text">API证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%86%E6%88%B7%E5%9B%9E%E8%B0%83API%E5%AE%89%E5%85%A8"><span class="nav-number">1.4.4.</span> <span class="nav-text">商户回调API安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">业务流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="nav-number">1.5.1.</span> <span class="nav-text">业务流程时序图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.6.</span> <span class="nav-text">开发步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#openid-code2session-%E8%8E%B7%E5%8F%96%EF%BC%88%E7%99%BB%E5%BD%95api%E2%80%93getSession%EF%BC%89"><span class="nav-number">1.6.1.</span> <span class="nav-text">openid: code2session() 获取（登录api–getSession）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%B5%B7%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D"><span class="nav-number">1.6.2.</span> <span class="nav-text">调起数据签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98API"><span class="nav-number">1.7.</span> <span class="nav-text">小程序调起支付API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D%E5%AD%97%E6%AE%B5%E5%88%97%E8%A1%A8"><span class="nav-number">1.7.1.</span> <span class="nav-text">小程序调起支付数据签名字段列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98"><span class="nav-number">1.7.2.</span> <span class="nav-text">发起支付</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">回调结果：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="nav-number">1.7.2.2.</span> <span class="nav-text">示例代码：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.8.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTPS%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">HTTPS服务器配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81SSL%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7"><span class="nav-number">2.1.</span> <span class="nav-text">一、SSL证书申请</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81HTTPS%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">二、HTTPS服务器配置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">小程序-微信支付API
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h1 id="微信支付"><a href="#微信支付" class="headerlink" title="微信支付"></a>微信支付</h1><blockquote>
+<p>个人无法开通微信支付   </p>
+<p><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/index.html">微信支付</a><br><a target="_blank" rel="noopener" href="https://open.weixin.qq.com/">WeChat Open Platform</a><br><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1">【主要API列表】</a>   </p>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98">微信支付</a><ul>
+<li><a href="#%E7%94%B3%E8%AF%B7%E5%BC%80%E9%80%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%82%E6%95%B0">申请开通微信支付参数</a></li>
+<li><a href="#%E8%A7%84%E8%8C%83">规范</a></li>
+<li><a href="#%E5%8F%82%E6%95%B0%E8%A7%84%E5%AE%9Ahttpspayweixinqqcomwikidocapiwxawxa_apiphpchapter4_2"><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_2">参数规定</a></a></li>
+<li><a href="#%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83">安全规范</a><ul>
+<li><a href="#%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95">签名算法</a><ul>
+<li><a href="#example">Example</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%AE%97%E6%B3%95">生成随机数算法</a></li>
+<li><a href="#api%E8%AF%81%E4%B9%A6">API证书</a></li>
+<li><a href="#%E5%95%86%E6%88%B7%E5%9B%9E%E8%B0%83api%E5%AE%89%E5%85%A8">商户回调API安全</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B">业务流程</a><ul>
+<li><a href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E6%97%B6%E5%BA%8F%E5%9B%BE">业务流程时序图</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4">开发步骤</a><ul>
+<li><a href="#openid-code2session-%E8%8E%B7%E5%8F%96%E7%99%BB%E5%BD%95api--getsession">openid: code2session() 获取（登录api–getSession）</a></li>
+<li><a href="#%E8%B0%83%E8%B5%B7%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D">调起数据签名</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98api"> <strong>小程序调起支付API</strong> </a><ul>
+<li><a href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%B5%B7%E6%94%AF%E4%BB%98%E6%95%B0%E6%8D%AE%E7%AD%BE%E5%90%8D%E5%AD%97%E6%AE%B5%E5%88%97%E8%A1%A8"> <strong>小程序调起支付数据签名字段列表</strong> </a></li>
+<li><a href="#%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98"> <strong>发起支付</strong> </a><ul>
+<li><a href="#%E5%9B%9E%E8%B0%83%E7%BB%93%E6%9E%9C">回调结果：</a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81">示例代码：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">最佳实践</a></li>
+</ul>
+</li>
+<li><a href="#https%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE">HTTPS服务器配置</a><ul>
+<li><a href="#%E4%B8%80ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7">一、SSL证书申请</a></li>
+<li><a href="#%E4%BA%8Chttps%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE">二、HTTPS服务器配置</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h2 id="申请开通微信支付参数"><a href="#申请开通微信支付参数" class="headerlink" title="申请开通微信支付参数"></a>申请开通微信支付参数</h2><p>邮件（申请微信支付开通）中的账户参数与接口API参数对应关系见表：<br>账户参数说明</p>
+<p>|邮件中参数	|API参数名	|详细说明|<br>| — | — |<br>| APPID |	appid |	appid是微信小程序后台APP的唯一标识，在小程序后台申请小程序账号后，微信会自动分配对应的appid，用于标识该应用。可在小程序–&gt;设置–&gt;开发设置中查看。|<br>| 微信支付商户号	| mch_id	|商户申请微信支付后，由微信支付分配的商户收款账号。|<br>| API密钥	| key	| <strong>交易过程生成签名的密钥，仅保留在商户系统和微信支付后台，不会在网络中传播。商户妥善保管该Key，切勿在网络中传输，不能在其他客户端中存储，保证key不会被泄漏。商户可根据邮件提示登录微信商户平台进行设置。也可按一下路径设置：微信商户平台(pay.weixin.qq.com)–&gt;账户设置–&gt;API安全–&gt;密钥设置</strong> |<br>| Appsecret |	secret	| AppSecret是APPID对应的接口密码，用于获取接口调用凭证时使用。|</p>
+<h2 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h2><p>商户接入微信支付，调用API必须遵循以下规则：</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>desp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传输方式</td>
+<td>为保证交易安全性，采用HTTPS传输</td>
+</tr>
+<tr>
+<td>提交方式</td>
+<td>采用POST方法提交</td>
+</tr>
+<tr>
+<td>数据格式</td>
+<td>提交和返回数据都为XML格式，根节点名为xml</td>
+</tr>
+<tr>
+<td>字符编码</td>
+<td>统一采用UTF-8字符编码</td>
+</tr>
+<tr>
+<td>签名算法</td>
+<td>MD5，后续会兼容SHA1、SHA256、HMAC等。</td>
+</tr>
+<tr>
+<td>签名要求</td>
+<td>请求和接收数据均需要校验签名，详细方法请参考<a href>安全规范-签名算法</a></td>
+</tr>
+<tr>
+<td>证书要求</td>
+<td><strong>调用申请退款、撤销订单接口需要商户证书</strong></td>
+</tr>
+<tr>
+<td>判断逻辑</td>
+<td><strong>先判断协议字段返回，再判断业务返回，最后判断交易状态</strong></td>
+</tr>
+</tbody></table>
+<h2 id="参数规定"><a href="#参数规定" class="headerlink" title="参数规定"></a><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_2">参数规定</a></h2><h2 id="安全规范"><a href="#安全规范" class="headerlink" title="安全规范"></a>安全规范</h2><h3 id="签名算法"><a href="#签名算法" class="headerlink" title="签名算法"></a>签名算法</h3><p>签名生成的通用步骤如下：</p>
+<p>第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即<code>key1=value1&amp;key2=value2…</code>）拼接成字符串<code>stringA</code>。<br><strong>特别注意以下重要规则：</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">◆ 参数名ASCII码从小到大排序（字典序）；  </span><br><span class="line">◆ 如果参数的值为空不参与签名；   </span><br><span class="line">◆ 参数名区分大小写；   </span><br><span class="line">◆ 验证调用返回或微信主动通知签名时，传送的sign参数不参与签名，将生成的签名与该sign值作校验。   </span><br><span class="line">◆ 微信接口可能增加字段，验证签名时必须支持增加的扩展字段   </span><br></pre></td></tr></table></figure>
+<p>第二步，在<code>stringA</code>最后拼接上<code>key</code>得到<code>stringSignTemp</code>字符串，并对<code>stringSignTemp</code>进行<code>MD5</code>运算，再将得到的<code>字符串所有字符转换为大写</code>，得到<code>sign</code>值<code>signValue</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">◆ key设置路径：微信商户平台(pay.weixin.qq.com)--&gt;账户设置--&gt;API安全--&gt;密钥设置</span><br></pre></td></tr></table></figure>
+
+<p>即：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stringA=&quot;param1=value1&amp;param2=value2...&quot;;</span><br><span class="line">stringSignTemp= stringA +&quot;&amp;key=&quot;+value(key);</span><br><span class="line">signValue=upperCase(MD5(stringSignTemp))</span><br></pre></td></tr></table></figure>
+
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>假设传送的参数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">appid：	wxd930ea5d5a258f4f</span><br><span class="line">mch_id：	10000100                        //商户id</span><br><span class="line">device_info：	1000                      //</span><br><span class="line">body：	test</span><br><span class="line">nonce_str：	ibuaiVcKdpRxkhJA            //随机数</span><br></pre></td></tr></table></figure>
+<p>第一步：对参数按照key&#x3D;value的格式，并按照参数名ASCII字典序排序如下：   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stringA=&quot;appid=wxd930ea5d5a258f4f&amp;body=test&amp;device_info=1000&amp;mch_id=10000100&amp;nonce_str=ibuaiVcKdpRxkhJA&quot;;</span><br></pre></td></tr></table></figure>
+<p>第二步：拼接API密钥：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stringSignTemp=stringA+&quot;&amp;key=192006250b4c09247ec02edce69f6a2d&quot; //注：key为商户平台设置的密钥key</span><br><span class="line">sign=MD5(stringSignTemp).toUpperCase()=&quot;9A0A8659F005D6984697E2CA0A9CF3B7&quot; //注：MD5签名方式</span><br><span class="line">//////////////////////新的签名方式：HMAC-SHA256签名方式</span><br><span class="line">sign=hash_hmac(&quot;sha256&quot;,stringSignTemp,key).toUpperCase()=&quot;6A9AE1657590FD6257D693A078E1C3E4BB6BA4DC30B23E0EE2496E54170DACD6&quot; //注：HMAC-SHA256签名方式</span><br></pre></td></tr></table></figure>
+<p>最终得到最终发送的数据：   </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appid</span>&gt;</span>wxd930ea5d5a258f4f<span class="tag">&lt;/<span class="name">appid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mch_id</span>&gt;</span>10000100<span class="tag">&lt;/<span class="name">mch_id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">device_info</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">device_info</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span>test<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">nonce_str</span>&gt;</span>ibuaiVcKdpRxkhJA<span class="tag">&lt;/<span class="name">nonce_str</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">sign</span>&gt;</span>9A0A8659F005D6984697E2CA0A9CF3B7<span class="tag">&lt;/<span class="name">sign</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成随机数算法"><a href="#生成随机数算法" class="headerlink" title="生成随机数算法"></a>生成随机数算法</h3><p>微信支付API接口协议中包含字段nonce_str，主要保证签名不可预测。我们推荐生成随机数算法如下：调用随机数函数生成，将得到的值转换为字符串。    </p>
+<h3 id="API证书"><a href="#API证书" class="headerlink" title="API证书"></a>API证书</h3><p>（1）获取API证书(SSL… 校验身份<a target="_blank" rel="noopener" href="http://kf.qq.com/faq/180824JvUZ3i180824YvMNJj.html">什么是api证书？如何升级？</a>)<br>微信支付接口中，涉及资金回滚的接口会使用到API证书，包括退款、撤销接口。商家在申请微信支付成功后，收到的相应邮件后，可以按照指引下载API证书，也可以按照以下路径下载：微信商户平台(pay.weixin.qq.com)–&gt;账户中心–&gt;账户设置–&gt;API安全 。证书文件说明如下：<br><img src="/interest/wechat_pay_cer.jpg" alt="证书文件">   </p>
+<p>（2）使用API证书</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">◆ apiclient_cert.p12是商户证书文件，除PHP外的开发均使用此证书文件。</span><br><span class="line">◆ 商户如果使用.NET环境开发，请确认Framework版本大于2.0，必须在操作系统上双击安装证书apiclient_cert.p12后才能被正常调用。</span><br><span class="line">◆ API证书调用或安装需要使用到密码，该密码的值为微信商户号（mch_id）</span><br></pre></td></tr></table></figure>
+<p>（3）API证书安全   </p>
+<ol>
+<li>证书文件不能放在web服务器虚拟目录，应放在有访问权限控制的目录中，防止被他人下载；</li>
+<li>建议将证书文件名改为复杂且不容易猜测的文件名；</li>
+<li>商户服务器要做好病毒和木马防护工作，不被非法侵入者窃取证书文件。</li>
+</ol>
+<h3 id="商户回调API安全"><a href="#商户回调API安全" class="headerlink" title="商户回调API安全"></a>商户回调API安全</h3><p>在普通的网络环境下，HTTP请求存在DNS劫持、运营商插入广告、数据被窃取，正常数据被修改等安全风险。商户回调接口使用HTTPS协议可以保证数据传输的安全性。所以微信支付建议商户提供给微信支付的各种回调采用HTTPS协议。请参考：HTTPS搭建指南。</p>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><h3 id="业务流程时序图"><a href="#业务流程时序图" class="headerlink" title="业务流程时序图"></a>业务流程时序图</h3><p>小程序支付的交互图如下：<br><img src="https://pay.weixin.qq.com/wiki/doc/api/img/wxa-7-2.jpg" alt="业务流程时序图" title="业务流程时序图"><br>商户系统和微信支付系统主要交互：<br>1、小程序内调用登录接口，获取到用户的openid,api参见公共api<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/api-login.html?t=20161122">【小程序登录API】</a><br>2、商户server调用支付统一下单，api参见公共api<a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1&index=1">【统一下单API】</a><br>3、商户server调用再次签名，api参见公共api<a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=3">【再次签名】</a><br>4、商户server接收支付通知，api参见公共api<a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_7">【支付结果通知API】</a><br>5、商户server查询支付结果，api参见公共api<a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_2">【查询订单API】</a>   </p>
+<h2 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h2><p>如果开发者已做过JSAPI或JSSDK调起微信支付，接入小程序支付非常相似，以下是三种接入方式的对比：</p>
+<p>| 对比栏目| JSAPI |	JSSDK|	小程序|<br>|— | —|<br>|统一下单|	都需要先获取到Openid，调用相同的API|||<br>|调起数据签名	|五个字段参与签名(区分大小写)：appId,nonceStr,package,signType,timeStamp |||<br>|调起支付页面协议	| HTTP或HTTPS	|HTTP或HTTPS|	HTTPS|<br>|支付目录	|有	|有	|无|<br>|授权域名	|有	|有	|无|<br>|回调函数	|有	|success回调	|complete、fail、success回调函数|</p>
+<p>程序访问商户服务都是通过HTTPS,开发部署的时候需要安装<a href>HTTPS服务器</a></p>
+<h3 id="openid-code2session-获取（登录api–getSession）"><a href="#openid-code2session-获取（登录api–getSession）" class="headerlink" title="openid: code2session() 获取（登录api–getSession）"></a>openid: code2session() 获取（登录api–getSession）</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">		<span class="attr">&quot;session_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;OpCABq/5O1T9MctGd/fq9Q==&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;openid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ofAqB4n1m4IKBnvrixY5qshNZrTg&quot;</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;header&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">		<span class="attr">&quot;Content-Type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;text/plain;charset=utf-8&quot;</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;statusCode&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;cookies&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;errMsg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;request:ok&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="调起数据签名"><a href="#调起数据签名" class="headerlink" title="调起数据签名"></a>调起数据签名</h3><p>详解<a href>小程序调起支付API-小程序调起支付数据签名字段列表</a><br>appid,nonceStr(随机数),package(…),signType(MD5&#x2F;HMAC-SHA256),timeStamp   </p>
+<h2 id="小程序调起支付API"><a href="#小程序调起支付API" class="headerlink" title="小程序调起支付API"></a><strong>小程序调起支付API</strong></h2><h3 id="小程序调起支付数据签名字段列表"><a href="#小程序调起支付数据签名字段列表" class="headerlink" title="小程序调起支付数据签名字段列表"></a><strong>小程序调起支付数据签名字段列表</strong></h3><p>|字段名	|变量名	|必填	|类型	|示例值	|描述|<br>|—|—|<br>|小程序ID	|appId	|是	|String	|wxd678efh567hg6787	|微信分配的小程序ID|<br>|时间戳	|timeStamp	|是	|String	|1490840662	|时间戳从1970年1月1日00:00:00至今的<strong>秒数</strong>,即当前的时间|<br>|随机串	|nonceStr	|是	|String	|5K8264ILTKCH16CQ2502SI8ZNMTM67VS	|随机字符串，<strong>不长于32位</strong>。推荐随机数生成算法|<br>|数据包	|package	|是	|String|	prepay_id&#x3D;wx2017033010242291fcfe0db70013231072	|统一下单接口返回的prepay_id 参数值，提交格式如：prepay_id&#x3D;wx2017033010242291fcfe0db70013231072|<br>|签名方式	|signType	|是	|String	|MD5	|签名类型，默认为MD5，支持HMAC-SHA256和MD5。<strong>注意此处需与统一下单的签名类型一致</strong> |<br>举例如下:   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">paySign = MD5(appId=wxd678efh567hg6787&amp;nonceStr=5K8264ILTKCH16CQ2502SI8ZNMTM67VS</span><br><span class="line">              &amp;package=prepay_id=wx2017033010242291fcfe0db70013231072</span><br><span class="line">              &amp;signType=MD5&amp;timeStamp=1490840662&amp;key=qazwsxedcrfvtgbyhnujmikolp111111) = 22D9B4E54AB1950F51E0649E8810ACD6</span><br></pre></td></tr></table></figure>
+<h3 id="发起支付"><a href="#发起支付" class="headerlink" title="发起支付"></a><strong>发起支付</strong></h3><p>调用wx.requestPayment(<code>OBJECT</code>)发起微信支付<br><code>Object</code>参数说明：</p>
+<p>| 参数	| 类型	| 必填	| 说明|<br>|—|—|<br>| timeStamp	| String	| 是	| 时间戳从1970年1月1日00:00:00至今的秒数,即当前的时间 |<br>| nonceStr	| String	| 是	| 随机字符串，长度为32个字符以下。 |<br>| package	| String	|是	| 统一下单接口返回的 prepay_id 参数值，提交格式如：prepay_id&#x3D;* |<br>| signType	| String	| 是	| 签名类型，默认为MD5，支持HMAC-SHA256和MD5。注意此处需与统一下单的签名类型一致 |<br>| paySign	| String	| 是	| 签名,<strong>ok 上一步结果</strong> |<br>| success	| Function	| 否	| 接口调用成功的回调函数 |<br>| fail	| Function	| 否	| 接口调用失败的回调函数 |<br>| complete	| Function	| 否	| 接口调用结束的回调函数（调用成功、失败都会执行） |</p>
+<h4 id="回调结果："><a href="#回调结果：" class="headerlink" title="回调结果："></a>回调结果：</h4><p>| 回调类型	| errMsg	| 说明 |<br>|—-|—-|<br>| success	| requestPayment:ok	| 调用支付成功 |<br>| fail	| requestPayment:fail cancel	 | 用户取消支付 |<br>| fail	 | requestPayment:fail (detail message)	 | 调用支付失败，其中 detail message 为后台返回的详细失败原因 |</p>
+<h4 id="示例代码："><a href="#示例代码：" class="headerlink" title="示例代码："></a>示例代码：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wx.<span class="title function_">requestPayment</span>(</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="string">&#x27;timeStamp&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;nonceStr&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;package&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;signType&#x27;</span>: <span class="string">&#x27;MD5&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;paySign&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;success&#x27;</span>:<span class="keyword">function</span>(<span class="params">res</span>)&#123;&#125;,</span><br><span class="line">  <span class="string">&#x27;fail&#x27;</span>:<span class="keyword">function</span>(<span class="params">res</span>)&#123;&#125;,</span><br><span class="line">  <span class="string">&#x27;complete&#x27;</span>:<span class="keyword">function</span>(<span class="params">res</span>)&#123;&#125;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=23_2&index=1">网络设置指引</a><br><a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=23_3&index=2">最佳安全实践</a>   </p>
+<hr>
+<h1 id="HTTPS服务器配置"><a href="#HTTPS服务器配置" class="headerlink" title="HTTPS服务器配置"></a>HTTPS服务器配置</h1><h2 id="一、SSL证书申请"><a href="#一、SSL证书申请" class="headerlink" title="一、SSL证书申请"></a>一、SSL证书申请</h2><ol>
+<li><p>确认需要申请证书的域名</p>
+</li>
+<li><p>生成私钥和csr文件<br>在linux机器上执行以下命令生成私钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">openssl genrsa -out server.key 2048</span></span><br></pre></td></tr></table></figure>
+<p>在linux机器上执行以下命令生成csr文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">openssl req -new -key server.key -out certreq.csr</span></span><br></pre></td></tr></table></figure>
+<p>以下黑色标识文字仅供参考，请根据商户自己实际情况进行填写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Country Name： CN                      //您所在国家的ISO标准代号，中国为CN</span><br><span class="line">State or Province Name：guandong       //您单位所在地省/自治区/直辖市</span><br><span class="line">Locality Name：shenzhen                 //您单位所在地的市/县/区</span><br><span class="line">Organization Name： Tencent Technology (Shenzhen) Company Limited                 //您单位/机构/企业合法的名称</span><br><span class="line">Organizational Unit Name： R&amp;D         //部门名称</span><br><span class="line">Common Name： www.example.com     //通用名，例如：www.itrus.com.cn。此项必须与您访问提供SSL服务的服务器时所应用的域名完全匹配。</span><br><span class="line">Email Address：                          //您的邮件地址，不必输入，直接回车跳过</span><br><span class="line">&quot;extra&quot;attributes                        //以下信息不必输入，回车跳过直到命令执行完毕。</span><br></pre></td></tr></table></figure>
+<p>执行上面的命令后，在当前目录下即可生成私钥文件server.key和certreq.csr csr文件    </p>
+</li>
+<li><p>将生成的csr文件提交给第三方证书颁发机构申请对应域名的服务器证书，同时将私钥文件保存好，以免丢失。</p>
+</li>
+<li><p>证书申请后，证书颁发机构会提供服务器证书内容和两张中级CA证书，请按证书颁发机器说明生成服务器证书，此处假设服务器证书文件名称为server.pem</p>
+</li>
+<li><p>将生成的私钥文件server.key和服务器证书server.pem拷贝至服务器指定的目录即可进行HTTPS服务器配置</p>
+</li>
+</ol>
+<h2 id="二、HTTPS服务器配置"><a href="#二、HTTPS服务器配置" class="headerlink" title="二、HTTPS服务器配置"></a>二、HTTPS服务器配置</h2><ol>
+<li>Nginx配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen       443;   #指定ssl监听端口</span><br><span class="line">server_name  www.example.com;</span><br><span class="line">ssl on;    #开启ssl支持</span><br><span class="line">ssl_certificate      /etc/nginx/server.pem;    #指定服务器证书路径</span><br><span class="line">ssl_certificate_key  /etc/nginx/server.key;    #指定私钥证书路径</span><br><span class="line">ssl_session_timeout  5m;</span><br><span class="line">ssl_protocols TLSv1 TLSv1.1 TLSv1.2;     #指定SSL服务器端支持的协议版本</span><br><span class="line">ssl_ciphers  ALL：!ADH：!EXPORT56：RC4+RSA：+HIGH：+MEDIUM：+LOW：+SSLv2：+EXP;    #指定加密算法</span><br><span class="line">ssl_prefer_server_ciphers   on;    #在使用SSLv3和TLS协议时指定服务器的加密算法要优先于客户端的加密算法</span><br><span class="line">#以下内容请按域名需要进行配置，此处仅供参考</span><br><span class="line">location / &#123;</span><br><span class="line">return 444;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>其它web服务器配置<br>请参考文档：<a target="_blank" rel="noopener" href="http://www.itrus.cn/html/fuwuyuzhichi/fuwuqizhengshuanzhuangpeizhizhinan">《服务器证书配置指南》</a></li>
+</ol>
+<p>三、相关事项</p>
+<ol>
+<li><p>证书颁发机构<br>推荐天威诚信，具体请见：<a target="_blank" rel="noopener" href="http://www.itrus.com.cn/">链接</a></p>
+</li>
+<li><p>参考文档<br><a target="_blank" rel="noopener" href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_prefer_server_ciphers">《ngx_http_ssl_module》</a><br><a target="_blank" rel="noopener" href="http://nginx.org/cn/docs/http/configuring_https_servers.html">《nginx配置HTTPS服务器》</a><br><a target="_blank" rel="noopener" href="http://www.itrus.cn/html/fuwuyuzhichi/fuwuqizhengshuanzhuangpeizhizhinan">《服务器证书配置指南》</a></p>
+</li>
+<li><p>常见问题   </p>
+</li>
+<li><p>证书受信任的问题<br>  部分国内签发的SSL证书，在Android上不受信任，推荐GeoTrust；</p>
+</li>
+<li><p>如果页面有动静分离，静态资源使用独立域名的话，也需要为该域名申请证书；</p>
+</li>
+<li><p>android低版本不支持SNI扩展，受此限制，一台服务器只能部署一个数字证书；</p>
+</li>
+</ol>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/interest/WeChatPay.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1dd2c015330c13fc756d7fc5ab2ded80"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

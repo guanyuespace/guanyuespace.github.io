@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xuewenm.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Review   Review Integer valueOf toStr parseInt 位操作&amp;最低位 位操作&amp;高位零的数目 位操作&amp;低位零的数目 位操作&amp;循环移位 位操作&amp;符号位 位操作&amp;二进制反序 位操作&amp;二进制中1的数目   AtomicInteger 简介 Unsafe 补充-volatile 测试      Integerva">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wen&#39;s blog">
+<meta property="og:url" content="https://xuewenm.github.io/interest/Review_Integer.html">
+<meta property="og:site_name" content="Wen&#39;s blog">
+<meta property="og:description" content="Review   Review Integer valueOf toStr parseInt 位操作&amp;最低位 位操作&amp;高位零的数目 位操作&amp;低位零的数目 位操作&amp;循环移位 位操作&amp;符号位 位操作&amp;二进制反序 位操作&amp;二进制中1的数目   AtomicInteger 简介 Unsafe 补充-volatile 测试      Integerva">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190111101332407.png">
+<meta property="article:published_time" content="2023-02-07T12:16:42.526Z">
+<meta property="article:modified_time" content="2023-02-07T12:16:42.526Z">
+<meta property="article:author" content="XueWen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190111101332407.png">
+
+
+<link rel="canonical" href="https://xuewenm.github.io/interest/Review_Integer">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://xuewenm.github.io/interest/Review_Integer.html","path":"interest/Review_Integer.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Wen's blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <!-- <script type="text/javascript" src="/js/dynamic-bg.js"></script>-->
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Wen's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-interest"><a href="/interest/" rel="section"><i class="fa fa-heart fa-fw"></i>interest</a></li><li class="menu-item menu-item-c"><a href="/c/" rel="section"><i class="fa fa-heart fa-fw"></i>C</a></li><li class="menu-item menu-item-python"><a href="/python/" rel="section"><i class="fa fa-heart fa-fw"></i>Python</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Review"><span class="nav-number">1.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Integer"><span class="nav-number">2.</span> <span class="nav-text">Integer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#valueOf-NaN"><span class="nav-number">2.1.</span> <span class="nav-text">valueOf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toStr"><span class="nav-number">2.2.</span> <span class="nav-text">toStr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parseInt"><span class="nav-number">2.3.</span> <span class="nav-text">parseInt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E6%9C%80%E4%BD%8E%E4%BD%8D"><span class="nav-number">2.4.</span> <span class="nav-text">位操作&amp;最低位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E9%AB%98%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="nav-number">2.5.</span> <span class="nav-text">位操作&amp;高位零的数目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E4%BD%8E%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="nav-number">2.6.</span> <span class="nav-text">位操作&amp;低位零的数目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E5%BE%AA%E7%8E%AF%E7%A7%BB%E4%BD%8D"><span class="nav-number">2.7.</span> <span class="nav-text">位操作&amp;循环移位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E7%AC%A6%E5%8F%B7%E4%BD%8D"><span class="nav-number">2.8.</span> <span class="nav-text">位操作&amp;符号位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8F%8D%E5%BA%8F"><span class="nav-number">2.9.</span> <span class="nav-text">位操作&amp;二进制反序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C-amp-%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="nav-number">2.10.</span> <span class="nav-text">位操作&amp;二进制中1的数目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AtomicInteger"><span class="nav-number">3.</span> <span class="nav-text">AtomicInteger</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsafe"><span class="nav-number">3.2.</span> <span class="nav-text">Unsafe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85-volatile"><span class="nav-number">3.3.</span> <span class="nav-text">补充-volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">3.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Thread"><span class="nav-number">4.</span> <span class="nav-text">Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yield"><span class="nav-number">4.1.</span> <span class="nav-text">yield</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join"><span class="nav-number">4.2.</span> <span class="nav-text">join</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XueWen"
+      src="/images/ic_hello.png">
+  <p class="site-author-name" itemprop="name">XueWen</p>
+  <div class="site-description" itemprop="description">不积硅步无以至千里，不积小流何以成江海。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guanyuespace" title="Code → https:&#x2F;&#x2F;github.com&#x2F;guanyuespace" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>Code</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuewenm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuewenm" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1853376164@qq.com" title="Mail → mailto:1853376164@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:guanyue003@gmail.com" title="E-Mail → mailto:guanyue003@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28798308&auto=1&height=66"></iframe>
+	  
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h1 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h1><!-- TOC -->
+
+<ul>
+<li><a href="#review">Review</a></li>
+<li><a href="#integer">Integer</a><ul>
+<li><a href="#valueof-function%20valueOf()%20%7B%20%5Bnative%20code%5D%20%7D1">valueOf</a></li>
+<li><a href="#tostr">toStr</a></li>
+<li><a href="#parseint">parseInt</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E6%9C%80%E4%BD%8E%E4%BD%8D">位操作&amp;最低位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E9%AB%98%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;高位零的数目</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BD%8E%E4%BD%8D%E9%9B%B6%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;低位零的数目</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%BE%AA%E7%8E%AF%E7%A7%BB%E4%BD%8D">位操作&amp;循环移位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%8F%B7%E4%BD%8D">位操作&amp;符号位</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8F%8D%E5%BA%8F">位操作&amp;二进制反序</a></li>
+<li><a href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E6%95%B0%E7%9B%AE">位操作&amp;二进制中1的数目</a></li>
+</ul>
+</li>
+<li><a href="#atomicinteger">AtomicInteger</a><ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#unsafe">Unsafe</a></li>
+<li><a href="#%E8%A1%A5%E5%85%85-volatile">补充-volatile</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95">测试</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<hr>
+<h1 id="Integer"><a href="#Integer" class="headerlink" title="Integer"></a>Integer</h1><h2 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf"></a>valueOf</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title function_">valueOf</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(i);</span><br><span class="line">&#125;</span><br><span class="line">Integer#IntegerCache(-<span class="number">128</span>~<span class="number">127</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="toStr"><a href="#toStr" class="headerlink" title="toStr"></a>toStr</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">toStr(val, radix)&#123;</span><br><span class="line">    <span class="keyword">while</span> (val &gt;= radix) &#123;</span><br><span class="line">       buf[charPos--] = digits[(val % radix)];</span><br><span class="line">       val = val / radix;</span><br><span class="line">    &#125;</span><br><span class="line">    buf<span class="comment">//result array buffer</span></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt"></a>parseInt</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">parseInt(s, radix)&#123;</span><br><span class="line">    digit = Character.digit(s.charAt(i++),radix);</span><br><span class="line">    result*=radix;</span><br><span class="line">    result+=digit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">## 位操作&amp;最高位</span><br><span class="line">```java</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">highestOneBit</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">   <span class="comment">// HD, Figure 3-1</span></span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">1</span>);<span class="comment">//右移一位，  </span></span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">2</span>);</span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">4</span>);</span><br><span class="line">   i |= (i &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">   i |= (i &gt;&gt; <span class="number">16</span>);</span><br><span class="line">   <span class="keyword">return</span> i - (i &gt;&gt;&gt; <span class="number">1</span>);<span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析：</strong>  </p>
+<ul>
+<li>右移一位，最高位1右移一位，取或–&gt; 最高的两位都是1</li>
+<li>右移两位，最高两位都是1，再右移两位取或—&gt; 最高四位都是1</li>
+<li>int共32位，到最后一步使得最高位之后均为1，返回最高位为1的数</li>
+</ul>
+<p><strong>Result:</strong>   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(15),16)</span><br><span class="line">$1 ==&gt; &quot;8&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(16),16)</span><br><span class="line">$2 ==&gt; &quot;10&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(7),16)</span><br><span class="line">$3 ==&gt; &quot;4&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.highestOneBit(0x7fffffff),16)</span><br><span class="line">$5 ==&gt; &quot;40000000&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-最低位"><a href="#位操作-amp-最低位" class="headerlink" title="位操作&amp;最低位"></a>位操作&amp;最低位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">lowestOneBit</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="comment">// HD, Section 2-1</span></span><br><span class="line">    <span class="keyword">return</span> i &amp; -i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析：</strong>    </p>
+<ul>
+<li>补码表示： 原码取反+1</li>
+<li>原码取反,  +1–&gt;（主体：反码）最低位0变1 (0之后的1均变为0）   因此使得最低位0之后的数位与原码都相同（主体：补码）   </li>
+<li>同样（主体：原码）最低位1之后的数位与补码均相同</li>
+</ul>
+<p>省去符号位(高位)表示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^1([0|1]+)?|0   </span><br><span class="line"></span><br><span class="line">1101 0000     0010 1111+1    0001 0000</span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-高位零的数目"><a href="#位操作-amp-高位零的数目" class="headerlink" title="位操作&amp;高位零的数目"></a>位操作&amp;高位零的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">numberOfLeadingZeros</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-6</span></span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">16</span> == <span class="number">0</span>) &#123; n += <span class="number">16</span>; i &lt;&lt;= <span class="number">16</span>; &#125;<span class="comment">//无符号右移16  高16位==0（i左移16位保存低16位，舍弃高16位）   </span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">24</span> == <span class="number">0</span>) &#123; n +=  <span class="number">8</span>; i &lt;&lt;=  <span class="number">8</span>; &#125;<span class="comment">//无符号右移24  高8位==0</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">28</span> == <span class="number">0</span>) &#123; n +=  <span class="number">4</span>; i &lt;&lt;=  <span class="number">4</span>; &#125;<span class="comment">//</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">30</span> == <span class="number">0</span>) &#123; n +=  <span class="number">2</span>; i &lt;&lt;=  <span class="number">2</span>; &#125;</span><br><span class="line">    n -= i &gt;&gt;&gt; <span class="number">31</span>;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line">```    </span><br><span class="line">**Result:**   </span><br><span class="line">```jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x1</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">8</span> ==&gt; <span class="string">&quot;31&quot;</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0xffffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">10</span> ==&gt; <span class="string">&quot;0&quot;</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x3fffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">11</span> ==&gt; <span class="string">&quot;2&quot;</span></span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfLeadingZeros(<span class="number">0x1fffffff</span>),<span class="number">10</span>)</span><br><span class="line">$<span class="number">12</span> ==&gt; <span class="string">&quot;3&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-低位零的数目"><a href="#位操作-amp-低位零的数目" class="headerlink" title="位操作&amp;低位零的数目"></a>位操作&amp;低位零的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">numberOfTrailingZeros</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-14</span></span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">31</span>;</span><br><span class="line">    y = i &lt;&lt;<span class="number">16</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n -<span class="number">16</span>; i = y; &#125;<span class="comment">//低十六位!=0  -=16</span></span><br><span class="line">    y = i &lt;&lt; <span class="number">8</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">8</span>; i = y; &#125;</span><br><span class="line">    y = i &lt;&lt; <span class="number">4</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">4</span>; i = y; &#125;</span><br><span class="line">    y = i &lt;&lt; <span class="number">2</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">2</span>; i = y; &#125;</span><br><span class="line">    <span class="keyword">return</span> n - ((i &lt;&lt; <span class="number">1</span>) &gt;&gt;&gt; <span class="number">31</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong>   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x77),10)</span><br><span class="line">$16 ==&gt; &quot;0&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x75),10)</span><br><span class="line">$17 ==&gt; &quot;0&quot;</span><br><span class="line">jshell&gt; Integer.toString(Integer.numberOfTrailingZeros(0x76),10)</span><br><span class="line">$18 ==&gt; &quot;1&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="位操作-amp-循环移位"><a href="#位操作-amp-循环移位" class="headerlink" title="位操作&amp;循环移位"></a>位操作&amp;循环移位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">rotateLeft</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> distance)</span> &#123;<span class="comment">//循环左移</span></span><br><span class="line">    <span class="keyword">return</span> (i &lt;&lt; distance) | (i &gt;&gt;&gt; -distance);<span class="comment">//左移|移出的补位</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">rotateRight</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> distance)</span> &#123;<span class="comment">//循环右移</span></span><br><span class="line">   <span class="keyword">return</span> (i &gt;&gt;&gt; distance) | (i &lt;&lt; -distance);<span class="comment">//无符号右移|移出的补位</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-符号位"><a href="#位操作-amp-符号位" class="headerlink" title="位操作&amp;符号位"></a>位操作&amp;符号位</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">signum</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">   <span class="comment">// HD, Section 2-7</span></span><br><span class="line">   <span class="keyword">return</span> (i &gt;&gt; <span class="number">31</span>) | (-i &gt;&gt;&gt; <span class="number">31</span>);<span class="comment">//i&lt;0?-1:0|  -i&gt;0?0:1    -1|0=-1(负数)   0|1=1（正数） 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>… …</p>
+<h2 id="位操作-amp-二进制反序"><a href="#位操作-amp-二进制反序" class="headerlink" title="位操作&amp;二进制反序"></a>位操作&amp;二进制反序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">reverse</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">   <span class="comment">// HD, Figure 7-1</span></span><br><span class="line">   i = (i &amp; <span class="number">0x55555555</span>) &lt;&lt; <span class="number">1</span> | (i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>;</span><br><span class="line">   i = (i &amp; <span class="number">0x33333333</span>) &lt;&lt; <span class="number">2</span> | (i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>;</span><br><span class="line">   i = (i &amp; <span class="number">0x0f0f0f0f</span>) &lt;&lt; <span class="number">4</span> | (i &gt;&gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0f0f0f0f</span>;</span><br><span class="line">   i = (i &lt;&lt; <span class="number">24</span>) | ((i &amp; <span class="number">0xff00</span>) &lt;&lt; <span class="number">8</span>) |</span><br><span class="line">       ((i &gt;&gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff00</span>) | (i &gt;&gt;&gt; <span class="number">24</span>);</span><br><span class="line">   <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="位操作-amp-二进制中1的数目"><a href="#位操作-amp-二进制中1的数目" class="headerlink" title="位操作&amp;二进制中1的数目"></a>位操作&amp;二进制中1的数目</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">bitCount</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="comment">// HD, Figure 5-2</span></span><br><span class="line">    i = i - ((i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>);</span><br><span class="line">    i = (i &amp; <span class="number">0x33333333</span>) + ((i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);</span><br><span class="line">    i = (i + (i &gt;&gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x0f0f0f0f</span>;</span><br><span class="line">    i = i + (i &gt;&gt;&gt; <span class="number">8</span>);</span><br><span class="line">    i = i + (i &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="keyword">return</span> i &amp; <span class="number">0x3f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><font color="red" size="+3">数学计算</font><br><br>函数功能说明：技术整型i二进制表示中1的个数。</p>
+<p>解释过程，设：$i&#x3D;b_0\cdot2^0+b_1\cdot2^1+…+b_{30}\cdot2^{30}+b_{31}\cdot2^{31}$。<br>要求的结果为：$b_0+b_1+b_2+b_3+…+b_{30}+b_{31}$ 的值。    </p>
+<p>第一步<code>i = i - ((i &gt;&gt;&gt; 1) &amp; 0x55555555);</code>(5的二进制为0101)得到的结果为：<br>$i&#x3D;b_0\cdot2^0+b_1\cdot2^1+…+b_{31}\cdot2^{31}-(b_1\cdot2^0+b_3\cdot2^2+b_5\cdot2^4+b_{31}\cdot2^{30}) \ &#x3D;(b_0-b_1)\cdot2^0+b_1\cdot2^1+(b_2-b_3)\cdot2^2+…+b_{29}\cdot2^{29}+(b_{30}-b_{31})\cdot2^{30}+b_{31}\cdot2^{31}\ &#x3D;(b_0+b_1)\cdot2^0+(b_2+b_3)\cdot2^2+…+(b_{28}+b_{29})\cdot2^{28}+(b_{30}+b_{31})\cdot2^{30}$。</p>
+<p>第二步<code>i = (i &amp; 0x33333333) + ((i &gt;&gt;&gt; 2) &amp; 0x33333333);</code>(3的二进制为0011)得到的结果为：<br>$i&#x3D;((b_0+b_1)\cdot2^0+(b_4+b_5)\cdot2^4+…+(b_{28}+b_{29})\cdot2^{28})\ +((b_2+b_3)\cdot2^0+(b_6+b_7)\cdot2^4+…+(b_{30}+b_{31})\cdot2^{28}\ &#x3D;(b_0+b_1+b_2+b_3)\cdot2^0+(b_4+b_5+b_6+b_7)\cdot2^4+…+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28}$  </p>
+<p>第三步<code>i = (i + (i &gt;&gt;&gt; 4)) &amp; 0x0f0f0f0f;</code>(0f的二进制为00001111)中i + (i &gt;&gt;&gt; 4)得到的结果为：<br>$i + (i &gt;&gt;&gt; 4)&#x3D;((b_0+b_1+b_2+b_3)\cdot2^0+(b_4+b_5+b_6+b_7)\cdot2^4+…\ +(b_{24}+b_{25}+b_{26}+b_{27})\cdot2^{24}+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28})\ +((b_4+b_5+b_6+b_7)\cdot2^0+(b_8+b_9+b_{10}+b_{11})\cdot2^4+…+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{24})\ &#x3D;(b_0+b_1+b_2+…+b_6+b_7)\cdot2^0+(b_4+b_5+b_6+…+b_{10}+b_{11})\cdot2^4+…\ +(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}+(b_{28}+b_{29}+b_{30}+b_{31})\cdot2^{28}$</p>
+<p>所以<code>i = (i + (i &gt;&gt;&gt; 4)) &amp; 0x0f0f0f0f;</code>得到的结果为：<br>$i&#x3D;(b_0+b_1+b_2+…+b_6+b_7)\cdot2^0+(b_8+b_9+b_{10}+b_{11}+…+b_{14}+b_{15})\cdot2^8+…+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>第四步<code>i = i + (i &gt;&gt;&gt; 8);</code>得到的结果为：<br>$i&#x3D;(b_0+b_1+b_2+…+b_{14}+b_{15})\cdot2^0+(b_8+b_9+b_{10}+…+b_{22}+b_{23})\cdot2^8\ +(b_{16}+b_{17}+b_{18}+…+b_{30}+b_{31})\cdot2^{16}+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>第五步<code>i = i + (i &gt;&gt;&gt; 16);</code>得到的结果为：<br>$i&#x3D;(b_0+b_1+b_2+…+b_{30}+b_{31})\cdot2^0+(b_8+b_9+b_{10}+…+b_{30}+b_{31})\cdot2^8\ +(b_{16}+b_{17}+b_{18}+…+b_{30}+b_{31})\cdot2^{16}+(b_{24}+b_{25}+b_{26}+…+b_{30}+b_{31})\cdot2^{24}$</p>
+<p>最后<code>i &amp; 0x3f;</code>得到的结果为：<br>$i&#x3D;\sum_{i&#x3D;0}^{31}b_i$   </p>
+<hr>
+<h1 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h1><blockquote>
+<p>An int value that may be updated atomically.</p>
+<p>An AtomicInteger is used in applications such as atomically incremented counters, and <strong>cannot be used as a replacement for an java.lang.Integer.</strong><br>However, this class does extend Number to allow uniform access by tools and utilities that deal with numerically-based classes.</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AtomicInteger</span> <span class="keyword">extends</span> <span class="title class_">Number</span> <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable &#123;</span><br><span class="line">    <span class="comment">// setup to use Unsafe.compareAndSwapInt for updates</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> Unsafe.getUnsafe();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> valueOffset;<span class="comment">//field: value   --&gt; offset  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">int</span> value;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           valueOffset = unsafe.objectFieldOffset(AtomicInteger.class.getDeclaredField(<span class="string">&quot;value&quot;</span>));</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception ex) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(ex); &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/////////////////////////////////////Function///////////////////////////////////////////////////////////////</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">lazySet</span><span class="params">(<span class="type">int</span> newValue)</span> &#123;</span><br><span class="line">        unsafe.putOrderedInt(<span class="built_in">this</span>, valueOffset, newValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">compareAndSet</span><span class="params">(<span class="type">int</span> expect, <span class="type">int</span> update)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.compareAndSwapInt(<span class="built_in">this</span>, valueOffset, expect, update);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">getAndIncrement</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.getAndAddInt(<span class="built_in">this</span>, valueOffset, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">incrementAndGet</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.getAndAddInt(<span class="built_in">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IntBinaryOperator: FunctionalInterface</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">accumulateAndGet</span><span class="params">(<span class="type">int</span> x,</span></span><br><span class="line"><span class="params">                                      IntBinaryOperator accumulatorFunction)</span> &#123;</span><br><span class="line">        <span class="type">int</span> prev, next;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            prev = get();</span><br><span class="line">            next = accumulatorFunction.applyAsInt(prev, x);</span><br><span class="line">        &#125; <span class="keyword">while</span> (!compareAndSet(prev, next));<span class="comment">//ok 原子操作的基础... ...</span></span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由代码可知，所有操作均有Unsafe.java类进行操作完成     </p>
+<h2 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Unsafe</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Unsafe theUnsafe;<span class="comment">//ok</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Unsafe <span class="title function_">getUnsafe</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">caller</span> <span class="operator">=</span> Reflection.getCallerClass();</span><br><span class="line">        <span class="keyword">if</span> (!VM.isSystemDomainLoader(caller.getClassLoader())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">SecurityException</span>(<span class="string">&quot;Unsafe&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> theUnsafe;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">      registerNatives();</span><br><span class="line">      Reflection.registerMethodsToFilter(Unsafe.class, <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;getUnsafe&quot;</span>&#125;);</span><br><span class="line">      theUnsafe = <span class="keyword">new</span> <span class="title class_">Unsafe</span>();</span><br><span class="line">      ... ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">////////////////////////////About AtomicInteger/////////////////////////////////////////</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">putOrderedInt</span><span class="params">(Object var1, <span class="type">long</span> offset, <span class="type">int</span> newValue)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="type">boolean</span> <span class="title function_">compareAndSwapInt</span><span class="params">(Object var1, <span class="type">long</span> offset, <span class="type">int</span> expect, <span class="type">int</span> update)</span>;<span class="comment">//Value(var1.offset)==expect?&#123;Value(var1.offset)=update; return true;&#125;:return false;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">getAndAddInt</span><span class="params">(Object var1, <span class="type">long</span> offset, <span class="type">int</span> addon)</span> &#123;</span><br><span class="line">        <span class="type">int</span> current;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            current = <span class="built_in">this</span>.getIntVolatile(var1, offset);<span class="comment">//取出当前值</span></span><br><span class="line">        &#125; <span class="keyword">while</span>(!<span class="built_in">this</span>.compareAndSwapInt(var1, offset, current, current + addon));<span class="comment">//set the new value successfully ? true : false;</span></span><br><span class="line">        <span class="keyword">return</span> current;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>阻塞同步和非阻塞同步都是实现线程安全的两个保障手段，非阻塞同步对于阻塞同步而言主要解决了阻塞同步中线程阻塞和唤醒带来的性能问题，那什么叫做非阻塞同步呢？<br><em>在并发环境下，某个线程对共享变量先进行操作，如果没有其他线程争用共享数据那操作就成功；如果存在数据的争用冲突，那就采取补偿措施，比如不断的重试机制，直到成功为止，因为这种乐观的并发策略不需要把线程挂起，也就把这种同步操作称为非阻塞同步（操作和冲突检测具备原子性）。</em> <em><strong>在硬件指令集的发展驱动下，使得 “操作和冲突检测” 这种看起来需要多次操作的行为只需要一条处理器指令便可以完成，这些指令中就包括非常著名的 CAS 指令（Compare-And-Swap 比较并交换）。</strong></em> 《深入理解 Java 虚拟机第二版. 周志明》第十三章中这样描述关于 CAS 机制:<br><img src="https://img-blog.csdnimg.cn/20190111101332407.png" alt="《深入理解 Java 虚拟机第二版. 周志明》13.2.2" title="《深入理解 Java 虚拟机第二版. 周志明》13.2.2">  </p>
+<p><strong>原子操作：</strong> incrementAndGet() 方法在一个无限循环体内，不断尝试将一个比当前值大 1 的新值赋给自己，如果失败则说明在执行 “获取 - 设置” 操作的时已经被其它线程修改过了，于是便再次进入循环下一次操作，直到成功为止。   </p>
+<h2 id="补充-volatile"><a href="#补充-volatile" class="headerlink" title="补充-volatile"></a>补充-volatile</h2><ul>
+<li>保证变量在线程间可见，对 volatile 变量所有的写操作都能立即反应到其他线程中，换句话说，volatile 变量在各个线程中是一致的（得益于 java 内存模型—“先行发生原则”）；</li>
+<li>禁止指令的重排序优化；</li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AtomicIntegerTest</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">counter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);</span><br><span class="line">        <span class="type">ExecutorService</span> <span class="variable">executors</span> <span class="operator">=</span> Executors.newFixedThreadPool(<span class="number">50</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            executors.execute(() -&gt; &#123;</span><br><span class="line">                increase();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Thread.sleep(<span class="number">50</span>);</span><br><span class="line">        <span class="keyword">if</span> (Thread.activeCount() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            Thread.<span class="keyword">yield</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(counter.get());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">increase</span><span class="params">()</span> &#123;</span><br><span class="line">        counter.accumulateAndGet(<span class="number">20</span>, (left, right) -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> left + right;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">200000</span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h1><blockquote>
+</blockquote>
+<h2 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h2><h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2>
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <span class="with-love">
+    <i class="fa fa-pen"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WEN</span>
+  <b>&nbsp;&nbsp;&nbsp;Keep fighting !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+  <!--
+  &copy; 
+  <span itemprop="copyrightYear">2023</span> -->
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line">&nbsp;字数:</i>
+    </span>
+    <span title="站点总字数">128k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee">&nbsp;阅读时长:</i>
+    </span>
+    <span title="站点阅读时长">7:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user">&nbsp;总访客量:</i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye">&nbsp;总访问量:</i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="49" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/guanyuespace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://xuewenm.github.io/interest/Review_Integer.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"xuewenm","repo":"Comments","client_id":"277afed5e192963a5025","client_secret":"f1b813c1d9382088b20d4590765a56c68f14209b","admin_user":"xuewenm","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"523ea6e0ba7861a4aaaf4773c62ae6ba"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
